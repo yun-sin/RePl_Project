@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
-const MyPage = memo(() => {
+const Main = memo(() => {
     return (
         <div>
-            <h2>MyPage</h2>
+            <h2>Main</h2>
         </div>
     );
 });
 
-export default MyPage;
+export default Main;
