@@ -7,7 +7,7 @@ import Raffle from "./pages/raffle/Raffle";
 const App = memo(() => {
   return (
     <div>
-      <h1>Re_pl</h1>
+      <h1>Re_pl 제목</h1>
 
       <hr />
 
