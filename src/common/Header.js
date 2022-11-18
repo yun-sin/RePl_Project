@@ -89,7 +89,7 @@ const SidebarContainer = styled.div`
 
 const Header = memo(() => {
   const SidebarCon = useRef();
-  const [isActive, setActive] = useState("false");
+  const [isActive, setActive] = useState(false);
 
   const onSidebarClick = useCallback((e) => {
     e.preventDefault();
@@ -103,12 +103,12 @@ const Header = memo(() => {
       </div>
       <div className="navbarMenu">
         <NavLink to="/login">login</NavLink>
-        <a onClick={onSidebarClick} className={`Sidebar ${isActive ? "" : "active"}`}>
+        <a onClick={onSidebarClick} className={`Sidebar ${isActive ? "active" : ""}`}>
           Sidebar
         </a>
       </div>
 
-      <SidebarContainer ref={SidebarCon} className={`${isActive ? "" : "active"}`}>
+      <SidebarContainer ref={SidebarCon} className={`${isActive ? "active" : ""}`}>
         <NavLink to="/">홈으로</NavLink>
         <NavLink to="/map">지도찾기</NavLink>
         <NavLink to="/login">마이페이지</NavLink>
