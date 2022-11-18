@@ -58,15 +58,24 @@ const SidebarContainer = styled.div`
   }
 
   a {
-    width: 100%;
+    width: 80%;
+
     height: 50px;
     display: block;
     text-align: center;
     font-size: 30px;
     line-height: 50px;
-    margin: 30px 0;
+    margin: 30px auto;
     background-color: #aaa;
     color: black;
+
+    &:first-of-type {
+      margin-top: 70px;
+    }
+
+    &:nth-of-type(2n) {
+      margin-bottom: 100px;
+    }
 
     &:hover {
       background-color: #eee;
