@@ -8,10 +8,12 @@ import MapPage from "./pages/map/MapPage";
 import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
 
+import GlobalStyles from "./GlobalStyles";
+
 const App = memo(() => {
   return (
     <div>
-
+      <GlobalStyles />
       <Header />
 
       <hr />
