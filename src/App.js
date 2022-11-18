@@ -7,6 +7,7 @@ import Main from "./pages/Main";
 import MapPage from "./pages/map/MapPage";
 import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
+import Bulletin from "./pages/Bulletin/Bulletin";
 
 const App = memo(() => {
   return (
@@ -18,6 +19,7 @@ const App = memo(() => {
         <Route path="/raffle" element={<Raffle />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/bulletin" element={<Bulletin />} />
       </Routes>
     </div>
   );
