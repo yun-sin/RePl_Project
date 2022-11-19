@@ -6,6 +6,7 @@ const HeaderContainer = styled.div`
   height: 50px;
   width: 100%;
   background-color: #eee;
+  z-index: 999;
 
   a {
     text-decoration: none;
@@ -45,6 +46,7 @@ const HeaderContainer = styled.div`
 `;
 
 const SidebarContainer = styled.div`
+  z-index: 99;
   width: 300px;
   background-color: rgba(200, 200, 200, 0.5);
   height: 100%;
