@@ -7,7 +7,7 @@ import Main from "./pages/Main";
 import MapPage from "./pages/map/MapPage";
 import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
-import Bulletin from "./pages/bulletin/Bulletin";
+import Bulletin from "./pages/Bulletin/Bulletin";
 
 const App = memo(() => {
   return (

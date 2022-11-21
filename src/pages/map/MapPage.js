@@ -1,7 +1,12 @@
 import React, { memo } from "react";
+import Location from "../../components/map/Location";
 
 const MapPage = memo(() => {
-  return <div>MapPage</div>;
+  return (
+    <div>
+      <Location />
+    </div>
+  );
 });
 
 export default MapPage;
