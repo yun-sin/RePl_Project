@@ -7,7 +7,11 @@ import Main from "./pages/Main";
 import MapPage from "./pages/map/MapPage";
 import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
-import Bulletin from "./pages/Bulletin/Bulletin";
+
+/* 게시판 컴포넌트 모듈 */
+import Bulletin from "./pages/bulletin/Bulletin";
+import MyPost from "./pages/bulletin/MyPost";
+import NewPost from "./pages/bulletin/NewPost";
 
 const App = memo(() => {
   return (
@@ -19,7 +23,11 @@ const App = memo(() => {
         <Route path="/raffle" element={<Raffle />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+
+        {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />
+        <Route path="/bulletin/mypost/:id" element={<MyPost />} />
+        <Route path="/bulletin/newpost/:id" element={<NewPost />} />
       </Routes>
     </div>
   );

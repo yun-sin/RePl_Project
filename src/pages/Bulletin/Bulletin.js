@@ -120,8 +120,8 @@ const Bulletin = memo(() => {
               <img src={banner} alt="배너 이미지" />
               <h1>여기는 배너 제목입니다</h1>
               <div className='links'>
-                <NavLink>내 브런치</NavLink>
-                <NavLink>글쓰기</NavLink>
+                <NavLink to='/bulletin/mypost/*'>내 게시글</NavLink>
+                <NavLink to='/bulletin/newpost/*'>글쓰기</NavLink>
               </div>
             </BannerArea>
 
