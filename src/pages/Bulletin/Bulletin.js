@@ -63,7 +63,7 @@ const MainArea = styled.section`
       padding: 5px;
     }
   }
-`
+`;
 
 const PostList = styled.div`
   width: 85%;
@@ -84,7 +84,7 @@ const PostList = styled.div`
     display: flex;
     flex-flow: row nowrap;
   }
-`
+`;
 
 const PageControl = styled.div`
   width: 50%;
@@ -111,7 +111,7 @@ const PageControl = styled.div`
       color: white;
     }
   }
-`
+`;
 
 const Bulletin = memo(() => {
     return (
