@@ -54,6 +54,7 @@ const MainArea = styled.section`
   .main__option-bar {
     width: 85%;
     margin: auto;
+    margin-bottom: 30px;
     padding: 8px 16px;
 
     select {
@@ -63,33 +64,25 @@ const MainArea = styled.section`
       padding: 5px;
     }
   }
-`
+`;
 
 const PostList = styled.div`
   width: 85%;
   background-color: orange;
   margin: auto;
-  margin-top: 30px;
   box-sizing: border-box;
 
   .list-box {
     width: 100%;  
     display: flex;
     flex-flow: row wrap;
+    margin-bottom: 30px;
   }
-
-  .page_control {
-    width: 700px;
-    margin: auto;
-    display: flex;
-    flex-flow: row nowrap;
-  }
-`
+`;
 
 const PageControl = styled.div`
   width: 50%;
   margin: auto;
-  margin-top: 30px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -111,7 +104,7 @@ const PageControl = styled.div`
       color: white;
     }
   }
-`
+`;
 
 const MyPost = memo(() => {
     return (
