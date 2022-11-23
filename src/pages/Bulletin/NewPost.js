@@ -1,6 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
-
 import styled from 'styled-components';
+
+import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
+import Context from '@ckeditor/ckeditor5-core/src/context';
+import Editor from '../../assets/js/ckeditor';
 
 const MainForm = styled.form`
     width: 100%;
@@ -88,6 +91,17 @@ const TitleArea = styled.div`
     }
 `;
 
+const PostingArea = styled.section`
+    width: 1400px;
+    padding: 20px;
+    margin: auto;
+    box-sizing: border-box;
+
+    .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+        
+    }
+`;
+
 const NewPost = memo(() => {
     const onPosting = useCallback(e => {
         e.preventDefault();
@@ -121,9 +135,42 @@ const NewPost = memo(() => {
                     </div>
                 </div>
             </TitleArea>
+
             <hr />
 
-
+            <PostingArea>
+                <CKEditorContext context={Context}>
+                    <CKEditor 
+                        editor={ Editor }
+                        config={{
+                            placeholder: "내용을 입력하세요.",
+                            toolbar: {
+                                items: [
+                                    'heading',
+                                    'fontSize',
+                                    'fontFamily',
+                                    'fontColor',
+                                    'fontBackgroundColor',
+                                ]
+                            }
+                        }}
+                        onReady={ editor => {
+                            // You can store the "editor" and use when it is needed.
+                            console.log( 'Editor is ready to use!', editor );
+                        }}
+                        onChange={ ( event, editor ) => {
+                            const data = editor.getData();
+                            console.log( { event, editor, data } );
+                        }}
+                        onBlur={ ( event, editor ) => {
+                            console.log( 'Blur.', editor );
+                        }}
+                        onFocus={ ( event, editor ) => {
+                            console.log( 'Focus.', editor );
+                        }}
+                    />
+                </CKEditorContext>
+            </PostingArea>
         </MainForm>
     );
 });
