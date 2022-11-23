@@ -1,10 +1,10 @@
 import React, { memo } from "react";
-import Location from "../../components/map/Location";
+import Map from "../../components/map/Map";
 
 const MapPage = memo(() => {
   return (
     <div>
-      <Location />
+      <Map />
     </div>
   );
 });
