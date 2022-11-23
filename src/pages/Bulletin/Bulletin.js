@@ -54,6 +54,7 @@ const MainArea = styled.section`
   .main__option-bar {
     width: 85%;
     margin: auto;
+    margin-bottom: 30px;
     padding: 8px 16px;
 
     select {
@@ -69,27 +70,19 @@ const PostList = styled.div`
   width: 85%;
   background-color: orange;
   margin: auto;
-  margin-top: 30px;
   box-sizing: border-box;
 
   .list-box {
     width: 100%;  
     display: flex;
     flex-flow: row wrap;
-  }
-
-  .page_control {
-    width: 700px;
-    margin: auto;
-    display: flex;
-    flex-flow: row nowrap;
+    margin-bottom: 30px;
   }
 `;
 
 const PageControl = styled.div`
   width: 50%;
   margin: auto;
-  margin-top: 30px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
