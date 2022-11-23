@@ -9,9 +9,9 @@ import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
 
 /* 게시판 컴포넌트 모듈 */
-import Bulletin from "./pages/bulletin/Bulletin";
-import MyPost from "./pages/bulletin/MyPost";
-import NewPost from "./pages/bulletin/NewPost";
+// import Bulletin from "./pages/bulletin/Bulletin";
+// import MyPost from "./pages/bulletin/MyPost";
+// import NewPost from "./pages/bulletin/NewPost";
 
 const App = memo(() => {
   return (
@@ -25,9 +25,9 @@ const App = memo(() => {
         <Route path="/login" element={<Login />} />
 
         {/* 게시판 Routes */}
-        <Route path="/bulletin" element={<Bulletin />} />
-        <Route path="/bulletin/mypost/:id" element={<MyPost />} />
-        <Route path="/bulletin/newpost/:id" element={<NewPost />} />
+        {/* <Route path="/bulletin" element={<Bulletin />} /> */}
+        {/* <Route path="/bulletin/mypost/:id" element={<MyPost />} /> */}
+        {/* <Route path="/bulletin/newpost/:id" element={<NewPost />} /> */}
       </Routes>
     </div>
   );

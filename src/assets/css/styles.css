@@ -1,0 +1,51 @@
+
+  .glider-prev,
+  .glider-next {
+    top: 75px;
+  }
+  
+  .glider-prev {
+    left: -30px;
+  }
+  
+  .glider-next {
+    right: -30px;
+  }
+  
+  .glider {
+    height: 200px;
+  }
+  .glider-contain {
+    margin-bottom: 25px;
+  }
+  
+  .glider-track {
+    height: 100%;
+  }
+  .glider-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  
+  .slide {
+    background-color: palegreen;
+    color: darkgreen;
+    font-size: 3em;
+    font-weight: bold;
+  }
+  
+  a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .text {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
