@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
-import Context from '@ckeditor/ckeditor5-core/src/context';
-import Editor from '../../assets/js/ckeditor';
+// import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
+// import Context from '@ckeditor/ckeditor5-core/src/context';
+// import Editor from '../../assets/js/ckeditor';
 
 const MainForm = styled.form`
     width: 100%;
@@ -139,21 +139,9 @@ const NewPost = memo(() => {
             <hr />
 
             <PostingArea>
-                <CKEditorContext context={Context}>
+                {/* <CKEditorContext context={Context}>
                     <CKEditor 
                         editor={ Editor }
-                        config={{
-                            placeholder: "내용을 입력하세요.",
-                            toolbar: {
-                                items: [
-                                    'heading',
-                                    'fontSize',
-                                    'fontFamily',
-                                    'fontColor',
-                                    'fontBackgroundColor',
-                                ]
-                            }
-                        }}
                         onReady={ editor => {
                             // You can store the "editor" and use when it is needed.
                             console.log( 'Editor is ready to use!', editor );
@@ -169,7 +157,7 @@ const NewPost = memo(() => {
                             console.log( 'Focus.', editor );
                         }}
                     />
-                </CKEditorContext>
+                </CKEditorContext> */}
             </PostingArea>
         </MainForm>
     );
