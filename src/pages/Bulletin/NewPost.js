@@ -95,15 +95,34 @@ const TitleArea = styled.div`
 `;
 
 const PostingArea = styled.section`
-    width: 1400px;
+    width: 100%;
     padding: 20px;
     margin: auto;
     box-sizing: border-box;
+
+    .send-post {
+        width: 600px;
+        margin: auto;
+        text-align: right;
+
+        .send-post__button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 16px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+        }
+    }
 `;
 
 const RecommendPlaceArea = styled.div`
     width: 600px;
     margin: auto;
+    margin-bottom: 40px;
 
     .recommend-place-top {
         display: flex;
@@ -134,6 +153,56 @@ const RecommendPlaceArea = styled.div`
         width: 100%;
         padding: 0 20px;
         box-sizing: border-box;
+    }
+`;
+
+const CategoryArea = styled.div`
+    width: 600px;
+    margin: auto;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-flow: row nowrap;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+
+    .category-title {
+        flex: 0 0 auto;
+        font-size: 24px;
+        font-weight: 600;
+        margin-right: 20px;
+    }
+
+    .category-tags {
+        flex: 2 1 auto;
+
+        span {
+            display: inline-block;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #eee;
+            margin-right: 15px;
+            margin-bottom: 10px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+        }
+    }
+
+    .category-addButton {
+        flex: 0 0 auto;
+        border: none;
+        border-radius: 10px;
+        width: 65px;
+        height: 30px;
+        font-size: 12px;
+        background-color: #ccc;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 `;
 
@@ -220,6 +289,28 @@ const NewPost = memo(() => {
                         </ul>
                     </div>
                 </RecommendPlaceArea>
+
+                <CategoryArea>
+                    <h3 className='category-title'>
+                        해시태그 : 
+                    </h3>
+                    <div className='category-tags'>
+                        <span>O 세글자</span>
+                        <span>O 네글자네</span>
+                        <span>O 다섯글자다</span>
+                        <span>O 네글자네</span>
+                        <span>O 여섯글자여섯</span>
+                        <span>O 세글자</span>
+                        <span>O 여섯글자여섯</span>
+                    </div>
+                    <button className='category-addButton'>
+                        + 더 보기
+                    </button>
+                </CategoryArea>
+
+                <div className='send-post'>
+                    <button className='send-post__button'>저장하기</button>
+                </div>
             </PostingArea>
         </MainForm>
     );

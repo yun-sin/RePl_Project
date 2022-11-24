@@ -32,10 +32,12 @@ const BannerArea = styled.div`
     position: absolute;
     bottom: 0;
     right: 0;
-
+    display: flex;
+    flex-flow: row nowrap;
     margin: 0 50px 30px 0;
 
     a {
+      margin: 0 5px;
       padding: 6px 10px;
       background-color: white;
       border: 1px solid #ccc;
@@ -113,8 +115,8 @@ const Bulletin = memo(() => {
               <img src={banner} alt="배너 이미지" />
               <h1>여기는 배너 제목입니다</h1>
               <div className='links'>
-                <NavLink to='/bulletin/mypost/*'>내 게시글</NavLink>
-                <NavLink to='/bulletin/newpost/*'>글쓰기</NavLink>
+                <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
+                <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
               </div>
             </BannerArea>
 
