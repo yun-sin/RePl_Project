@@ -1349,6 +1349,13 @@
     ckeditor5 "^35.3.2"
     lodash-es "^4.17.15"
 
+"@ckeditor/ckeditor5-theme-lark@^35.3.2":
+  version "35.3.2"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-35.3.2.tgz#0b84e3960b37456d4a2d7497ff60540e90d1b631"
+  integrity sha512-3YZXJXUnX90A9Ju4fth9zVki2yDhTGRCCzZGKseM7BdJU7Drc8caQh5vTKjN8g9t4xZKCPsGPaeZ2Jk5Wd1f3Q==
+  dependencies:
+    "@ckeditor/ckeditor5-ui" "^35.3.2"
+
 "@ckeditor/ckeditor5-typing@^35.3.2":
   version "35.3.2"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-typing/-/ckeditor5-typing-35.3.2.tgz#6735a9ac62caa671fde33d1cfc4ba90f23ca6da2"

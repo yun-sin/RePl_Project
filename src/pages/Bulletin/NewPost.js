@@ -4,10 +4,6 @@ import styled from 'styled-components';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 
-// import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
-// import Context from '@ckeditor/ckeditor5-core/src/context';
-// import Editor from '../../assets/js/ckeditor';
-
 const MainForm = styled.form`
     width: 100%;
 `;
@@ -243,25 +239,6 @@ const NewPost = memo(() => {
             <hr />
 
             <PostingArea>
-                {/* <CKEditorContext context={Context}>
-                    <CKEditor 
-                        editor={ Editor }
-                        onReady={ editor => {
-                            // You can store the "editor" and use when it is needed.
-                            console.log( 'Editor is ready to use!', editor );
-                        }}
-                        onChange={ ( event, editor ) => {
-                            const data = editor.getData();
-                            console.log( { event, editor, data } );
-                        }}
-                        onBlur={ ( event, editor ) => {
-                            console.log( 'Blur.', editor );
-                        }}
-                        onFocus={ ( event, editor ) => {
-                            console.log( 'Focus.', editor );
-                        }}
-                    />
-                </CKEditorContext> */}
 
                 <RecommendPlaceArea>
                     <div className='recommend-place-top'>
