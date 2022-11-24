@@ -1,6 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
+import Editor from '../../components/bulletin/Editor';
+
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 
@@ -239,7 +241,7 @@ const NewPost = memo(() => {
             <hr />
 
             <PostingArea>
-
+                <Editor />
                 <RecommendPlaceArea>
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>
