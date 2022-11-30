@@ -5,6 +5,12 @@ import styled from 'styled-components';
 import Post from '../../components/bulletin/Post';
 
 import banner from '../../assets/img/bulletin/banner_sample.jpg';
+import postImg1 from '../../assets/img/bulletin/post_sample01.jpg';
+import postImg2 from '../../assets/img/bulletin/post_sample02.jpg';
+import postImg3 from '../../assets/img/bulletin/post_sample03.jpg';
+import postImg4 from '../../assets/img/bulletin/post_sample04.jpg';
+import postImg5 from '../../assets/img/bulletin/post_sample05.jpg';
+import postImg6 from '../../assets/img/bulletin/post_sample06.jpg';
 
 const BannerArea = styled.div`
   width: 100%;
@@ -108,6 +114,63 @@ const PageControl = styled.div`
   }
 `;
 
+const testData = [
+  {
+    targetId: 1,
+    title: '게시물 1',
+    img: postImg1,
+    publisher: '게시자 1',
+    like: 1,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+  {
+    targetId: 2,
+    title: '게시물 2',
+    img: postImg2,
+    publisher: '게시자 3',
+    like: 2,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+  {
+    targetId: 3,
+    title: '게시물 3',
+    img: postImg3,
+    publisher: '게시자 3',
+    like: 3,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+  {
+    targetId: 4,
+    title: '게시물 4',
+    img: postImg4,
+    publisher: '게시자 4',
+    like: 4,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+  {
+    targetId: 5,
+    title: '게시물 5',
+    img: postImg5,
+    publisher: '게시자 5',
+    like: 5,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+  {
+    targetId: 6,
+    title: '게시물 6',
+    img: postImg6,
+    publisher: '게시자 6',
+    like: 6,
+    postDate: '2022-11-30',
+    hashtag: ['해시태그 1', '태그 2', '3']
+  },
+];
+
 const Bulletin = memo(() => {
     return (
         <>
@@ -136,26 +199,35 @@ const Bulletin = memo(() => {
 
               <PostList>
                 <div className='list-box'>
-                  <Post />
-                  <Post />
-                  <Post />
-                  <Post />
-                  <Post />
-                  <Post />
+                  {
+                    testData.map((v, i) => {
+                      return (
+                        <Post
+                          targetId={v.targetId}
+                          title={v.title}
+                          img={v.img}
+                          publisher={v.publisher}
+                          like={v.like}
+                          postDate={v.postDate}
+                          hashtag={v.hashtag}
+                        />
+                      );
+                    })
+                  }
                 </div>
 
                 <PageControl>
                   <NavLink>&lt;</NavLink>
-                  <NavLink>1</NavLink>
-                  <NavLink>2</NavLink>
-                  <NavLink>3</NavLink>
-                  <NavLink>4</NavLink>
-                  <NavLink>5</NavLink>
-                  <NavLink>6</NavLink>
-                  <NavLink>7</NavLink>
-                  <NavLink>8</NavLink>
-                  <NavLink>9</NavLink>
-                  <NavLink>10</NavLink>
+                  <NavLink to='/bulletin?page=1'>1</NavLink>
+                  <NavLink to='/bulletin?page=2'>2</NavLink>
+                  <NavLink to='/bulletin?page=3'>3</NavLink>
+                  <NavLink to='/bulletin?page=4'>4</NavLink>
+                  <NavLink to='/bulletin?page=5'>5</NavLink>
+                  <NavLink to='/bulletin?page=6'>6</NavLink>
+                  <NavLink to='/bulletin?page=7'>7</NavLink>
+                  <NavLink to='/bulletin?page=8'>8</NavLink>
+                  <NavLink to='/bulletin?page=9'>9</NavLink>
+                  <NavLink to='/bulletin?page=10'>10</NavLink>
                   <NavLink>&gt;</NavLink>
                 </PageControl>
               </PostList>
