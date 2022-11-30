@@ -12,6 +12,7 @@ import Raffle from "./pages/raffle/Raffle";
 import Bulletin from "./pages/bulletin/Bulletin";
 import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
+import PostView from './pages/bulletin/PostView';
 
 const App = memo(() => {
   return (
@@ -28,6 +29,7 @@ const App = memo(() => {
         <Route path="/bulletin" element={<Bulletin />} />
         <Route path="/bulletin/mypost/:id" element={<MyPost />} />
         <Route path="/bulletin/newpost/:id" element={<NewPost />} />
+        <Route path="/bulletin/postview/:id" element={<PostView />} />
       </Routes>
     </div>
   );
