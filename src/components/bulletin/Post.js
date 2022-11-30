@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 const PostCard = styled.div`
     width: 22.99%;
@@ -114,7 +114,7 @@ const Post = memo(props => {
 
     return (
         <PostCard>
-            <div className={classnames('hover__preview', {active: isHover})}
+            <div className={classNames('hover__preview', {active: isHover})}
             onMouseLeave={() => setIsHover(false)}
             onClick={onLinkClick}
             >

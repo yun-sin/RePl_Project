@@ -99,7 +99,7 @@ const PostingArea = styled.section`
     box-sizing: border-box;
 
     .send-post {
-        width: 600px;
+        width: 1000px;
         margin: auto;
         text-align: right;
 
@@ -118,7 +118,7 @@ const PostingArea = styled.section`
 `;
 
 const RecommendPlaceArea = styled.div`
-    width: 600px;
+    width: 1000px;
     margin: auto;
     margin-bottom: 40px;
 
@@ -155,20 +155,13 @@ const RecommendPlaceArea = styled.div`
 `;
 
 const CategoryArea = styled.div`
-    width: 600px;
+    width: 1000px;
     margin: auto;
     border-bottom: 1px solid #ccc;
     display: flex;
     flex-flow: row nowrap;
     padding-bottom: 20px;
     margin-bottom: 40px;
-
-    .category-title {
-        flex: 0 0 auto;
-        font-size: 24px;
-        font-weight: 600;
-        margin-right: 20px;
-    }
 
     .category-tags {
         flex: 2 1 auto;
@@ -270,9 +263,6 @@ const NewPost = memo(() => {
                 </RecommendPlaceArea>
 
                 <CategoryArea>
-                    <h3 className='category-title'>
-                        해시태그 : 
-                    </h3>
                     <div className='category-tags'>
                         <span>O 세글자</span>
                         <span>O 네글자네</span>
