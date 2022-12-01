@@ -1,12 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
+import Editor from '../../components/bulletin/Editor';
+
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
-
-// import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
-// import Context from '@ckeditor/ckeditor5-core/src/context';
-// import Editor from '../../assets/js/ckeditor';
 
 const MainForm = styled.form`
     width: 100%;
@@ -95,15 +93,34 @@ const TitleArea = styled.div`
 `;
 
 const PostingArea = styled.section`
-    width: 1400px;
+    width: 100%;
     padding: 20px;
     margin: auto;
     box-sizing: border-box;
+
+    .send-post {
+        width: 1000px;
+        margin: auto;
+        text-align: right;
+
+        .send-post__button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 16px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+        }
+    }
 `;
 
 const RecommendPlaceArea = styled.div`
-    width: 600px;
+    width: 1000px;
     margin: auto;
+    margin-bottom: 40px;
 
     .recommend-place-top {
         display: flex;
@@ -134,6 +151,49 @@ const RecommendPlaceArea = styled.div`
         width: 100%;
         padding: 0 20px;
         box-sizing: border-box;
+    }
+`;
+
+const CategoryArea = styled.div`
+    width: 1000px;
+    margin: auto;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-flow: row nowrap;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+
+    .category-tags {
+        flex: 2 1 auto;
+
+        span {
+            display: inline-block;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #eee;
+            margin-right: 15px;
+            margin-bottom: 10px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+        }
+    }
+
+    .category-addButton {
+        flex: 0 0 auto;
+        border: none;
+        border-radius: 10px;
+        width: 65px;
+        height: 30px;
+        font-size: 12px;
+        background-color: #ccc;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 `;
 
@@ -174,26 +234,7 @@ const NewPost = memo(() => {
             <hr />
 
             <PostingArea>
-                {/* <CKEditorContext context={Context}>
-                    <CKEditor 
-                        editor={ Editor }
-                        onReady={ editor => {
-                            // You can store the "editor" and use when it is needed.
-                            console.log( 'Editor is ready to use!', editor );
-                        }}
-                        onChange={ ( event, editor ) => {
-                            const data = editor.getData();
-                            console.log( { event, editor, data } );
-                        }}
-                        onBlur={ ( event, editor ) => {
-                            console.log( 'Blur.', editor );
-                        }}
-                        onFocus={ ( event, editor ) => {
-                            console.log( 'Focus.', editor );
-                        }}
-                    />
-                </CKEditorContext> */}
-
+                <Editor />
                 <RecommendPlaceArea>
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>
@@ -220,6 +261,25 @@ const NewPost = memo(() => {
                         </ul>
                     </div>
                 </RecommendPlaceArea>
+
+                <CategoryArea>
+                    <div className='category-tags'>
+                        <span>O 세글자</span>
+                        <span>O 네글자네</span>
+                        <span>O 다섯글자다</span>
+                        <span>O 네글자네</span>
+                        <span>O 여섯글자여섯</span>
+                        <span>O 세글자</span>
+                        <span>O 여섯글자여섯</span>
+                    </div>
+                    <button className='category-addButton'>
+                        + 더 보기
+                    </button>
+                </CategoryArea>
+
+                <div className='send-post'>
+                    <button className='send-post__button'>저장하기</button>
+                </div>
             </PostingArea>
         </MainForm>
     );

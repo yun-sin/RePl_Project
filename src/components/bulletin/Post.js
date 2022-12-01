@@ -1,13 +1,7 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import classnames from 'classnames';
-
-import postImg1 from '../../assets/img/bulletin/post_sample01.jpg';
-import postImg2 from '../../assets/img/bulletin/post_sample02.jpg';
-import postImg3 from '../../assets/img/bulletin/post_sample03.jpg';
-import postImg4 from '../../assets/img/bulletin/post_sample04.jpg';
-import postImg5 from '../../assets/img/bulletin/post_sample05.jpg';
-import postImg6 from '../../assets/img/bulletin/post_sample06.jpg';
+import classNames from 'classnames';
 
 const PostCard = styled.div`
     width: 22.99%;
@@ -110,28 +104,41 @@ const PostCard = styled.div`
     }
 `
 
-const Post = memo(() => {
+const Post = memo(props => {
     const [isHover, setIsHover] = useState(false);
+    
+    const navigate = useNavigate();
+    const onLinkClick = useCallback(e => {
+        navigate(`/bulletin/postview/${props.targetId}`);
+    }, []);
 
     return (
         <PostCard>
-            <div className={classnames('hover__preview', {active: isHover})} onMouseLeave={() => setIsHover(false)}>
-                <h3>게시글 소개</h3>
-                <p>미리보기 프리뷰 창</p>
+            <div className={classNames('hover__preview', {active: isHover})}
+            onMouseLeave={() => setIsHover(false)}
+            onClick={onLinkClick}
+            >
+                <h3>{props.title}</h3>
+                <p>게시물 바로가기</p>
             </div>
 
-            <img src={postImg1} alt="게시물 이미지" onMouseOver={() => setIsHover(true)}/>
-            <h3 className='post__title'>게시물 타이틀</h3>
+            <img src={props.img} alt="게시물 이미지" onMouseOver={() => setIsHover(true)}/>
+            <h3 className='post__title' onClick={onLinkClick}>{props.title}</h3>
             <div className='post__desc'>
-                <h4>게시자</h4>
+                <h4>{props.publisher}</h4>
                 <div className='post__desc__other'>
-                    <span>좋아요</span>
-                    <span>게시일</span>
+                    <p><span>좋아요</span> {props.like}</p>
+                    <p>{props.postDate}</p>
                 </div>
             </div>
             <div className='post__hashtags'>
-                <span>#해시태그</span>
-                <span>#카테고리</span>
+                {
+                    props.hashtag.map((v, i) => {
+                        return (
+                            <span key={i}>#{v}</span>
+                        )
+                    })
+                }
             </div>
         </PostCard>
     );

@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import styled from "styled-components";
 import { data } from "./data";
-import img0 from "./Images/tumbler.jpg";
+import img0 from "../../assets/img/raffle/tumbler.jpg";
 
 const SubContentContainer = styled.div`
   width: 80%;
