@@ -1,5 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useCallback, useRef } from "react";
 import styled from "styled-components";
+
+import { useNavigate } from 'react-router-dom';
 
 import img from "../../assets/img/main/magnifyingglass.png";
 
@@ -71,12 +73,28 @@ const SearchContainer = styled.div`
 `;
 
 const Search = memo(() => {
+  /** 페이지 강제 이동을 처리하기 위한 navigate 함수 생성 */
+  const navigate = useNavigate();
+
+  /** 지도 찾기 페이지로 이동 이벤트 */
+  const onmapSubmit = useCallback((e) => {
+    e.preventDefault();
+
+    const current = e.currentTarget;
+    const keyword = current.keyword.value;
+
+    let redirectUrl = keyword ? `/map_finder?keyword=${keyword}` : '/map_finder'
+    console.log(keyword);
+    navigate(redirectUrl);
+
+  },[navigate]);
+
   return (
     <SearchContainer>
-      <form>
+      <form onSubmit={onmapSubmit}>
         <div>
-          <input type="text" placeholder="지도를 검색해보세요" />
-          <button>
+          <input type="text" name='keyword' placeholder="지도를 검색해보세요" />
+          <button type='submit'>
             <img src={img} alt="img" />
           </button>
         </div>

@@ -9,6 +9,7 @@ const MapContainer = styled.div``;
 const Map = memo(() => {
   useEffect(() => {
     const container = document.getElementById("map");
+  
     const options = {
       center: new kakao.maps.LatLng(37.5025506249856, 127.02485228946493),
       level: 3,

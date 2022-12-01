@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import styled from 'styled-components';
 
 
-
+// 임시데이터
 const placeArr = [
     { name: "가게이름1", address: "주소1", theme: "테마이름" },
     { name: "가게이름2", address: "주소2", theme: "테마이름" },
@@ -37,21 +37,25 @@ const ListContainer = styled.div`
 `;
 
 
-
 const PlaceList = memo(() => {
+  // 후기 팝업창 클릭이벤트 정의
+  const onPopUpClick = useCallback((e) => {
+  e.preventDefault();
+  /* 팝업창 추가하기 */
+})
+
   return (
     <ListContainer>
         <ul>
           {placeArr.map(({ name, address, theme }, i) => {
             return (
               <li>
-                <a href="#!">
+                <a href="#!" onClick={onPopUpClick}>
                   <div>{name}</div>
                   <div>{address}</div>
                   <div>{theme}</div>
                   <div>{theme}</div>
                   <div>{theme}</div>
-
                 </a>
               </li>
             );
