@@ -8,21 +8,16 @@ import MapPage from "./pages/map/MapPage";
 import MyPage from "./pages/mypage/MyPage";
 import Raffle from "./pages/raffle/Raffle";
 
-/* 게시판 컴포넌트 모듈 */
-
-import Bulletin from "./pages/Bulletin/Bulletin";
-import MyPost from "./pages/Bulletin/MyPost";
-import NewPost from "./pages/Bulletin/NewPost";
-
 /* 메인 컴포넌트 모듈 */
 import MapFinder from "./pages/Main/MapFinder";
 import Theme from "./pages/Main/Theme";
 import ThemeList from "./components/Main/ThemeList";
 
-import Bulletin from "./pages/bulletin/Bulletin";
-import MyPost from "./pages/bulletin/MyPost";
-import NewPost from "./pages/bulletin/NewPost";
-import PostView from './pages/bulletin/PostView';
+/* 게시판 컴포넌트 모듈 */
+import Bulletin from "./pages/Bulletin/Bulletin";
+import MyPost from "./pages/Bulletin/MyPost";
+import NewPost from "./pages/Bulletin/NewPost";
+import PostView from './pages/Bulletin/PostView';
 
 
 const App = memo(() => {
@@ -37,10 +32,7 @@ const App = memo(() => {
         <Route path="/login" element={<Login />} />
 
 
-        {/* 게시판 Routes  */}
-        <Route path="/bulletin" element={<Bulletin />} />
-        <Route path="/bulletin/mypost/:id" element={<MyPost />} />
-        <Route path="/bulletin/newpost/:id" element={<NewPost />} />
+ 
 
         {/* 메인 Routes */}
         <Route path='/map_finder' element={<MapFinder />} />
