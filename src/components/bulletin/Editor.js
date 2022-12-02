@@ -10,7 +10,7 @@ const PostingContests = styled.div`
     .postingContents {
         color: blue;
     }
-`
+`;
 
 const Editor = memo(() => {
     return (
@@ -29,6 +29,25 @@ const Editor = memo(() => {
                     autoGrow_maxHeight: 600, // " 최대값
                     autoGrow_bottomSpace: 50, // 아래에서부터 본문 띄울 영역
                     //  bodyId: 'contents_id', // 본문 내용 가르킬 Id
+
+                    toolbarGroups: [
+                        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                        { name: 'styles', groups: [ 'styles' ] },
+                        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                        { name: 'insert', groups: [ 'insert' ] },
+                        { name: 'forms', groups: [ 'forms' ] },
+                        { name: 'others', groups: [ 'others' ] },
+                        { name: 'links', groups: [ 'links' ] },
+                        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                        { name: 'tools', groups: [ 'tools' ] },
+                        { name: 'colors', groups: [ 'colors' ] },
+                        { name: 'about', groups: [ 'about' ] }
+                    ],
+                    removeButtons: 'Subscript,Superscript,Cut,Copy,Paste,PasteText,PasteFromWord,Scayt,Link,Unlink,Anchor,SpecialChar,Maximize,Source,RemoveFormat,Blockquote,About,Styles',
+
+                    removePlugins: 'resize',
                 } }
             />
         </PostingContests>
