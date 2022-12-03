@@ -1,6 +1,5 @@
 /*global kakao*/
-import React, { memo, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { positions } from "./data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,15 +8,13 @@ import markerStar from "../../assets/img/map/markerStar.png";
 import markerRed from "../../assets/img/map/markerRed.png";
 
 const MapContainer = styled.div`
-  position: relative;
-
   .yourLoc {
     font-size: 50px;
     color: red;
-    position: absolute;
+    position: fixed;
     right: 4vw;
     bottom: 4vw;
-    z-index: 9999;
+    z-index: 1;
     background-color: white;
     padding: 10px;
     border-radius: 100%;
@@ -31,20 +28,63 @@ const MapContainer = styled.div`
   }
 `;
 
-// style={{ fontSize: "60px", color: "red", position: "absolute", left: "30px", bottom: "0" }}
+const ListContainer = styled.div`
+  position: fixed;
+  height: 100%;
+  top: 70px;
+  left: 0;
+  z-index: 1;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
+  div {
+    background-color: rgb(255, 255, 255, 0.99);
+    border-radius: 10px;
+    width: 300px;
+    height: 150px;
+    margin-bottom: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #39f;
+      color: white;
+    }
+
+    h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    h4 {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  }
+`;
+
 const Map = memo(() => {
   const yourLoc = useRef();
+  const [kakaoMap, setKakaoMap] = useState();
+  const kakaoRef = useRef();
 
   useEffect(() => {
     const container = document.getElementById("map");
-  
     const options = {
       // 이젠 아카데미 위도 경도
       center: new kakao.maps.LatLng(37.5025506249856, 127.02485228946493),
       level: 3,
     };
     const map = new kakao.maps.Map(container, options);
-    console.log("지도 렌더링 🗺️");
+    setKakaoMap(map);
+    console.log("🗺️ 지도 렌더링");
 
     /**
      * 데이터에 저장된 위치 지도에 마커 출력
@@ -52,6 +92,7 @@ const Map = memo(() => {
     positions.forEach((v, i) => {
       var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지의 이미지 크기 입니다
       var markerImage = new kakao.maps.MarkerImage(markerStar, imageSize); // 마커 이미지를 생성합니다
+      // var geocoder = new kakao.maps.services.Geocoder();
 
       // 마커를 생성합니다
       const marker = new kakao.maps.Marker({
@@ -61,6 +102,7 @@ const Map = memo(() => {
         image: markerImage, // 마커 이미지
       });
       marker.setMap(map);
+      console.log(marker);
 
       /**
        * 마커에 mouseover, mouseout 이벤트
@@ -99,7 +141,7 @@ const Map = memo(() => {
      * 현재 위치 찾기
      */
     yourLoc.current.addEventListener("click", (e) => {
-      console.log("현재 위치 찾기 📍");
+      console.log("📍 현재 위치 찾기");
 
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -150,12 +192,31 @@ const Map = memo(() => {
     }
   }, []);
 
+  const onListClick = useCallback((e) => {
+    const current = e.currentTarget;
+    var moveLatLng = new kakao.maps.LatLng(current.dataset.loc.split(",")[0], current.dataset.loc.split(",")[1]);
+
+    kakaoMap.panTo(moveLatLng);
+  });
+
   return (
     <MapContainer>
-      <div id="map" style={{ width: "100%", height: "95vh" }}></div>
+      <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
 
       {/* 내 위치 찾기 버튼 */}
       <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} />
+
+      <ListContainer>
+        {positions.map((v, i) => {
+          return (
+            <div key={i} onClick={onListClick} data-loc={v.latlng} data-title={v.title}>
+              <h3>{v.title}</h3>
+              <h4>{v.address}</h4>
+              <h4>🧑‍💻</h4>
+            </div>
+          );
+        })}
+      </ListContainer>
     </MapContainer>
   );
 });
