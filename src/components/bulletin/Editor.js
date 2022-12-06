@@ -3,13 +3,9 @@ import { CKEditor } from 'ckeditor4-react';
 import styled from 'styled-components';
 
 const PostingContests = styled.div`
-    width: 70%;
+    width: 1200px;
     margin: auto;
     margin-bottom: 50px;
-
-    .postingContents {
-        color: blue;
-    }
 `;
 
 const Editor = memo(() => {
@@ -29,6 +25,7 @@ const Editor = memo(() => {
                     autoGrow_maxHeight: 600, // " 최대값
                     autoGrow_bottomSpace: 50, // 아래에서부터 본문 띄울 영역
                     //  bodyId: 'contents_id', // 본문 내용 가르킬 Id
+                    contentsCss: '../../assets/css/ckEditorStyle.css',
 
                     toolbarGroups: [
                         { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
