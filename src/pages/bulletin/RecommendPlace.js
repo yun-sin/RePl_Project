@@ -1,5 +1,4 @@
-import React, { memo } from 'react';
-import { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import styled from 'styled-components';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
@@ -63,6 +62,7 @@ const PopUpBox = styled.div`
         }
 
         span {
+            display: inline-block;
             background-color: #ccc;
             padding: 2px;
             margin: 0 10px 10px 0;
@@ -124,8 +124,15 @@ const PopUpBox = styled.div`
         max-height: 250px;
         box-sizing: border-box;
         overflow-y: scroll;
-        ::-webkit-scrollbar {
-            display: none;
+        ::-webkit-scrollbar { 
+            width: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-track { 
+            background: none;
         }
 
         li {
@@ -200,6 +207,20 @@ const RecommendPlace = memo(() => {
                 <button type='button' onClick={resetForm}>초기화</button>
             </form>
             <ul className='searched-list'>
+                <li>
+                    <img src={breadSample} alt="장소 사진" />
+                    <div>
+                        <h4>썸플라워 베이크샵</h4>
+                        <p>서울시 강남구 어디어디</p>
+                    </div>
+                </li>
+                <li>
+                    <img src={breadSample} alt="장소 사진" />
+                    <div>
+                        <h4>썸플라워 베이크샵</h4>
+                        <p>서울시 강남구 어디어디</p>
+                    </div>
+                </li>
                 <li>
                     <img src={breadSample} alt="장소 사진" />
                     <div>
