@@ -14,13 +14,12 @@ import Theme from "./pages/Main/Theme";
 import ThemeList from "./components/Main/ThemeList";
 
 /* 게시판 컴포넌트 모듈 */
-import Bulletin from "./pages/Bulletin/Bulletin";
-import MyPost from "./pages/Bulletin/MyPost";
-import NewPost from "./pages/Bulletin/NewPost";
-import PostView from './pages/Bulletin/PostView';
-import RecommendPlace from "./pages/Bulletin/RecommendPlace";
-import PlaceHashtag from "./pages/Bulletin/PlaceHashtag";
-
+import Bulletin from "./pages/bulletin/Bulletin";
+import MyPost from "./pages/bulletin/MyPost";
+import NewPost from "./pages/bulletin/NewPost";
+import PostView from "./pages/bulletin/PostView";
+import RecommendPlace from "./pages/bulletin/RecommendPlace";
+import PlaceHashtag from "./pages/bulletin/PlaceHashtag";
 
 const App = memo(() => {
   return (
@@ -33,12 +32,10 @@ const App = memo(() => {
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
 
-
         {/* 메인 Routes */}
-        <Route path='/map_finder' element={<MapFinder />} />
-        <Route path='/theme/:id' element={<Theme />} />
-        <Route path='/themelist' element={<ThemeList />} />
-
+        <Route path="/map_finder" element={<MapFinder />} />
+        <Route path="/theme/:id" element={<Theme />} />
+        <Route path="/themelist" element={<ThemeList />} />
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />
