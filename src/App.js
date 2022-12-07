@@ -17,10 +17,9 @@ import ThemeList from "./components/Main/ThemeList";
 import Bulletin from "./pages/bulletin/Bulletin";
 import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
-import PostView from './pages/bulletin/PostView';
+import PostView from "./pages/bulletin/PostView";
 import RecommendPlace from "./pages/bulletin/RecommendPlace";
 import PlaceHashtag from "./pages/bulletin/PlaceHashtag";
-
 
 const App = memo(() => {
   return (
@@ -30,15 +29,13 @@ const App = memo(() => {
         <Route path="/" element={<Main />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/raffle" element={<Raffle />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
 
-
         {/* 메인 Routes */}
-        <Route path='/map_finder' element={<MapFinder />} />
-        <Route path='/theme/:id' element={<Theme />} />
-        <Route path='/themelist' element={<ThemeList />} />
-
+        <Route path="/map_finder" element={<MapFinder />} />
+        <Route path="/theme/:id" element={<Theme />} />
+        <Route path="/themelist" element={<ThemeList />} />
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />

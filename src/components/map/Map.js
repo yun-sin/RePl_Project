@@ -15,6 +15,8 @@ import markerBlue from "../../assets/img/map/markerBlue.png";
 import iconMore from "../../assets/img/map/icon-more.svg";
 import iconPlus from "../../assets/img/map/icon-plus-grey-sm.svg";
 
+import "animate.css";
+
 const Map = memo(() => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.MapSlice);
@@ -24,29 +26,71 @@ const Map = memo(() => {
   const [replMap, setReplMap] = useState();
   const [btnActive, setBtnActive] = useState();
 
-  const [swLimit, setSwLimit] = useState();
-  const [neLimit, setNeLimit] = useState();
+  const [swLimit, setSwLimit] = useState([32, 123]);
+  const [neLimit, setNeLimit] = useState([44, 133]);
   const [centerCoord, setCenterCoord] = useState([37.5025506249856, 127.02485228946493]);
+  const [zoomLevel, setZoomLevel] = useState(6);
 
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [LocData, setLocData] = useState();
+
+  /**
+   * 처음 열릴때 지도를 렌더링하고 전체 데이터를 가져옴 (1회)
+   */
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
       // 이젠 아카데미 위도 경도
       center: new kakao.maps.LatLng(centerCoord[0], centerCoord[1]),
-      level: 3,
+      level: zoomLevel,
     };
     const map = new kakao.maps.Map(container, options);
     setReplMap(map);
     console.log("🗺️ 지도 렌더링");
 
-    dispatch(getMapData()).then((result) => console.log(result));
+    dispatch(getMapData());
   }, []);
 
+  /**
+   * 기존의 마커를 전부 지우기 위해 지도를 재 렌더링
+   * 필터링 조건이 바뀜에 따라 전체 데이터에서 필터링한 새로운 데이터를 넣어줌
+   */
   useEffect(() => {
+    const container = document.getElementById("map");
+    const options = {
+      // 보고 있던 중심좌표와 확대레벨
+      center: new kakao.maps.LatLng(centerCoord[0], centerCoord[1]),
+      level: zoomLevel,
+    };
+    const map = new kakao.maps.Map(container, options);
+    setReplMap(map);
+    console.log("♻️ 지도 재 렌더링");
+
     if (data) {
+      setLocData((LocData) => {
+        const newData = [];
+
+        data.forEach((v, i) => {
+          // 지도 범위 제한
+          if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1]) {
+            newData.push(v);
+          }
+        });
+
+        return newData;
+      });
+    }
+  }, [data, swLimit, neLimit]);
+
+  /**
+   * 데이터가 바뀔때 마다 마커와 목록을 출력
+   */
+  useEffect(() => {
+    if (LocData && LocData.length != 0) {
+      setBtnActive(null);
+      console.log(LocData);
       console.log("📍 마커 렌더링");
       /**
        * 데이터에 저장된 위치 지도에 마커 출력
@@ -57,7 +101,7 @@ const Map = memo(() => {
       const markerImage = new kakao.maps.MarkerImage(markerBlue, imageSize); // 마커 이미지를 생성합니다
       const overImage = new kakao.maps.MarkerImage(markerStar, overSize); // 확대된 마커 이미지를 생성합니다
 
-      data.forEach((v, i) => {
+      LocData.forEach((v, i) => {
         // 마커를 생성합니다
         const marker = new kakao.maps.Marker({
           map: replMap, // 마커를 표시할 지도
@@ -79,13 +123,14 @@ const Map = memo(() => {
           content: iwContent,
         });
 
+        const listItem = document.querySelector(".loc" + i);
         /** 마커 마우스오버 이벤트 */
         kakao.maps.event.addListener(marker, "mouseover", function () {
           // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
           infowindow.open(replMap, marker);
           // 마커 이미지 약간 확대
           marker.setImage(overImage);
-          document.querySelector(".loc" + i).classList.add("hover");
+          listItem.classList.add("hover");
         });
 
         /** 마커 마우스아웃 이벤트 */
@@ -93,35 +138,42 @@ const Map = memo(() => {
           // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
           infowindow.close();
           marker.setImage(markerImage);
-          document.querySelector(".loc" + i).classList.remove("hover");
+          listItem.classList.remove("hover");
         });
 
         /** 마커 마우스클릭 이벤트 */
         kakao.maps.event.addListener(marker, "click", function () {
           // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
           infowindow.open(replMap, marker);
-          document.querySelector(".loc" + i).scrollIntoView({ behavior: "smooth" });
+          listItem.scrollIntoView({ behavior: "smooth" });
           setBtnActive(i);
         });
 
         /** 목록에 마우스엔터,리브시 마커에 인포윈도우 출력 이벤트 */
-        document.querySelector(".loc" + i).addEventListener("mouseenter", (e) => {
+        listItem.addEventListener("mouseenter", (e) => {
           infowindow.open(replMap, marker);
           e.currentTarget.classList.add("hover");
           marker.setImage(overImage);
         });
 
-        document.querySelector(".loc" + i).addEventListener("mouseleave", (e) => {
+        listItem.addEventListener("mouseleave", (e) => {
           infowindow.close();
           e.currentTarget.classList.remove("hover");
           marker.setImage(markerImage);
         });
 
         /** 목록 클릭시 이벤트 */
-        document.querySelector(".loc" + i).addEventListener("click", (e) => {
+        listItem.addEventListener("click", (e) => {
           var moveLatLng = new kakao.maps.LatLng(v.lat, v.lng);
           setBtnActive(i);
           replMap.panTo(moveLatLng);
+        });
+
+        listItem.classList.add("animate__animated", "animate__flipInX"); // 엘리먼트에 애니메이션 클래스 부여
+        // animate__animated클래스를 부여하면 자동으로 등록되는 커스텀 이벤트
+        listItem.addEventListener("animationend", () => {
+          // 애니메이션 실행이 끝나면 함수 실행
+          listItem.classList.remove("animate__animated", "animate__flipInX");
         });
       });
 
@@ -188,24 +240,25 @@ const Map = memo(() => {
         replMap.setCenter(locPosition);
       }
     }
-  }, [data, swLimit, neLimit]);
+  }, [LocData]);
 
   const onSearchLoc = useCallback((e) => {
     // 지도의 현재 중심좌표를 얻어옵니다
     var center = replMap.getCenter();
-
     // 지도의 현재 영역을 얻어옵니다
     var bounds = replMap.getBounds();
     // 영역의 남서쪽 좌표를 얻어옵니다
     var swLatLng = bounds.getSouthWest();
     // 영역의 북동쪽 좌표를 얻어옵니다
     var neLatLng = bounds.getNorthEast();
+    // 지도의 확대 수준을 얻어옵니다.
+    var level = replMap.getLevel();
 
     console.log("현재 영역의 남서쪽 좌표 : " + swLatLng + ", 북동쪽 좌표 : " + neLatLng);
 
-    setSwLimit(swLatLng);
-    setNeLimit(neLatLng);
-
+    setZoomLevel(level);
+    setSwLimit([swLatLng["Ma"], swLatLng["La"]]);
+    setNeLimit([neLatLng["Ma"], neLatLng["La"]]);
     setCenterCoord([center["Ma"], center["La"]]);
   });
 
@@ -226,14 +279,14 @@ const Map = memo(() => {
 
       {/* 이 위치에서 다시 찾기*/}
       <SearchLoc onClick={onSearchLoc}>
-        <span>이 위치에서 찾기</span>
-        {SearchLoc ? <input type="checkbox" /> : <FontAwesomeIcon icon={faMagnifyingGlassLocation} />}
+        <span>현재 범위로 찾기</span>
+        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
       </SearchLoc>
 
       <ListContainer id="container">
-        {data?.map((v, i) => {
+        {LocData?.map((v, i) => {
           return (
-            <div key={i} data-loc={v.latlng} data-title={v.title} className={`${"list_item"} ${"loc" + i} ${i == btnActive ? "active" : ""}`}>
+            <div key={i} data-loc={v.latlng} data-title={v.title} className={`${"list_item"} ${"loc" + i} ${i == btnActive ? "active" : ""}  ${"animate__faster"}`} style={{ animationDelay: i * 40 + "ms" }}>
               <h3>{v.title}</h3>
               <h4>{v.address}</h4>
               <a>🧑‍💻 혼자 노트북들고 작업하러 가기 좋은 곳</a>
@@ -263,7 +316,7 @@ const Map = memo(() => {
               margin: "auto",
             },
           }}>
-          {data?.map((v, i) => {
+          {LocData?.map((v, i) => {
             if (v["id"] == modalContent)
               return (
                 <ModalContainer>
