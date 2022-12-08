@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import PageContainer from '../../components/mypage/PageContainer';
 import PageInputBox from '../../components/mypage/PageInputBox';
+import PageButton from '../../components/mypage/PageButton';
 
 const InfoBox = styled(PageContainer)`
     
@@ -34,22 +35,6 @@ const InfoBox = styled(PageContainer)`
 
 
 
-`
-
-const PageButton = styled.button`
-    width: 130px;
-    height: 37px;
-    background-color:#C5441C;
-    border-style: none;
-    border-radius: 13px;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-
-    &:hover {
-        scale: 1.05;
-        transition: 0.1s;
-    }
 `
 
 // const infoData = {
