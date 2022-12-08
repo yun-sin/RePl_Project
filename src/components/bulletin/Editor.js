@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { CKEditor } from 'ckeditor4-react';
 import styled from 'styled-components';
 
@@ -8,13 +8,23 @@ const PostingContests = styled.div`
     margin-bottom: 50px;
 `;
 
-const Editor = memo(() => {
+const editorStyle = {
+    border: 'none',
+};
+
+const Editor = memo(props => {
+    const onContentInput = useCallback(e => {
+        const data = e.editor.getData();
+        props.setContent(data);
+    }, []);
+
     return (
         <PostingContests>
             <CKEditor
                 initData="여기에 내용을 입력하세요."
                 onInstanceReady={ () => {
                     // console.log( 'Editor is ready!' ); // 인스턴스 생성 완료되면 할 내용
+                    props.setContent("<p>여기에 내용을 입력하세요.</p>");
                 } }
                 type='classic' // classic / inline 인데 classic이 나을듯
                 name='postingContentEditor' // 에디터 인스턴스에 대한 유일 식별자
@@ -24,9 +34,7 @@ const Editor = memo(() => {
                     autoGrow_minHeight: 200, // 자동 높이 조절 최소 값
                     autoGrow_maxHeight: 600, // " 최대값
                     autoGrow_bottomSpace: 50, // 아래에서부터 본문 띄울 영역
-                    //  bodyId: 'contents_id', // 본문 내용 가르킬 Id
-                    contentsCss: '../../assets/css/ckEditorStyle.css',
-
+                    bodyId: 'contents_id', // 본문 내용 가르킬 Id
                     toolbarGroups: [
                         { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
                         { name: 'styles', groups: [ 'styles' ] },
@@ -46,6 +54,8 @@ const Editor = memo(() => {
 
                     removePlugins: 'resize',
                 } }
+                style={editorStyle}
+                onChange={onContentInput}
             />
         </PostingContests>
     );

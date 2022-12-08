@@ -2,8 +2,11 @@ import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import Editor from '../../components/bulletin/Editor';
-
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { newPost } from '../../slices/BulletinSlice';
+
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 
 const MainForm = styled.form`
@@ -198,9 +201,21 @@ const CategoryArea = styled.div`
 `;
 
 const NewPost = memo(() => {
+    const [content, setContent] = useState('');
+    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+
+    const dispatch = useDispatch();
+
+    const setContentFunc = useCallback(v => {
+        setContent(v);
+    }, []);
+
     const onPosting = useCallback(e => {
         e.preventDefault();
-    }, []);
+        console.log(content);
+
+        if (content !== '') dispatch(newPost(content));
+    }, [content, dispatch]);
 
     const [backgroundColor, setBackgroundColor] = useState('#cccccc');
 
@@ -234,7 +249,7 @@ const NewPost = memo(() => {
             <hr />
 
             <PostingArea>
-                <Editor />
+                <Editor setContent={setContentFunc} />
                 <RecommendPlaceArea>
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>
@@ -272,7 +287,7 @@ const NewPost = memo(() => {
                         <span>O 세글자</span>
                         <span>O 여섯글자여섯</span>
                     </div>
-                    <button className='category-addButton'>
+                    <button type='button' className='category-addButton'>
                         + 더 보기
                     </button>
                 </CategoryArea>
