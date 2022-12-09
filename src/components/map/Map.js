@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
 import { MapContainer, ListContainer, SearchLoc, ModalContainer } from "./MapStyled";
 import Modal from "react-modal";
-import LocModal from "./LocModal";
+import LocModal from "../../common/LocModal";
 import Spinner from "./Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
