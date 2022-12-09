@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
 import { MapContainer, ListContainer, SearchLoc, ModalContainer } from "./MapStyled";
 import Modal from "react-modal";
+import LocModal from "./LocModal";
 import Spinner from "./Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,9 +14,8 @@ import markerStar from "../../assets/img/map/markerStar.png";
 import markerRed from "../../assets/img/map/markerRed.png";
 import markerBlue from "../../assets/img/map/markerBlue.png";
 import iconMore from "../../assets/img/map/icon-more.svg";
-import iconPlus from "../../assets/img/map/icon-plus-grey-sm.svg";
 
-// import "animate.css";
+import "animate.css";
 
 const Map = memo(() => {
   const dispatch = useDispatch();
@@ -334,54 +334,7 @@ const Map = memo(() => {
             },
           }}>
           {LocData?.map((v, i) => {
-            if (v["id"] == modalContent)
-              return (
-                <ModalContainer key={i}>
-                  <div className="modal-header">
-                    <h3>{v["title"]}</h3>
-                    <span>{v["address"]}</span>
-                    <FontAwesomeIcon className="faX" icon={faX} onClick={() => setModalIsOpen(false)} />
-                  </div>
-                  <div className="modal-body">
-                    <div className="modal-img-container">
-                      <div className="icon">
-                        <img src={iconPlus} />
-                      </div>
-                      <div className="text">
-                        여기를 눌러서 장소와 관련된 사진을 올려주시면
-                        <br />
-                        페이지가 더 유익해 질 것 같아요!
-                      </div>
-                    </div>
-                    <div className="modal-info-container">
-                      <div className="info">
-                        <div className="info-item">
-                          <div className="title">여기는 어떤 곳인가요?</div>
-                          <div className="theme-card">🛋 편안한 의자가 있어서 책 읽기 좋은 카페</div>
-                          <div className="theme-card">💻 혼자 노트북들고 작업하러 가기 좋은 곳</div>
-                        </div>
-                        <div className="info-item">
-                          <div className="title">123</div>
-                        </div>
-                      </div>
-                      <div className="info">
-                        <div className="info-item">
-                          <div className="title">이 장소에 대한 후기들!</div>
-                          <div className="theme-card">☕️두유 옵션 제공 카페</div>
-                          <div className="theme-card">🛋 편안한 의자가 있어서 책 읽기 좋은 카페</div>
-                        </div>
-                        <div className="info-item">
-                          <div className="title">직접 의견을 남겨보세요!</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="modal-bullet-container">
-                      <div className="title">이 장소를 추천한 게시글 목록</div>
-                    </div>
-                  </div>
-                  <div className="modal-footer"></div>
-                </ModalContainer>
-              );
+            if (v["id"] == modalContent) return <LocModal key={i} title={v["title"]} address={v["address"]} onClick={() => setModalIsOpen(false)} theme={v["theme"]} review={v["review"]} />;
           })}
         </Modal>
       </ListContainer>
