@@ -22,6 +22,7 @@ const Map = memo(() => {
   const { data, loading, error } = useSelector((state) => state.MapSlice);
 
   const yourLoc = useRef();
+  const [yourCoord, setYourCoord] = useState();
   const kakaoRef = useRef();
   const [replMap, setReplMap] = useState();
   const [btnActive, setBtnActive] = useState();
@@ -66,6 +67,7 @@ const Map = memo(() => {
     };
     const map = new kakao.maps.Map(container, options);
     setReplMap(map);
+    console.log(centerCoord);
     console.log("♻️ 지도 재 렌더링");
 
     if (data) {
@@ -82,12 +84,17 @@ const Map = memo(() => {
         return newData;
       });
     }
-  }, [data, swLimit, neLimit]);
+  }, [data, centerCoord]);
 
   /**
    * 데이터가 바뀔때 마다 마커와 목록을 출력
    */
   useEffect(() => {
+    // 현재위치를 찾았었다면 마커 표시
+    if (yourCoord) {
+      displayMarker(yourCoord, "현재 위치");
+    }
+
     if (LocData && LocData.length != 0) {
       setBtnActive(null);
       console.log(LocData);
@@ -185,63 +192,12 @@ const Map = memo(() => {
       //   const latlng = mouseEvent.latLng;
       //   console.log("현재 클릭한 위치의 위도: " + latlng.getLat() + ", 경도: " + latlng.getLng());
       // });
-
-      /**
-       * 현재 위치 찾기
-       */
-      yourLoc.current.addEventListener("click", (e) => {
-        console.log("📍 현재 위치 찾기");
-
-        if (navigator.geolocation) {
-          // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-          navigator.geolocation.getCurrentPosition(function (position) {
-            var lat = position.coords.latitude, // 위도
-              lon = position.coords.longitude; // 경도
-
-            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-              message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
-
-            // 마커와 인포윈도우를 표시합니다
-            displayMarker(locPosition, message);
-          });
-        } else {
-          // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-          var locPosition = new kakao.maps.LatLng(37.5025506249856, 127.02485228946493),
-            message = "현재 위치를 찾을 수 없습니다.";
-
-          displayMarker(locPosition, message);
-        }
-      });
-
-      function displayMarker(locPosition, message) {
-        var imageSize = new kakao.maps.Size(35, 35); // 마커 이미지의 이미지 크기 입니다
-        var markerImage = new kakao.maps.MarkerImage(markerRed, imageSize); // 마커 이미지를 생성합니다
-
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-          map: replMap,
-          position: locPosition,
-          image: markerImage, // 마커 이미지
-        });
-
-        var iwContent = message, // 인포윈도우에 표시할 내용
-          iwRemoveable = true;
-
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-          content: iwContent,
-          removable: iwRemoveable,
-        });
-
-        // 인포윈도우를 마커위에 표시합니다
-        infowindow.open(replMap, marker);
-
-        // 지도 중심좌표를 접속위치로 변경합니다
-        replMap.setCenter(locPosition);
-      }
     }
   }, [LocData]);
 
+  /**
+   * 현재 범위로 찾기
+   */
   const onSearchLoc = useCallback((e) => {
     // 지도의 현재 중심좌표를 얻어옵니다
     var center = replMap.getCenter();
@@ -262,10 +218,69 @@ const Map = memo(() => {
     setCenterCoord([center["Ma"], center["La"]]);
   });
 
+  /**
+   * 현재 위치 찾기
+   */
+  const onYourLoc = useCallback((e) => {
+    console.log("📍 현재 위치 찾기");
+
+    if (navigator.geolocation) {
+      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var lat = position.coords.latitude, // 위도
+          lon = position.coords.longitude; // 경도
+
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+          message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
+
+        console.log(locPosition);
+        setYourCoord(locPosition);
+        // setCenterCoord([locPosition["Ma"]]);
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition, message);
+        replMap.panTo(locPosition);
+      });
+    } else {
+      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+      var locPosition = new kakao.maps.LatLng(37.5025506249856, 127.02485228946493),
+        message = "현재 위치를 찾을 수 없습니다.";
+
+      displayMarker(locPosition, message);
+    }
+  });
+
+  function displayMarker(locPosition, message) {
+    var imageSize = new kakao.maps.Size(35, 35); // 마커 이미지의 이미지 크기 입니다
+    var markerImage = new kakao.maps.MarkerImage(markerRed, imageSize); // 마커 이미지를 생성합니다
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      map: replMap,
+      position: locPosition,
+      image: markerImage, // 마커 이미지
+    });
+
+    var iwContent = message, // 인포윈도우에 표시할 내용
+      iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+      content: iwContent,
+      removable: iwRemoveable,
+      disableAutoPan: true,
+    });
+
+    // 인포윈도우를 마커위에 표시합니다
+    infowindow.open(replMap, marker);
+  }
+
+  /**
+   * 모달창 제어
+   */
   const onModalIsOpen = useCallback((e) => {
     setModalContent(e.currentTarget.dataset.id);
     setModalIsOpen(true);
-    console.log(data.modalContent);
+    console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
   });
 
   return (
@@ -275,7 +290,7 @@ const Map = memo(() => {
       <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
 
       {/* 내 위치 찾기 버튼 */}
-      <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} />
+      <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} onClick={onYourLoc} />
 
       {/* 이 위치에서 다시 찾기*/}
       <SearchLoc onClick={onSearchLoc}>
@@ -284,6 +299,8 @@ const Map = memo(() => {
       </SearchLoc>
 
       <ListContainer id="container">
+        {LocData && LocData.length > 0 && yourCoord && <div className="sort">정렬</div>}
+        {yourCoord && LocData.length > 0 && <div className="sort-by-distance">거리순</div>}
         {LocData?.map((v, i) => {
           return (
             <div key={i} data-loc={v.latlng} data-title={v.title} className={`${"list_item"} ${"loc" + i} ${i == btnActive ? "active" : ""}  ${"animate__faster"}`} style={{ animationDelay: i * 40 + "ms" }}>
@@ -319,7 +336,7 @@ const Map = memo(() => {
           {LocData?.map((v, i) => {
             if (v["id"] == modalContent)
               return (
-                <ModalContainer>
+                <ModalContainer key={i}>
                   <div className="modal-header">
                     <h3>{v["title"]}</h3>
                     <span>{v["address"]}</span>
