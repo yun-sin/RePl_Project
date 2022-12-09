@@ -7,7 +7,7 @@ import PageButton from '../../components/mypage/PageButton';
 const InfoBox = styled(PageContainer)`
     
     h2 {
-        margin: 0 auto;
+        
         padding-bottom: 40px;
     }
 
@@ -36,18 +36,6 @@ const InfoBox = styled(PageContainer)`
 
 
 `
-
-// const infoData = {
-//     info: [
-//         {
-//             "eName": "닉네임",
-//             "introduction": "힘을내요 슈퍼파워",
-//             "icon": "icon",
-//             "email": "email@naver.com",
-//             "point": 10
-//         }
-//     ]
-// }
 
 const Info = memo(() => {
     return (

@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 const InputBox = styled.div`
-    width: 350px;
-    height: 40px;
+    width: ${(props) => props.width || '350px'};
+    height: ${(props) => props.height || '40px'};
     border-radius: 10px;
     box-shadow: 2px 2px 5px #DADADA;
     font-size: 13px;
@@ -12,9 +12,9 @@ const InputBox = styled.div`
     line-height: 3.2;
     padding: 0 10px;
 `
-const PageInputBox = memo(({children}) => {
+const PageInputBox = memo(({children, width, height}) => {
     return (
-        <InputBox>
+        <InputBox width={width} height={height}>
             {children}
         </InputBox>
     );
