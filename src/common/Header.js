@@ -111,8 +111,8 @@ const Header = memo(() => {
 
       <SidebarContainer ref={SidebarCon} className={`${isActive ? "active" : ""}`}>
         <NavLink to="/">🏠 홈으로</NavLink>
-        <NavLink to="/map_finder">🗺 지도찾기</NavLink>
-        <NavLink to="/mypage">🧒 마이페이지</NavLink>
+        <NavLink to="/map_finer">🗺 지도찾기</NavLink>
+        <NavLink to="/mypage/info">🧒 마이페이지</NavLink>
         <NavLink to="!#">👋 로그아웃</NavLink>
         <NavLink to="/bulletin">📌 게시판</NavLink>
         <NavLink to="/raffle">🎉 경품페이지</NavLink>

@@ -1,11 +1,14 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useRef } from 'react';
 import styled from 'styled-components';
+import classNames from 'classnames';
 
 import EditorView from '../../components/bulletin/EditorView';
 import Comments from '../../components/bulletin/Comments';
+import OtherPost from '../../components/bulletin/OtherPost';
 
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import { useEffect } from 'react';
 
 const TitleArea = styled.div`
     width: 100%;
@@ -108,25 +111,127 @@ const CategoryArea = styled.div`
             }
         }
     }
+`;
 
-    .comments {
-        flex: 1 0 auto;
-        background: none;
+const PublisherDiv = styled.div`
+    width: 1000px;
+    height: 50px;
+    margin: auto;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #eee;
+    margin-bottom: 50px;
+    padding: 10px;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-end;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.8);
+        }
+    }
+
+    h2 {
+        font-size: 30px;
+        margin-left: 15px;
+        font-weight: 600;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    p {
+        margin-right: 15px;
+        font-size: 16px;
+
+        span {
+            font-size: 18px;
+            margin-left: 5px;
+        }
+    }
+
+    button {
         border: 1px solid #ccc;
-        border-radius: 20px;
-        width: 50px;
+        background-color: #fff;
+        width: 100px;
         height: 40px;
-
+        border-radius: 20px;
+        color: skyblue;
+        
         &:hover {
             cursor: pointer;
             background-color: #eee;
         }
+    }
+`;
 
-        span {
-            margin: 0 10px;
+const OtherPostsArea = styled.div`
+    width: 1000px;
+    margin: auto;
 
+    h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .other-posts {
+        width: 100%;
+        padding: 20px;
+        background-color: #ccc;
+        display: flex;
+        flex-flow: row nowrap;
+        position: relative;
+
+        .other_posts__wrap {
+            width: 900px;
+            margin: auto;
+            display: flex;
+            flex-flow: row nowrap;
+            overflow-x: scroll;
+            scroll-behavior: smooth;
+            
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        button {
+            display: none;
+            &.active {
+                display: block;
+            }
+
+            width: 50px;
+            height: 300px;
+            border: none;
+            background-color: #00000020;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 600;
+            position: absolute;
+            &:first-child {
+                left: 20px;
+            }
             &:last-child {
-                color: skyblue;
+                right: 20px;
+            }
+
+            &:hover {
+                cursor: pointer;
+                font-size: 60px;
+                background-color: #00000040;
             }
         }
     }
@@ -159,15 +264,110 @@ const testData2 = [
         writeDate: '2022-11-30',
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
+];
+
+const testData3 = [
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
+    {
+        imgSrc: breadSample,
+        title: '김밥',
+        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
+    },
 ]
 
 const NewPost = memo(props => {
-    const [showComments, setShowComments] = useState(false);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [maxScroll, setMaxScroll] = useState(0);
 
-    const onCommentsShowClick = useCallback(e => {
-        setShowComments(state => {
-            return !state;
-        });
+    const toLeft = useRef();
+    const toRight = useRef();
+
+    useEffect(() => {
+        const target = document.querySelector('.other_posts__wrap');
+        setMaxScroll(target.scrollWidth);
+    }, []);
+
+    const onToRightClick = useCallback(e => {
+        e.preventDefault();
+        e.currentTarget.setAttribute('disabled', 'disabled');
+        const target = document.querySelector('.other_posts__wrap');
+        target.scrollLeft += 900;
+        setScrollPosition(state => state + 900);
+        const current = e.currentTarget;
+        setTimeout(() => {
+            current.removeAttribute('disabled');
+        }, 500);
+    }, []);
+
+    const onToLeftClick = useCallback(e => {
+        e.preventDefault();
+        e.currentTarget.setAttribute('disabled', 'disabled');
+        const target = document.querySelector('.other_posts__wrap');
+        target.scrollLeft -= 900;
+        setScrollPosition(state => state - 900);
+        const current = e.currentTarget;
+        setTimeout(() => {
+            current.removeAttribute('disabled');
+        }, 500);
     }, []);
 
     return (
@@ -222,11 +422,38 @@ const NewPost = memo(props => {
                         <span>O 세글자</span>
                         <span>O 여섯글자여섯</span>
                     </div>
-                    <button className='comments' onClick={onCommentsShowClick}><span>O</span>댓글<span>3</span></button>
                 </CategoryArea>
 
-                <Comments showComments={showComments} data={testData2} />
+                <Comments data={testData2} />
             </PostingArea>
+
+            <PublisherDiv>
+                <div>
+                    <img src={breadSample} alt="작성자 프로필" />
+                    <h2>작성자명</h2>
+                </div>
+                <div>
+                    <p>구독자<span>23</span></p>
+                    <button>구독하기</button>
+                </div>
+            </PublisherDiv>
+
+            <OtherPostsArea>
+                <h3>작성자의 다른 게시글</h3>
+                <div className="other-posts">
+                    <button className={classNames({active: scrollPosition > 0})} ref={toLeft} onClick={onToLeftClick}>&lt;</button>
+                    <div className='other_posts__wrap'>
+                        {
+                            testData3.map((v, i) => {
+                                return (
+                                    <OtherPost key={i} imgSrc={v.imgSrc} title={v.title} preview={v.preview} />
+                                )
+                            })
+                        }
+                    </div>
+                    <button className={classNames({active: scrollPosition < maxScroll - 900})} ref={toRight} onClick={onToRightClick}>&gt;</button>
+                </div>
+            </OtherPostsArea>
         </>
     );
 });

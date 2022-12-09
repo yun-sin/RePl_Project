@@ -17,12 +17,13 @@ const MenuLinkContainer = styled(NavLink)`
     text-align: center;
     
     &:hover {
-        color: #22b8cf;
+        color: #0584BB;
     }
 
     &.active {
         color: white;
         background-color: #0584BB;
+        border-color: #0584BB;
 
         &:after {
             border-bottom: 4px solid #fff !important;

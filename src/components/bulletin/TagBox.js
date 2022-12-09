@@ -114,10 +114,8 @@ const TagBox = memo(props => {
 
     useEffect(() => {
         const target = tagbox.current;
-        console.log(target.scrollHeight);
         if (target.scrollHeight >= 130) {
             setIsOver(true);
-            console.log('hi');
         }
     }, [tagbox]);
 
