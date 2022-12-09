@@ -12,8 +12,7 @@ import '../../assets/css/fonts.css';
 const MenuTab = styled.nav`
     position: fixed;
     top: 50%;
-    transform: translate(0,-50%);
-    font-family: 'S-CoreDream-3Light', 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';
+    transform: translate(0,-70%);
 `
 
 const MyPage = memo(() => {

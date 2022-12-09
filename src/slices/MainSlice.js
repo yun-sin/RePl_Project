@@ -8,14 +8,17 @@ const MainSlice = createSlice({
   },
   reducers: {
     setFilter: (state, action) => {
-        let filterVallue = action.payload
-      return { filter: filterVallue };
+      let filterValue = action.payload;
+      return { filter: filterValue };
     },
   },
 });
 
+
+
 // 액션함수들 내보내기
 export const { setFilter } = MainSlice.actions;
+
 
 // 리듀서 객체 내보내기
 export default MainSlice.reducer;

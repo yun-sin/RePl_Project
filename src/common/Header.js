@@ -61,7 +61,6 @@ const SidebarContainer = styled.div`
 
   a {
     width: 80%;
-
     height: 50px;
     display: block;
     text-align: center;
@@ -111,14 +110,14 @@ const Header = memo(() => {
       </div>
 
       <SidebarContainer ref={SidebarCon} className={`${isActive ? "active" : ""}`}>
-        <NavLink to="/">홈으로</NavLink>
-        <NavLink to="/map">지도찾기</NavLink>
-        <NavLink to="/mypage">마이페이지</NavLink>
-        <NavLink to="!#">로그아웃</NavLink>
-        <NavLink to="/bulletin">게시판</NavLink>
-        <NavLink to="/raffle">경품페이지</NavLink>
-        <NavLink to="!#">의견 및 오류제보</NavLink>
-        <NavLink to="!#">사용 설명서</NavLink>
+        <NavLink to="/">🏠 홈으로</NavLink>
+        <NavLink to="/map_finder">🗺 지도찾기</NavLink>
+        <NavLink to="/mypage/info">🧒 마이페이지</NavLink>
+        <NavLink to="!#">👋 로그아웃</NavLink>
+        <NavLink to="/bulletin">📌 게시판</NavLink>
+        <NavLink to="/raffle">🎉 경품페이지</NavLink>
+        <NavLink to="!#">💬 의견 및 오류제보</NavLink>
+        <NavLink to="!#">📝 사용 설명서</NavLink>
       </SidebarContainer>
     </HeaderContainer>
   );

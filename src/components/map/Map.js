@@ -15,7 +15,7 @@ import markerBlue from "../../assets/img/map/markerBlue.png";
 import iconMore from "../../assets/img/map/icon-more.svg";
 import iconPlus from "../../assets/img/map/icon-plus-grey-sm.svg";
 
-import "animate.css";
+// import "animate.css";
 
 const Map = memo(() => {
   const dispatch = useDispatch();

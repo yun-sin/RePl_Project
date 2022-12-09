@@ -5,7 +5,7 @@ const CreateMapContainer = styled.div`
     position: fixed;
     right: 20px;
     bottom: 30px;
-    z-index: 9999;
+    z-index: 10;
     a {
         display: inline-block;
         padding: 15px 20px;
