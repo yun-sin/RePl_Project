@@ -37,6 +37,41 @@ export const ListContainer = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
 
+  .sort {
+    width: 30px;
+    height: 60px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 20px;
+    position: fixed;
+    left: 0;
+    background-color: #ccc;
+    color: white;
+    top: 80px;
+  }
+
+  .sort-by-distance {
+    background-color: #da4c1f;
+    width: 30px;
+    height: 80px;
+    position: fixed;
+    left: 0;
+    top: 140px;
+    text-align: center;
+    line-height: 20px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    /* border-radius: 5px; */
+    opacity: 0.7;
+    cursor: pointer;
+    color: white;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   .list_item {
     background-color: rgb(255, 255, 255, 0.99);
     border-radius: 10px;

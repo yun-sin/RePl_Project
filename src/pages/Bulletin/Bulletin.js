@@ -203,6 +203,7 @@ const Bulletin = memo(() => {
                     testData.map((v, i) => {
                       return (
                         <Post
+                          key={i}
                           targetId={v.targetId}
                           title={v.title}
                           img={v.img}

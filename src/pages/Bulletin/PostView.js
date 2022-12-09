@@ -1,14 +1,16 @@
-import React, { memo, useCallback, useState, useRef } from 'react';
+import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 
 import EditorView from '../../components/bulletin/EditorView';
 import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
-
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
+
+import { getPost } from '../../slices/BulletinSlice';
+import { useSelector, useDispatch } from 'react-redux';
+
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
-import { useEffect } from 'react';
 
 const TitleArea = styled.div`
     width: 100%;
