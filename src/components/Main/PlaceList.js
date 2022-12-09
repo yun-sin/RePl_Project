@@ -49,7 +49,7 @@ const PlaceList = memo(() => {
         <ul>
           {placeArr.map(({ name, address, theme }, i) => {
             return (
-              <li>
+              <li key={i}>
                 <a href="#!" onClick={onPopUpClick}>
                   <div>{name}</div>
                   <div>{address}</div>

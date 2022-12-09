@@ -38,12 +38,12 @@ const Slider = memo(() => {
       >
           {data.map(({id, emoji, title, desc}, i) => {
             return (
-              <div>
-              <NavLink to={`/theme/${id}`}>
-                <div>{emoji}</div>
-                <div>{title}</div>
-                <div>{desc}</div>
-              </NavLink>
+              <div key={i}>
+                <NavLink to={`/theme/${id}`}>
+                  <div>{emoji}</div>
+                  <div>{title}</div>
+                  <div>{desc}</div>
+                </NavLink>
               </div>
             )
           })}

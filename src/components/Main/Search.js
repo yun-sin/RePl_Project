@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useRef } from "react";
 import styled from "styled-components";
-
-import { useNavigate } from 'react-router-dom';
-
+import { NavLink, useNavigate } from 'react-router-dom';
 import img from "../../assets/img/main/magnifyingglass.png";
 
 
@@ -100,9 +98,9 @@ const Search = memo(() => {
         </div>
       </form>
       <div className="find_place">
-        <a href="#!">
-          <span>🧭 내 주변 장소 찾기</span>
-        </a>
+        <NavLink to='/map'>
+          <span>🧭 지도에서 찾기</span>
+        </NavLink>
       </div>
     </SearchContainer>
   );

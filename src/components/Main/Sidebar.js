@@ -139,7 +139,7 @@ const Sidebar = memo(() => {
             <ul>
             {whereArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )

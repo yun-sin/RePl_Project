@@ -65,7 +65,7 @@ const ThemeList = memo(() => {
         {/* 추후에 인피니티 스크롤 적용해야함 */}
         {data.map(({ id, emoji, title, desc }, i) => {
           return (
-            <NavLink to={`/theme/${id}`} className="link">
+            <NavLink to={`/theme/${id}`} className="link"  key={i}>
               <li>
                 <div className="emoji">{emoji}</div>
                 <div className="title">{title}</div>
