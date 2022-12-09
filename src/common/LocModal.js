@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import styled from "styled-components";
+import Modal from "react-modal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -98,69 +99,89 @@ export const LocModalContainer = styled.div`
   }
 `;
 
-const LocModal = memo(({ title, address, onClick, theme, review }) => {
+const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, theme, review }) => {
   return (
-    <LocModalContainer>
-      <div className="modal-header">
-        <h3>{title}</h3>
-        <span>{address}</span>
-        <FontAwesomeIcon className="faX" icon={faX} onClick={onClick} />
-      </div>
-      <div className="modal-body">
-        {/* 이미지 칸 */}
-        <div className="modal-img-container">
-          <div className="icon">
-            <img src={iconPlus} />
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={onRequestClose}
+      ariaHideApp={false}
+      style={{
+        overlay: {
+          backgroundColor: "rgba(50, 50, 50, 0.75)",
+          zIndex: 99999,
+        },
+        content: {
+          backgroundColor: "#F8F8F8",
+          width: "700px",
+          maxHeight: "1000px",
+          left: "300px",
+          borderRadius: "15px",
+          padding: "40px",
+          margin: "auto",
+        },
+      }}>
+      <LocModalContainer>
+        <div className="modal-header">
+          <h3>{title}</h3>
+          <span>{address}</span>
+          <FontAwesomeIcon className="faX" icon={faX} onClick={onClick} />
+        </div>
+        <div className="modal-body">
+          {/* 이미지 칸 */}
+          <div className="modal-img-container">
+            <div className="icon">
+              <img src={iconPlus} />
+            </div>
+            <div className="text">
+              여기를 눌러서 장소와 관련된 사진을 올려주시면
+              <br />
+              페이지가 더 유익해 질 것 같아요!
+            </div>
           </div>
-          <div className="text">
-            여기를 눌러서 장소와 관련된 사진을 올려주시면
-            <br />
-            페이지가 더 유익해 질 것 같아요!
+
+          <div className="modal-info-container">
+            {/* 왼쪽 줄 */}
+            <div className="info">
+              <div className="info-item">
+                <div className="title">여기는 어떤 곳인가요?</div>
+                {theme?.map((v, i) => {
+                  return (
+                    <div key={i} className="theme-card">
+                      {v}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="info-item">
+                <div className="title">123</div>
+              </div>
+            </div>
+
+            {/* 오른쪽 줄 */}
+            <div className="info">
+              <div className="info-item">
+                <div className="title">이 장소에 대한 후기들!</div>
+                {review?.map((v, i) => {
+                  return (
+                    <div key={i} className="theme-card">
+                      {v}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="info-item">
+                <div className="title">직접 의견을 남겨보세요!</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="modal-bullet-container">
+            <div className="title">이 장소를 추천한 게시글 목록</div>
           </div>
         </div>
-
-        <div className="modal-info-container">
-          {/* 왼쪽 줄 */}
-          <div className="info">
-            <div className="info-item">
-              <div className="title">여기는 어떤 곳인가요?</div>
-              {theme?.map((v, i) => {
-                return (
-                  <div key={i} className="theme-card">
-                    {v}
-                  </div>
-                );
-              })}
-            </div>
-            <div className="info-item">
-              <div className="title">123</div>
-            </div>
-          </div>
-
-          {/* 오른쪽 줄 */}
-          <div className="info">
-            <div className="info-item">
-              <div className="title">이 장소에 대한 후기들!</div>
-              {review?.map((v, i) => {
-                return (
-                  <div key={i} className="theme-card">
-                    {v}
-                  </div>
-                );
-              })}
-            </div>
-            <div className="info-item">
-              <div className="title">직접 의견을 남겨보세요!</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="modal-bullet-container">
-          <div className="title">이 장소를 추천한 게시글 목록</div>
-        </div>
-      </div>
-      <div className="modal-footer"></div>
-    </LocModalContainer>
+        <div className="modal-footer"></div>
+      </LocModalContainer>
+    </Modal>
   );
 });
 

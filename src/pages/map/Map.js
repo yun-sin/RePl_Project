@@ -2,10 +2,9 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
-import { MapContainer, ListContainer, SearchLoc, ModalContainer } from "./MapStyled";
-import Modal from "react-modal";
+import { MapContainer, ListContainer, SearchLoc, ModalContainer } from "../../components/map/MapStyled";
 import LocModal from "../../common/LocModal";
-import Spinner from "./Spinner";
+import Spinner from "../../common/Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationCrosshairs, faMagnifyingGlassLocation, faX } from "@fortawesome/free-solid-svg-icons";
@@ -314,29 +313,9 @@ const Map = memo(() => {
           );
         })}
 
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          ariaHideApp={false}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(50, 50, 50, 0.75)",
-              zIndex: 99999,
-            },
-            content: {
-              backgroundColor: "#F8F8F8",
-              width: "700px",
-              maxHeight: "1000px",
-              left: "300px",
-              borderRadius: "15px",
-              padding: "40px",
-              margin: "auto",
-            },
-          }}>
-          {LocData?.map((v, i) => {
-            if (v["id"] == modalContent) return <LocModal key={i} title={v["title"]} address={v["address"]} onClick={() => setModalIsOpen(false)} theme={v["theme"]} review={v["review"]} />;
-          })}
-        </Modal>
+        {LocData?.map((v, i) => {
+          if (v["id"] == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v["title"]} address={v["address"]} onClick={() => setModalIsOpen(false)} theme={v["theme"]} review={v["review"]} />;
+        })}
       </ListContainer>
     </MapContainer>
   );
