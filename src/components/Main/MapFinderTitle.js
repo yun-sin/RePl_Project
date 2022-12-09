@@ -1,13 +1,15 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setFilter } from "../../slices/MainSlice";
+import { setActive } from "../../slices/SidebarSlice";
+import Sidebar from "./Sidebar";
 
 const TitleContainer = styled.div`
   //임시 배경색상
   background-color: rgba(0, 0, 0, 0.4);
-
+  /* padding: 0 80px; */
   .title {
     margin-bottom: 60px;
     .icon {
@@ -21,7 +23,8 @@ const TitleContainer = styled.div`
   }
 
   .theme_search {
-    a {
+    div {
+      cursor: pointer;
       h2 {
         font-size: 20px;
         color: rgba(255, 255, 255, 0.6);
@@ -56,8 +59,8 @@ const TitleContainer = styled.div`
         }
 
         .active {
-            color: #fefefe;
-            background-color: #da4c1f;
+          color: #fefefe;
+          background-color: #da4c1f;
         }
 
         a {
@@ -70,53 +73,89 @@ const TitleContainer = styled.div`
 `;
 
 const MapFinderTitle = memo(() => {
-    const onAllClick = useCallback((e) => {
-        dispatch(setFilter(0));
-
-    });
-    
-    const onThemeClick = useCallback((e) => {
-        dispatch(setFilter(1));   
-        e.currentTarget.classList.add('active');    
-    });
-    
-    const onFollowingClick = useCallback((e) => {
-        dispatch(setFilter(2));
-        e.currentTarget.classList.add('active');    
-
-    });
   const { filter } = useSelector((state) => state.MainSlice);
+  const { isActive } = useSelector((state) => state.SidebarSlice);
+
+ 
+
+
+
+  
   const dispatch = useDispatch();
 
-  console.log(filter);
+  const all = React.useRef();
+  const theme = React.useRef();
+  const following = React.useRef();
+
+  const onAllClick = useCallback((e) => {
+    dispatch(setFilter(0));
+    theme.classList.remove("active");
+    following.classList.remove("active");
+  });
+
+  const onThemeClick = useCallback((e) => {
+    dispatch(setFilter(1));
+    e.currentTarget.classList.add("active");
+    all.classList.remove("active");
+    following.classList.remove("active");
+  });
+
+  const onFollowingClick = useCallback((e) => {
+    dispatch(setFilter(2));
+
+    e.currentTarget.classList.add("active");
+    all.classList.remove("active");
+    following.classList.remove("active");
+  });
+
+
+  // 사이드바 이벤트
+  const onSearch = useCallback(() => {
+    dispatch(setActive(true));
+    console.log(isActive);
+
+  })
+
+ 
+
+
+  
+
 
   return (
     <TitleContainer>
-      <div className="title">
-        <div className="icon">🗺</div>
-        <a href="">지도 찾기</a>
-      </div>
+        <Sidebar />
+        <div className="title">
+          <div className="icon">🗺</div>
+          <NavLink to="/map_finder">지도 찾기</NavLink>
+        </div>
 
-      <div className="theme_search">
-        <a href="">
-          <img src="" alt="" />
-          <h2>상황에 맞는 지도를 찾아보세요.</h2>
-        </a>
-      </div>
+        <div className="theme_search">
+          <div onClick={onSearch}>
+            <img src="" alt="" />
+            <h2>상황에 맞는 지도를 찾아보세요.</h2>
+          </div>
+        </div>
 
-      <div className="filter">
-        <ul>
-          <li>
-            <button type="button" onClick={onAllClick}>모든지도</button>
-          </li>
-          <li>
-            <button type="button" onClick={onThemeClick}>🗺테마지도</button>
-          </li>
-          <li>
-            <button type="button" onClick={onFollowingClick}>👫팔로잉지도</button>
-          </li>
-        </ul>
-      </div>
+        <div className="filter">
+          <ul>
+            <li>
+              <button type="button" onClick={onAllClick} ref={all}>
+                모든지도
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={onThemeClick} ref={theme}>
+                🗺테마지도
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={onFollowingClick} ref={following}>
+                👫팔로잉지도
+              </button>
+            </li>
+          </ul>
+        </div>
     </TitleContainer>
   );
 });
