@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 
 const CommentsArea = styled.div`
-    width: 1000px;
+    width: 800px;
     margin: auto;
     position: relative;
     padding-top: 40px;

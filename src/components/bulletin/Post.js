@@ -4,13 +4,15 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 
 const PostCard = styled.div`
-    width: 22.99%;
-    margin: 0 1% 1.5% 1%;
+    width: 260px;
+    margin: 0 10px 15px;
     position: relative;
+    border: 1px solid #ccc;
     
     img {
-        width: 100%;
-        aspect-ratio: 13 / 9;
+        width: 260px;
+        height: 180px;
+        margin-bottom: -2px;
     }
 
     .post__title {
@@ -67,8 +69,8 @@ const PostCard = styled.div`
         }
 
         flex-flow: column nowrap;
-        width: 100%;
-        aspect-ratio: 13 / 9;
+        width: 260px;
+        height: 180px;
         background-color: #000000c8;
         color: white;
         align-items: center;

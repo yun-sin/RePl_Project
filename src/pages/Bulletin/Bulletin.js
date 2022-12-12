@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Post from '../../components/bulletin/Post';
 
-import banner from '../../assets/img/bulletin/banner_sample.jpg';
+import banner from '../../assets/img/bulletin/banner.PNG';
 import postImg1 from '../../assets/img/bulletin/post_sample01.jpg';
 import postImg2 from '../../assets/img/bulletin/post_sample02.jpg';
 import postImg3 from '../../assets/img/bulletin/post_sample03.jpg';
@@ -34,40 +34,48 @@ const BannerArea = styled.div`
     color: skyblue;
   }
 
-  .links {
+  .linksWrap {
+    width: 1200px;
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
     display: flex;
     flex-flow: row nowrap;
-    margin: 0 50px 30px 0;
+    justify-content: flex-end;
+  }
+
+  .links {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 5px;
 
     a {
       margin: 0 5px;
       padding: 6px 10px;
-      background-color: white;
-      border: 1px solid #ccc;
+      background-color: #fff;
       text-decoration: none;
-      color: skyblue;
+      color: #39f;
     }
   }
 `;
 
 const MainArea = styled.section`
-  width: 100%;
+  width: 1200px;
+  margin: auto;
   padding: 16px 32px;
-  background-color: #bbb;
+  background-color: #fff;
   box-sizing: border-box;
 
   .main__option-bar {
-    width: 85%;
+    width: 100%;
     margin: auto;
     margin-bottom: 30px;
-    padding: 8px 16px;
 
     select {
-      border: none;
-      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
       margin: 0 5px;
       padding: 5px;
     }
@@ -75,8 +83,8 @@ const MainArea = styled.section`
 `;
 
 const PostList = styled.div`
-  width: 85%;
-  background-color: orange;
+  width: 100%;
+  background-color: #fff;
   margin: auto;
   box-sizing: border-box;
 
@@ -101,14 +109,14 @@ const PageControl = styled.div`
     text-align: center;
     padding: 10px 5px;
 
-    background-color: #ccc;
+    background-color: #fff;
     text-decoration: none;
     color: black;
     font-size: 16px;
 
     &:hover,
     .active {
-      background-color: black;
+      background-color: #ccc;
       color: white;
     }
   }
@@ -176,10 +184,11 @@ const Bulletin = memo(() => {
         <>
             <BannerArea>
               <img src={banner} alt="배너 이미지" />
-              <h1>여기는 배너 제목입니다</h1>
-              <div className='links'>
-                <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
-                <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
+              <div className="linksWrap">
+                <div className='links'>
+                  <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
+                  <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
+                </div>
               </div>
             </BannerArea>
 
