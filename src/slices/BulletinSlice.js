@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getPost = createAsyncThunk('BulletinSlice/gePost', async (payload, { rejectWithValue }) => {
+export const getPost = createAsyncThunk('BulletinSlice/getPost', async (payload, { rejectWithValue }) => {
     let result = null;
 
     try {
