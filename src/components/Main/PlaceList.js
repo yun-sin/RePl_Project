@@ -12,14 +12,17 @@ const placeArr = [
 
 const ListContainer = styled.div`
   margin-bottom: 30px;
+  width : 60%;
+  margin: auto;
   ul {
     display: flex;
     justify-content: space-between;
     li {
       width: 24%;
-      background-color: #bbb;
+      background-color: #f8f8f8;
       text-decoration: none;
       padding: 20px;
+      margin: 10px 0 50px 0;
       box-sizing: border-box;
       border-radius: 12px;
       a {
@@ -29,6 +32,23 @@ const ListContainer = styled.div`
           margin-bottom: 5px;
           &:last-child {
             margin-bottom: 0;
+          }
+          &.name {
+            font-size: 16px;
+            color: #666;
+            font-weight: 600;
+          }
+          &.address {
+            font-size: 12px;
+            color: #ADADAD;
+            font-weight: 500;
+            margin: 10px 0;
+          }
+          &.theme {
+            font-size: 12px;
+            color: #666;
+            font-weight: 200;
+
           }
         }
       }
@@ -51,11 +71,11 @@ const PlaceList = memo(() => {
             return (
               <li key={i}>
                 <a href="#!" onClick={onPopUpClick}>
-                  <div>{name}</div>
-                  <div>{address}</div>
-                  <div>{theme}</div>
-                  <div>{theme}</div>
-                  <div>{theme}</div>
+                  <div className='name'>{name}</div>
+                  <div className='address'>{address}</div>
+                  <div className='theme'>{theme}</div>
+                  <div className='theme'>{theme}</div>
+                  <div className='theme'>{theme}</div>
                 </a>
               </li>
             );

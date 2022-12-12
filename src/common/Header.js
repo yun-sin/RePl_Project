@@ -48,7 +48,8 @@ const HeaderContainer = styled.div`
 const SidebarContainer = styled.div`
   z-index: 99;
   width: 300px;
-  background-color: rgba(200, 200, 200, 0.5);
+  /* background-color: rgba(200, 200, 200, 0.5); */
+  background-color: #F8F8F8;
   height: 100%;
   position: fixed;
   top: 50px;
@@ -63,12 +64,13 @@ const SidebarContainer = styled.div`
     width: 80%;
     height: 50px;
     display: block;
-    text-align: center;
+    text-align: left;
     font-size: 30px;
     line-height: 50px;
     margin: 30px auto;
-    background-color: #aaa;
-    color: black;
+    /* background-color: #aaa; */
+    color: #666;
+    font-size: 15px;
 
     &:first-of-type {
       margin-top: 70px;
@@ -80,6 +82,7 @@ const SidebarContainer = styled.div`
 
     &:hover {
       background-color: #eee;
+      font-weight: bolder;
     }
 
     &.active {
