@@ -3,7 +3,7 @@ import { CKEditor } from 'ckeditor4-react';
 import styled from 'styled-components';
 
 const PostingContests = styled.div`
-    width: 1200px;
+    width: 800px;
     margin: auto;
     margin-bottom: 50px;
 `

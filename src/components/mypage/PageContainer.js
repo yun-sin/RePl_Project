@@ -6,7 +6,7 @@ const PageContainer = styled.div`
     
     h2 {
         text-align: center;
-        font-size: 19px;
+        font-size: 23px;
         font-weight: bold;
         color: #424242;
     }

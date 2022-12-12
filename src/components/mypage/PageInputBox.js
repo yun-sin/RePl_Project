@@ -11,6 +11,7 @@ const InputBox = styled.div`
     font-weight: bold;
     line-height: 3.2;
     padding: 0 10px;
+    margin-bottom: 20px;
 `
 const PageInputBox = memo(({children, width, height}) => {
     return (
