@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import Post from '../../components/bulletin/Post';
 
-import banner from '../../assets/img/bulletin/banner.PNG';
 import postImg1 from '../../assets/img/bulletin/post_sample01.jpg';
 import postImg2 from '../../assets/img/bulletin/post_sample02.jpg';
 import postImg3 from '../../assets/img/bulletin/post_sample03.jpg';
@@ -16,22 +15,25 @@ const BannerArea = styled.div`
   width: 100%;
   height: 300px;
   position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #39f;
+  font-weight: 900;
 
-  img {
-    width: 100%;
-    height: 100%;
-  }
+  .banner__title {
+    h1 {
+      font-size: 40px;
+      margin-bottom: 30px;
+      font-weight: 900;
+    }
 
-  h1 {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-
-    font-size: 28px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    color: skyblue;
+    p {
+      font-size: 20px;
+      line-height: 1.5;
+    }
   }
 
   .linksWrap {
@@ -183,7 +185,10 @@ const Bulletin = memo(() => {
     return (
         <>
             <BannerArea>
-              <img src={banner} alt="배너 이미지" />
+              <div className="banner__title">
+                <h1>사람들의 서울 이야기</h1>
+                <p>게시글은 직접 리뷰를 남긴 장소를 대상으로 작성 가능해요.<br/>아래의 썸네일을 클릭해서 사람들의 취향과 개성이 담긴 이야기를 직접 읽어보세요.</p>
+              </div>
               <div className="linksWrap">
                 <div className='links'>
                   <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>

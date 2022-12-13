@@ -68,7 +68,8 @@ const PostingArea = styled.section`
     .postContent {
         width: 800px;
         margin: auto;
-        padding: 50px 0 100px;
+        padding: 50px 10px 100px;
+        box-sizing: border-box;
     }
 `;
 
@@ -211,6 +212,7 @@ const OtherPostsArea = styled.div`
             display: flex;
             flex-flow: row nowrap;
             overflow-x: scroll;
+            overflow-y: hidden;
             scroll-behavior: smooth;
             
             ::-webkit-scrollbar {
@@ -246,14 +248,6 @@ const OtherPostsArea = styled.div`
         }
     }
 `;
-
-const testData = {
-    bgColor: 'gray',
-    title: '예시 게시물 1',
-    publisher: '게시자 1',
-    postDate: '2022-11-30',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-};
 
 const testData2 = [
     {
