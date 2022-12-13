@@ -298,5 +298,52 @@
       "content": "<p><em>dsgdgsfg<strong>sfdgsfgsfg</strong></em></p>\n",
       "id": 3
     }
+  ],
+  "emoji": [
+    {
+      "id" : 1,
+      "icon" : "🧍",
+      "dsec" : "혼자서"
+    },
+    {
+      "id" : 2,
+      "icon" : "👯‍♀️",
+      "dsec" : "동료랑"
+    },
+    {
+      "id" : 3,
+      "icon" : "👩‍❤️‍👨",
+      "dsec" : "연인이랑"
+    },
+    {
+      "id" : 4,
+      "icon" : "🐶",
+      "dsec" : "반려동물과"
+    },
+    {
+      "id" : 5,
+      "icon" : "🙌🏻",
+      "dsec" : "친구랑"
+    },
+    {
+      "id" : 6,
+      "icon" : "🔢",
+      "dsec" : "소규모로"
+    },
+    {
+      "id" : 7,
+      "icon" : "❤️",
+      "dsec" : "소개팅"
+    },
+    {
+      "id" : 8,
+      "icon" : "👶",
+      "dsec" : "아이랑"
+    },
+    {
+      "id" : 9,
+      "icon" : "👨‍👩‍👧",
+      "dsec" : "부모님이랑"
+    }
   ]
 }

@@ -6,6 +6,7 @@ import img from "../../assets/img/main/magnifyingglass.png";
 
 const SearchContainer = styled.div`
   text-align: center;
+  margin-bottom: 70px;
   form {
     div {
       max-width: 360px;
@@ -33,14 +34,13 @@ const SearchContainer = styled.div`
         cursor: pointer;
         border: none;
         font-size: 16px;
+        height: 60px;
 
         img {
-          height: 55px;
-          padding: 10px;
+          height: auto;
           box-sizing: border-box;
-          max-width: 100%;
           object-fit: cover;
-        
+          vertical-align: middle;
         }
       }
     }

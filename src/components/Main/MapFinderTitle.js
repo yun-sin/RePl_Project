@@ -6,25 +6,40 @@ import { setFilter } from "../../slices/MainSlice";
 import { setActive } from "../../slices/SidebarSlice";
 import Sidebar from "./Sidebar";
 
+import img from '../../assets/img/main/magnifyingglass2.png';
+
 const TitleContainer = styled.div`
   //임시 배경색상
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); */
   /* padding: 0 80px; */
+    width: 60%;
+    margin: auto;
+    padding-top: 150px;
+
   .title {
     margin-bottom: 60px;
     .icon {
       font-size: 37px;
+      text-align: left;
+
     }
     a {
       font-size: 30px;
-      font-weight: bolder;
+      font-weight: 600;
       color: #fefefe;
+      text-align: left;
+      margin-top: 20px;
     }
   }
 
   .theme_search {
     div {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      img {
+        width: 40px;
+      }
       h2 {
         font-size: 20px;
         color: rgba(255, 255, 255, 0.6);
@@ -113,13 +128,7 @@ const MapFinderTitle = memo(() => {
   const onSearch = useCallback(() => {
     dispatch(setActive(true));
     console.log(isActive);
-
-  })
-
- 
-
-
-  
+  });
 
 
   return (
@@ -132,7 +141,7 @@ const MapFinderTitle = memo(() => {
 
         <div className="theme_search">
           <div onClick={onSearch}>
-            <img src="" alt="" />
+            <img src={img} alt="img" />
             <h2>상황에 맞는 지도를 찾아보세요.</h2>
           </div>
         </div>

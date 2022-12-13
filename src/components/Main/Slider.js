@@ -23,6 +23,8 @@ let data = [
 // 임시데이터 배열 랜덤 처리
 data = data.sort(() => Math.random() - 0.5);
 
+
+
 const Slider = memo(() => {
   const gliderRef = React.useRef(null);
   return (
@@ -40,9 +42,9 @@ const Slider = memo(() => {
             return (
               <div key={i}>
                 <NavLink to={`/theme/${id}`}>
-                  <div>{emoji}</div>
-                  <div>{title}</div>
-                  <div>{desc}</div>
+                  <div className="emoji">{emoji}</div>
+                  <div className="title">{title}</div>
+                  <div className="desc">{desc}</div>
                 </NavLink>
               </div>
             )
