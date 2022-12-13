@@ -305,7 +305,7 @@ const Map = memo(() => {
             <div key={i} data-loc={v.latlng} data-title={v.title} className={`${"list_item"} ${"loc" + i} ${i == btnActive ? "active" : ""}  ${"animate__faster"}`} style={{ animationDelay: i * 40 + "ms" }}>
               <h3>{v.title}</h3>
               <h4>{v.address}</h4>
-              <a>🧑‍💻 혼자 노트북들고 작업하러 가기 좋은 곳</a>
+              <a>{v.theme[0]}</a>
               <div className="more_btn" onClick={onModalIsOpen} data-id={v.id}>
                 <img src={iconMore} />
               </div>
@@ -314,7 +314,7 @@ const Map = memo(() => {
         })}
 
         {LocData?.map((v, i) => {
-          if (v["id"] == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v["title"]} address={v["address"]} onClick={() => setModalIsOpen(false)} theme={v["theme"]} review={v["review"]} />;
+          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v.title} address={v.address} onClick={() => setModalIsOpen(false)} theme={v.theme} review={v.review} />;
         })}
       </ListContainer>
     </MapContainer>

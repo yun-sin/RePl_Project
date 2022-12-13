@@ -5,16 +5,6 @@ import axios from "axios";
 export const getMapData = createAsyncThunk("MapSlice/getMapData", async (payload, { rejectWithValue }) => {
   let result = null;
 
-  // // 영역의 남서쪽 좌표를 얻어옵니다
-  // if (payload.swLatLng) {
-  //   console.log(payload.swLatLng);
-  // }
-
-  // // 영역의 북동쪽 좌표를 얻어옵니다
-  // if (payload.neLatLng) {
-  //   console.log(payload.neLatLng);
-  // }
-
   try {
     const response = await axios.get("/map");
     result = response.data;
