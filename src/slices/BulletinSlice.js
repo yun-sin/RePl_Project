@@ -1,19 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getPost = createAsyncThunk('BulletinSlice/gePost', async (payload, { rejectWithValue }) => {
+export const getPost = createAsyncThunk('BulletinSlice/getPost', async (payload, { rejectWithValue }) => {
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST, {
-            params: {
-                id: payload.id
-            }
-        });
+        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + payload.id);
 
         result = response.data;
     } catch (err) {
-        rejectWithValue(err.response);
+        result = rejectWithValue(err.response);
     }
 
     return result;
@@ -24,7 +20,11 @@ export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload,
 
     try {
         const response = await axios.post(process.env.REACT_APP_EDITOR_TEST, {
-            "body": payload
+            bgColor: payload.bgColor,
+            postTitle: payload.postTitle,
+            postDate: payload.postDate,
+            postUser: payload.postUser,
+            content: payload.content,
         });
 
         result = response.data;
@@ -43,7 +43,9 @@ const BulletinSlice = createSlice({
         error: null
     },
     reducers: {
-
+        getCurrentData: (state, action) => {
+            return state;
+        }
     },
     extraReducers: {
         [getPost.pending]: (state, { payload }) => {
@@ -97,4 +99,5 @@ const BulletinSlice = createSlice({
     }
 });
 
+export const { getCurrentData } = BulletinSlice.actions;
 export default BulletinSlice.reducer;

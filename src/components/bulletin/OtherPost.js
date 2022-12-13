@@ -2,16 +2,16 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 const Post = styled.div`
-    min-width: 270px;
-    height: 300px;
+    min-width: 240px;
+    height: 250px;
     background-color: #fff;
-    margin: 0 15px;
+    margin: 0 10px;
     box-sizing: border-box;
 
     &:hover {
         cursor: pointer;
         filter: brightness(0.9);
-        border: 2px solid #ccc;
+        border: 1px solid #eee;
     }
 
     img {
@@ -23,7 +23,7 @@ const Post = styled.div`
     }
 
     h4 {
-        font-size: 22px;
+        font-size: 18px;
         padding: 5px;
     }
 
@@ -32,9 +32,9 @@ const Post = styled.div`
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical; 
-        font-size: 18px;
+        font-size: 12px;
         padding: 5px;
-        line-height: 1.6;
+        line-height: 1.8;
     }
 `
 

@@ -19,6 +19,8 @@ const ThemeContainer = styled.div`
   margin-bottom: 30px;
   /* padding: 30px;
   box-sizing: border-box; */
+  width: 60%;
+  margin: auto;
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -27,19 +29,18 @@ const ThemeContainer = styled.div`
       display: block;
       text-decoration: none;
       width: 32%;
-      flex: none;
-      height: 152px;
+      /* flex: none; */
       margin-bottom: 30px;
     }
     li {
       background-color: #f8f8f8;
       text-align: center;
       text-decoration: none;
-      padding: 30px;
-      box-sizing: border-box;
       border-radius: 12px;
       box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
-      margin-bottom: 30px;
+      padding: 30px;
+      box-sizing: border-box;
+      height: 180px;
       .emoji {
         font-size: 30px;
         margin-bottom: 20px;

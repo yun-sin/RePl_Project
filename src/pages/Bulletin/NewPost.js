@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 
 import Editor from '../../components/bulletin/Editor';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
@@ -18,6 +19,7 @@ const TitleArea = styled.div`
     margin: auto;
     height: 400px;
     position: relative;
+    border-bottom: 1px solid #eee;
 
     .title-edit-menu {
         display: flex;
@@ -102,7 +104,7 @@ const PostingArea = styled.section`
     box-sizing: border-box;
 
     .send-post {
-        width: 1000px;
+        width: 800px;
         margin: auto;
         text-align: right;
 
@@ -110,7 +112,8 @@ const PostingArea = styled.section`
             border: none;
             padding: 10px 15px;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 600;
 
             &:hover {
                 cursor: pointer;
@@ -121,7 +124,7 @@ const PostingArea = styled.section`
 `;
 
 const RecommendPlaceArea = styled.div`
-    width: 1000px;
+    width: 800px;
     margin: auto;
     margin-bottom: 40px;
 
@@ -131,9 +134,10 @@ const RecommendPlaceArea = styled.div`
         justify-content: space-between;
         align-items: flex-end;
         margin-bottom: 20px;
+        padding: 0 10px;
 
         h3 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
         }
 
@@ -152,13 +156,12 @@ const RecommendPlaceArea = styled.div`
 
     .recommend-place-body {
         width: 100%;
-        padding: 0 20px;
         box-sizing: border-box;
     }
 `;
 
 const CategoryArea = styled.div`
-    width: 1000px;
+    width: 800px;
     margin: auto;
     border-bottom: 1px solid #ccc;
     display: flex;
@@ -171,7 +174,7 @@ const CategoryArea = styled.div`
 
         span {
             display: inline-block;
-            font-size: 16px;
+            font-size: 12px;
             padding: 5px;
             border-radius: 5px;
             background-color: #eee;
@@ -210,18 +213,40 @@ const NewPost = memo(() => {
         setContent(v);
     }, []);
 
-    const onPosting = useCallback(e => {
-        e.preventDefault();
-        console.log(content);
-
-        if (content !== '') dispatch(newPost(content));
-    }, [content, dispatch]);
-
-    const [backgroundColor, setBackgroundColor] = useState('#cccccc');
+    const [backgroundColor, setBackgroundColor] = useState('#fff');
 
     const onBackgroundColorInputChange = useCallback(e => {
         setBackgroundColor(e.currentTarget.value);
     }, []);
+
+    const onPosting = useCallback(e => {
+        e.preventDefault();
+
+        const postTitle = e.currentTarget.postTitle.value;
+        if (postTitle === '') {
+            alert('제목을 입력하세요.');
+            e.currentTarget.postTitle.focus();
+            return;
+        }
+        
+        if (content === '') {
+            alert('내용을 입력하세요.');
+            return;
+        }
+
+        const postDate = dayjs().format('YYYY-MM-DD');
+        const postUser = 'test'; // <TO DO> 로그인 정보 불러오기
+
+        const data = {
+            bgColor: backgroundColor,
+            postTitle: postTitle,
+            postDate: postDate,
+            postUser: postUser,
+            content: content,
+        }
+
+        dispatch(newPost(data));
+    }, [content, dispatch]);
 
     return (
         <MainForm onSubmit={onPosting}>
@@ -246,10 +271,8 @@ const NewPost = memo(() => {
                 </div>
             </TitleArea>
 
-            <hr />
-
             <PostingArea>
-                <Editor setContent={setContentFunc} />
+                <Editor id='editor' setContent={setContentFunc} />
                 <RecommendPlaceArea>
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>

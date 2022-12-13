@@ -20,9 +20,8 @@ const Item = styled.li`
         flex: 0 0 auto;
 
         img {
-            width: 150px;
-            height: 100px;
-            repeat: no-repeat;
+            width: 100px;
+            height: 70px;
             object-fit: cover;
         }
     }
@@ -36,13 +35,14 @@ const Item = styled.li`
         justify-content: space-between;
 
         h4 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             color: skyblue;
         }
         p {
             color: gray;
             font-weight: 500;
+            font-size: 16px;
         }
     }
 

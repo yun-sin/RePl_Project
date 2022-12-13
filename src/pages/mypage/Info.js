@@ -24,7 +24,6 @@ const InfoBox = styled(PageContainer)`
         
         .name {
             margin: 0 auto;
-            padding-top: 10px;    
         }
 
         .changeButton {

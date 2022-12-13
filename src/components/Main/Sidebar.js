@@ -9,9 +9,9 @@ const SidebarContainer = styled.div`
     width: 30%;
     /* min-width: 400px; */
     max-width: 520px;
-    height: 100%;
+    height: 100vw;
     background-color: #FEFEFE;
-    padding: 40px 30px;
+    padding: 40px 30px 40px 0;
     box-sizing: border-box;
     font-size: 14px;
     color: #666666;
@@ -91,7 +91,7 @@ const SidebarContainer = styled.div`
 `;
 
 // 필터 생성을 위한 배열
-const whereArr = ['서울', '경기', '인천', '강원도', '충청도', '경상도', '전라도', '대전', '대구', '울산', '부산', '광주', '제주도']
+const whereArr = ['을지로/충무로', '광화문/시청', '삼성/역삼/선릉', '성수', '종로/중구', '송파/강동', '홍대/합정', '성북', '영등포/금천', '이태원/경리단', '강남/서초/방배', '은평', '망원', '동대문/성동', '압구정/신사', '신촌', '관악/동작', '용산/마포', '대학로/혜화', '강서', '노원/도봉/강북', '서촌/북촌', '연남/연희', '구로', '여의도']
 
 const whoArr = ['🧍 혼자서', '👯‍♀️ 동료랑', '👩‍❤️‍👨연인이랑', '🐶 반려동물과', '🙌🏻 친구랑', '🔢 소규모로', '❤️ 소개팅', '👶 아이랑', '👨‍👩‍👧 부모님이랑'];
 
@@ -151,7 +151,7 @@ const Sidebar = memo(() => {
             <ul>
             {whoArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
@@ -163,7 +163,7 @@ const Sidebar = memo(() => {
             <ul>
             {whatArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
@@ -175,7 +175,7 @@ const Sidebar = memo(() => {
             <ul ref={moreul}>
             {featureArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
@@ -190,7 +190,7 @@ const Sidebar = memo(() => {
             <ul>
             {foodArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
@@ -202,7 +202,7 @@ const Sidebar = memo(() => {
             <ul>
             {drinkArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
@@ -214,7 +214,7 @@ const Sidebar = memo(() => {
             <ul>
             {categoryArr.map((v, i) => {
                 return (
-                        <li>
+                        <li key={i}>
                             <span>{v}</span>
                         </li>
                 )
