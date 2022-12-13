@@ -5,8 +5,11 @@ import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
 import Map from "./pages/map/Map";
-import MyPage from "./pages/mypage/MyPage";
+import MapAdd from "./pages/map/MapAdd";
+
 import Raffle from "./pages/raffle/Raffle";
+
+import MyPage from "./pages/mypage/MyPage";
 
 /* 메인 컴포넌트 모듈 */
 import MapFinder from "./pages/Main/MapFinder";
@@ -27,8 +30,14 @@ const App = memo(() => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
+
+        {/* 지도 Routes */}
         <Route path="/map" element={<Map />} />
+        <Route path="/map/add" element={<MapAdd />} />
+
+        {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />
+
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
 
