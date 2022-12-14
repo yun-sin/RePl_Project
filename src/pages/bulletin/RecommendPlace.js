@@ -1,10 +1,12 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
+import classNames from 'classnames';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import { useEffect } from 'react';
 
 const PopUpBox = styled.div`
-    width: 600px;
+    width: 400px;
     height: 500px;
     position: relative;
     padding: 20px;
@@ -20,7 +22,7 @@ const PopUpBox = styled.div`
         width: 30px;
         height: 30px;
         border-radius: 5px;
-        font-size: 15px;
+        font-size: 25px;
         
         &:hover {
             cursor: pointer;
@@ -29,19 +31,16 @@ const PopUpBox = styled.div`
     }
 
     .top-desc {
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: flex-end;
         margin-bottom: 15px;
 
         h3 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
+            margin-bottom: 10px;
         }
 
         p {
             font-size: 12px;
-            margin-left: 15px;
         }
     }
 
@@ -56,7 +55,7 @@ const PopUpBox = styled.div`
         border-radius: 2px;
 
         p {
-            font-size: 16px;
+            font-size: 14px;
             display: inline-block;
             margin-right: 10px;
         }
@@ -67,12 +66,13 @@ const PopUpBox = styled.div`
             padding: 2px;
             margin: 0 10px 10px 0;
             border-radius: 3px;
-            font-size: 14px;
+            font-size: 12px;
 
             button {
                 background: none;
                 border: none;
-                margin: 0 2px 0 5px;
+                margin: 0 2px 0 2px;
+                font-size: 10px;
 
                 &:hover {
                     cursor: pointer;
@@ -94,6 +94,7 @@ const PopUpBox = styled.div`
             padding: 5px;
             border-radius: 2px;
             background-color: #eee;
+            font-size: 12px;
         }
 
         div {
@@ -123,12 +124,13 @@ const PopUpBox = styled.div`
         width: 100%;
         max-height: 250px;
         box-sizing: border-box;
+        padding-bottom: 15px;
         overflow-y: scroll;
         ::-webkit-scrollbar { 
-            width: 5px;
+            width: 4px;
         }
         ::-webkit-scrollbar-thumb {
-            background-color: #333;
+            background-color: #777;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-track { 
@@ -137,20 +139,28 @@ const PopUpBox = styled.div`
 
         li {
             width: 100%;
-            height: 100px;
             box-sizing: border-box;
             padding: 10px;
             display: flex;
             flex-flow: row nowrap;
+            transition: all 0.2s;
 
             &:hover {
                 cursor: pointer;
                 background-color: #ccc;
             }
 
+            &.active {
+                background-color: #0581bb;
+                
+                div {
+                    h4, p { color: white; }
+                }
+            }
+
             img {
-                width: 120px;
-                height: 80px;
+                width: 90px;
+                height: 60px;
                 object-fit: cover;
                 margin-right: 20px;
             }
@@ -160,15 +170,16 @@ const PopUpBox = styled.div`
                 flex-flow: column wrap;
                 justify-content: space-between;
                 padding: 5px 0;
+                padding-bottom: 10px;
 
                 h4 {
                     color: skyblue;
                     font-weight: 600;
-                    font-size: 24px;
+                    font-size: 18px;
                 }
 
                 p {
-                    font-size: 16px;
+                    font-size: 14px;
                     color: darkgray;
                 }
             }
@@ -176,7 +187,42 @@ const PopUpBox = styled.div`
     }
 `;
 
+const testData = [
+    {
+        img: breadSample,
+        title: '장소명',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명',
+        address: '서울시 어디어디'
+    },
+    
+]
+
 const RecommendPlace = memo(() => {
+    const [selectedIndex, setSelectedIndex] = useState([]);
+
+    useEffect(() => {
+        setSelectedIndex(new Array(testData.length).fill(false));
+    }, []);
+
     const onSearchPlace = useCallback(e => {
         e.preventDefault();
     }, []);
@@ -185,6 +231,21 @@ const RecommendPlace = memo(() => {
         e.preventDefault();
         e.currentTarget.closest('form').reset();
     }, []);
+
+    const onPlaceClick = useCallback(e => {
+        const idx = e.currentTarget.getAttribute('idx');
+        setSelectedIndex(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            temp[idx] = !temp[idx];
+            return temp;
+        });
+
+        const title = e.currentTarget.children[1].children[0].innerHTML;
+        console.log(title);
+    }, [selectedIndex]);
 
     return (
         <PopUpBox>
@@ -207,27 +268,19 @@ const RecommendPlace = memo(() => {
                 <button type='button' onClick={resetForm}>초기화</button>
             </form>
             <ul className='searched-list'>
-                <li>
-                    <img src={breadSample} alt="장소 사진" />
-                    <div>
-                        <h4>썸플라워 베이크샵</h4>
-                        <p>서울시 강남구 어디어디</p>
-                    </div>
-                </li>
-                <li>
-                    <img src={breadSample} alt="장소 사진" />
-                    <div>
-                        <h4>썸플라워 베이크샵</h4>
-                        <p>서울시 강남구 어디어디</p>
-                    </div>
-                </li>
-                <li>
-                    <img src={breadSample} alt="장소 사진" />
-                    <div>
-                        <h4>썸플라워 베이크샵</h4>
-                        <p>서울시 강남구 어디어디</p>
-                    </div>
-                </li>
+                {
+                    testData.map((v, i) => {
+                        return (
+                            <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                <img src={v.img} alt="장소 사진" />
+                                <div>
+                                    <h4>{v.title}</h4>
+                                    <p>{v.address}</p>
+                                </div>
+                            </li>
+                        )
+                    })
+                }
             </ul>
         </PopUpBox>
     );
