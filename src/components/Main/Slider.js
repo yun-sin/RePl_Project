@@ -7,7 +7,7 @@ import styled from "styled-components";
  */
 import Glider from "react-glider";
 import "glider-js/glider.min.css";
-import "../../assets/css/styles.css";
+import "../../assets/css/styles.scss";
 
 // 임시데이터 
 let data = [

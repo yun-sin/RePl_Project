@@ -227,7 +227,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
     current.children[0].checked = true;
     const targetArray = document.querySelectorAll('input[type=radio]');
     targetArray.forEach(v => {
-      if (v.checked == true) {
+      if (v.checked === true) {
         v.closest('label').classList.add('active');
       } else {
         v.closest('label').classList.remove('active');
@@ -373,7 +373,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
                   <div className="comment__contents">
                     <textarea name="comment__input" className='comment__input' placeholder='여기에 의견을 입력해주세요' rows='5' onChange={onCommentContentsChange}></textarea>
                   </div>
-                  <button type='submit' class='comment__submit-button'>저장하기</button>
+                  <button type='submit' className='comment__submit-button'>저장하기</button>
                 </form>
               </div>
             </div>
