@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 
@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import iconPlus from "../assets/img/map/icon-plus-grey-sm.svg";
-import { useCallback } from "react";
+
+import breadSample from '../assets/img/bulletin/bread_sample.jpg';
 
 export const LocModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -104,9 +105,11 @@ export const LocModalContainer = styled.div`
           }
 
           .theme-card__about {
+            transition: all 0.3s;
+
             &:hover {
               cursor: pointer;
-              background-color: #e5e5e5;
+              background-color: #eee;
             }
           }
         }
@@ -203,8 +206,159 @@ export const LocModalContainer = styled.div`
         }
       }
     }
+
+    .modal-bullet-container {
+      .posts {
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+        padding-bottom: 10px;
+
+        li {
+          width: 23%;
+          margin: 1%;
+          height: 150px;
+          box-sizing: border-box;
+          background-color: #fff;
+          border-radius: 12px;
+          box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
+          transition: all 0.2s;
+
+          &:hover {
+            cursor: pointer;
+            scale: 0.98;
+            box-shadow: 1px 1px 2px rgb(0 0 0 / 40%);
+            filter: brightness(97%);
+          }
+          
+          img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+          }
+
+          .posts_desc {
+            h4 {
+              padding: 0 5px 2px;
+              text-overflow: ellipsis;
+              font-size: 14px;
+              font-weight: 600;
+            }
+
+            p {
+              overflow: hidden;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical; 
+              font-size: 10px;
+              padding: 0 5px;
+              line-height: 1.4;
+            }
+          }
+
+          .posts_fb {
+            text-align: right;
+            padding: 0 10px 3px 0;
+            font-size: 10px;
+            font-weight: 600;
+
+            span {
+              margin-left: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 10px 0;
+
+    button {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      transition: all 0.3s;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgb(0 0 0 / 40%);
+      }
+    }
+
+    .forKakao {
+      width: 90%;
+      margin-right: 2%;
+      background-color: #0581bb;
+      color: #fff;
+
+      &:hover {
+        background-color: #045f8a;
+      }
+    }
+
+    .scrap {
+      width: 8%;
+      aspect-ratio: 1 / 1;
+      background-color: #fff;
+      color: #0581bb;
+    }
   }
 `;
+
+const testData = [
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  {
+    bgImg: breadSample,
+    title: '예시 게시물',
+    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
+    hearts: 3
+  },
+  
+]
 
 const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, theme, review }) => {
   useEffect(() => {
@@ -270,7 +424,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
           height: '800px',
           left: "300px",
           borderRadius: "15px",
-          padding: "40px",
+          padding: "40px 40px 50px",
           margin: "auto",
           overflowY: 'hidden',
           overscrollBehavior: "contain"
@@ -381,9 +535,30 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
 
           <div className="modal-bullet-container">
             <div className="title">이 장소를 추천한 게시글 목록</div>
+            <ul className="posts">
+             {
+              testData.map((v, i) => {
+                return (
+                  <li key={i}>
+                    <img src={v.bgImg} alt="미리보기 이미지" />
+                    <div className="posts_desc">
+                      <h4>{v.title}</h4>
+                      <p>{v.contents}</p>
+                    </div>
+                    <div className="posts_fb">
+                      <p>♡<span>{v.hearts}</span></p>
+                    </div>
+                  </li>
+                 )
+              })
+             }
+            </ul>
           </div>
         </div>
-        <div className="modal-footer"></div>
+        <div className="modal-footer">
+          <button className="forKakao">카카오맵으로 자세히 보기</button>
+          <button className="scrap">O</button>
+        </div>
       </LocModalContainer>
     </Modal>
   );

@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import { useParams } from 'react-router-dom';
 
-import EditorView from '../../components/bulletin/EditorView';
 import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 
-import { getPost, getCurrentData } from '../../slices/BulletinSlice';
+import { getPost } from '../../slices/BulletinSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
