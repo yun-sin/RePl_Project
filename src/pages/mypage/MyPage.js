@@ -13,6 +13,8 @@ const MenuTab = styled.nav`
     position: fixed;
     top: 50%;
     transform: translate(0,-70%);
+    display: flex;
+    flex-direction: column;
 `
 
 const MyPage = memo(() => {

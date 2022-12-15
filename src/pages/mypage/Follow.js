@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import PageContainer from '../../components/mypage/PageContainer';
 import PageInputBox from '../../components/mypage/PageInputBox';
-import PageButton from '../../components/mypage/PageButton';
 import styled from 'styled-components';
 
 const TabMenu = styled.ul`

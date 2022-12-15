@@ -5,7 +5,7 @@ import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
 import Map from "./pages/map/Map";
-import MapAdd from "./pages/map/MapAdd";
+// import MapAdd from "./pages/map/MapAdd";
 
 import Raffle from "./pages/raffle/Raffle";
 
@@ -33,7 +33,7 @@ const App = memo(() => {
 
         {/* 지도 Routes */}
         <Route path="/map" element={<Map />} />
-        <Route path="/map/add" element={<MapAdd />} />
+        {/* <Route path="/map/add" element={<MapAdd />} /> */}
 
         {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />
