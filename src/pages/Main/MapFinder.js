@@ -43,7 +43,6 @@ const MapFinder = memo(() => {
 
   const handleClose = useCallback((e) => {
     if (isActive) {
-      console.log("testtest");
       dispatch(setActive(false));
     }
   });

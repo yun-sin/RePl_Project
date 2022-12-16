@@ -29,6 +29,7 @@ const TitleContainer = styled.div`
       color: #fefefe;
       text-align: left;
       margin-top: 20px;
+      text-decoration: none;
     }
   }
 
@@ -91,6 +92,7 @@ const MapFinderTitle = memo(() => {
   const { filter } = useSelector((state) => state.MainSlice);
   const { isActive } = useSelector((state) => state.SidebarSlice);
 
+  const { keyword } = useSelector((state) => state.MapFinderSlice);
  
 
 
@@ -142,7 +144,10 @@ const MapFinderTitle = memo(() => {
         <div className="theme_search">
           <div onClick={onSearch}>
             <img src={img} alt="img" />
-            <h2>상황에 맞는 지도를 찾아보세요.</h2>
+            { keyword === null? 
+              <h2>상황에 맞는 지도를 찾아보세요.</h2>
+            : <h2>{keyword}</h2>}
+
           </div>
         </div>
 

@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setActive } from '../../slices/SidebarSlice';
+import { setKeyword } from '../../slices/MapFinderSlice';
 
 
 const SidebarContainer = styled.div`
@@ -36,6 +37,10 @@ const SidebarContainer = styled.div`
             width: 100%;
             position: relative;
             .magnifyingGlass {
+                background: #E5E5E5;
+                cursor: pointer;
+                width: 40px;
+                border: none;
                 position: absolute;
                 top: 0;
                 bottom: 0;
@@ -52,7 +57,9 @@ const SidebarContainer = styled.div`
                 padding: 18px 16px 16px;
                 box-sizing: border-box;
                 border: none;
-
+                &:focus {
+                    outline: none;
+                }
             }
         }
 
@@ -111,20 +118,31 @@ const categoryArr = ['식당', '카페', '주점', '상점', '기타', '베이�
 
 const Sidebar = memo(() => {
     const { isActive } = useSelector((state) => state.SidebarSlice);
+    const { keyword } = useSelector((state) => state.MapFinderSlice);
+    const dispatch = useDispatch();
 
     const moreul = useRef();
 
     const onMoreView = useCallback(() => {
         
-    })
+    },[]);
+
+    const onSearchSubmit = useCallback((e) => {
+        e.preventDefault();
+        dispatch(setKeyword(e.target.search.value));
+        dispatch(setActive(false));
+        console.log(e.target.search.value);
+    },[]);
+
+
 
 
   return (
     <SidebarContainer className={`${isActive ? 'active' : ''}`} >
         <div className='search'>
-            <form>
-                <NavLink to='#' className='magnifyingGlass'>🔍</NavLink>
-                <input type="text" placeholder='키워드로 검색해보세요.' />
+            <form onSubmit={onSearchSubmit}>
+                <button type='submit' className='magnifyingGlass'>🔍</button>
+                <input type="text" name='search' placeholder='키워드로 검색해보세요.' defaultValue={keyword}/>
             </form>
         </div>
         <div className="filter map">

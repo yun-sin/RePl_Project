@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { setKeyword } from "../../slices/MapFinderSlice";
 import img from "../../assets/img/main/magnifyingglass.png";
-
 
 const SearchContainer = styled.div`
   text-align: center;
@@ -26,6 +27,9 @@ const SearchContainer = styled.div`
         box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
         flex: none;
         font-size: 17px;
+        &:focus {
+          outline: none;
+        }
       }
       button {
         position: absolute;
@@ -74,6 +78,9 @@ const Search = memo(() => {
   /** 페이지 강제 이동을 처리하기 위한 navigate 함수 생성 */
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+
   /** 지도 찾기 페이지로 이동 이벤트 */
   const onmapSubmit = useCallback((e) => {
     e.preventDefault();
@@ -85,7 +92,14 @@ const Search = memo(() => {
     console.log(keyword);
     navigate(redirectUrl);
 
+    dispatch(setKeyword(keyword));
+
+
+
+    
   },[navigate]);
+
+  const { keyword } = useSelector((state) => state.MapFinderSlice);
 
   return (
     <SearchContainer>
