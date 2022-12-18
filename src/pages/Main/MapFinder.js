@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import MapFinderTitle from "../../components/Main/MapFinderTitle";
 import CreateMap from "../../components/Main/CreateMap";
+import ViewMap from "../../components/Main/ViewMap";
 import AllList from "../../components/Main/AllList";
 import ThemeList from "../../components/Main/ThemeList";
 import FollowingList from "../../components/Main/FollowingList";
@@ -58,7 +59,9 @@ const MapFinder = memo(() => {
       {filter == 0 && <AllList />}
       {filter == 1 && <ThemeList />}
       {filter == 2 && <FollowingList />}
-      <CreateMap />
+      {filter == 0 && <CreateMap />}
+      {filter == 1 && <ViewMap />}
+      {filter == 2 && <ViewMap />}
     </MapFinderContaier>
   );
 });
