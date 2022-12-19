@@ -219,13 +219,10 @@ const testData = [
 const RecommendPlace = memo(() => {
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [selectedItem, setSelectedItem] = useState([]);
+    const [keyword, setKeyword] = useState('');
 
     useEffect(() => {
         setSelectedIndex(new Array(testData.length).fill(false));
-    }, []);
-
-    const onSearchPlace = useCallback(e => {
-        e.preventDefault();
     }, []);
 
     const resetForm = useCallback(e => {
@@ -283,6 +280,18 @@ const RecommendPlace = memo(() => {
         });
     }, []);
 
+    const onSearchPlace = useCallback(e => {
+        e.preventDefault();
+
+        const value = e.currentTarget.keywordInput.value.trim();
+        if (value === null || value ==='') {
+            setKeyword(state => null);
+            return;
+        };
+
+        setKeyword(state => value);
+    }, []);
+
     return (
         <PopUpBox>
             <button className='closePopUp'>X</button>
@@ -302,24 +311,40 @@ const RecommendPlace = memo(() => {
             </div>
             <form className='search' onSubmit={onSearchPlace}>
                 <div>
-                    <input type="text"></input>
+                    <input type="text" name="keywordInput"></input>
                     <button type='submit'>O 검색</button>
                 </div>
                 <button type='button' onClick={resetForm}>초기화</button>
             </form>
             <ul className='searched-list'>
                 {
-                    testData.map((v, i) => {
-                        return (
-                            <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                <img src={v.img} alt="장소 사진" />
-                                <div>
-                                    <h4>{v.title}</h4>
-                                    <p>{v.address}</p>
-                                </div>
-                            </li>
-                        )
-                    })
+                    keyword ? (
+                        testData.map((v, i) => {
+                            if (v.title.indexOf(keyword) !== -1) {
+                                return (
+                                    <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                        <img src={v.img} alt="장소 사진" />
+                                        <div>
+                                            <h4>{v.title}</h4>
+                                            <p>{v.address}</p>
+                                        </div>
+                                    </li>
+                                );
+                            } else return '';
+                        })
+                    ) : (
+                        testData.map((v, i) => {
+                            return (
+                                <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                    <img src={v.img} alt="장소 사진" />
+                                    <div>
+                                        <h4>{v.title}</h4>
+                                        <p>{v.address}</p>
+                                    </div>
+                                </li>
+                            );
+                        })
+                    )
                 }
             </ul>
         </PopUpBox>
