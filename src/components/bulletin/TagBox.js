@@ -4,19 +4,20 @@ import classNames from 'classnames';
 
 const SubjectBox = styled.div`
     width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 
     div {
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
+        align-items: bottom;
+        margin-bottom: 5px;
     }
 
     h4 {
-        color: skyblue;
-        font-size: 20px;
+        color: #0581BB;
+        font-size: 18px;
         font-weight: 600;
-        margin-bottom: 15px;
     }
 
     .moreTags {
@@ -27,13 +28,15 @@ const SubjectBox = styled.div`
 
         border: none;
         background: none;
+        color: #aaa;
         &.active {
-            background-color: #ccc;
+            font-weight: 600;
+            color: #000;
         }
 
-        font-size: 16px;
+        font-size: 12px;
         border-radius: 5px;
-        padding: 5px 10px;
+        padding: 3px 5px;
 
         &:hover {
             cursor: pointer;
@@ -43,7 +46,7 @@ const SubjectBox = styled.div`
     ul {
         padding: 10px 5px;
         width: 100%;
-        max-height: 110px;
+        max-height: 100px;
         overflow: hidden;
 
         &.active {
@@ -54,14 +57,20 @@ const SubjectBox = styled.div`
         li {
             display: inline-block;
             background-color: #eee;
-            padding: 8px 15px;
+            &.active {
+                background-color: #0581BB;
+                color: white;
+            }
+            padding: 8px 10px;
             border-radius: 5px;
-            font-size: 16px;
-            margin: 0 15px 10px 0;
+            font-size: 13px;
+            margin: 0 10px 10px 0;
+
+            transition: all 0.2s;
 
             &:hover {
                 cursor: pointer;
-                background-color: #ccc;
+                scale: 0.98;
             }
         }
     }
@@ -102,6 +111,13 @@ const TagBox = memo(props => {
     const tagbox = useRef();
     const moreTags = useRef();
 
+    useEffect(() => {
+        const target = tagbox.current;
+        if (target.scrollHeight >= 130) {
+            setIsOver(true);
+        }
+    }, [tagbox]);
+
     const onMoreTagsClick = useCallback(e => {
         e.preventDefault();
 
@@ -112,12 +128,12 @@ const TagBox = memo(props => {
         target.classList.toggle('active');
     }, []);
 
-    useEffect(() => {
-        const target = tagbox.current;
-        if (target.scrollHeight >= 130) {
-            setIsOver(true);
-        }
-    }, [tagbox]);
+    const onHashtagClick = useCallback(e => {
+        e.preventDefault();
+
+        const current = e.currentTarget;
+        current.classList.toggle('active');
+    }, []);
 
     return (
         <SubjectBox className='tagbox'>
@@ -129,7 +145,7 @@ const TagBox = memo(props => {
                 {
                     testData.map((v, i) => {
                         return (
-                            <li key={i}>{v}</li>
+                            <li key={i} onClick={onHashtagClick}>{v}</li>
                         )
                     })
                 }

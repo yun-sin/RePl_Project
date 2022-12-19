@@ -6,7 +6,6 @@ export const getPost = createAsyncThunk('BulletinSlice/getPost', async (payload,
 
     try {
         const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + payload.id);
-
         result = response.data;
     } catch (err) {
         result = rejectWithValue(err.response);
