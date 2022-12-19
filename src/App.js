@@ -21,7 +21,6 @@ import Bulletin from "./pages/bulletin/Bulletin";
 import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
 import PostView from "./pages/bulletin/PostView";
-import RecommendPlace from "./pages/bulletin/RecommendPlace";
 import PlaceHashtag from "./pages/bulletin/PlaceHashtag";
 
 const App = memo(() => {
@@ -51,7 +50,6 @@ const App = memo(() => {
         <Route path="/bulletin/mypost/:id" element={<MyPost />} />
         <Route path="/bulletin/newpost/:id" element={<NewPost />} />
         <Route path="/bulletin/postview/:id" element={<PostView />} />
-        <Route path="/bulletin/recommend-place" element={<RecommendPlace />} />
         <Route path="/bulletin/place-hashtag" element={<PlaceHashtag />} />
       </Routes>
     </div>

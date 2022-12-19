@@ -1,17 +1,34 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 
+import Modal from 'react-modal';
+
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
-import { useEffect } from 'react';
+
+const modalStyle = {
+    overlay: {
+        backgroundColor: "rgba(50, 50, 50, 0.75)",
+        zIndex: 99999,          
+    },
+    content: {
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '400px',
+        height: '500px',
+        padding: '0',
+        border: 'none',
+    },
+};
 
 const PopUpBox = styled.div`
-    width: 400px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     position: relative;
     padding: 20px;
     box-sizing: border-box;
-    background-color: tomato;
+    background-color: #fff;
 
     .closePopUp {
         position: absolute;
@@ -216,7 +233,7 @@ const testData = [
     
 ]
 
-const RecommendPlace = memo(() => {
+const RecommendPlace = memo(props => {
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [selectedItem, setSelectedItem] = useState([]);
     const [keyword, setKeyword] = useState('');
@@ -227,11 +244,14 @@ const RecommendPlace = memo(() => {
 
     const resetForm = useCallback(e => {
         e.preventDefault();
-        e.currentTarget.closest('form').reset();
+        const target =  e.currentTarget.closest('div').childNodes[0].childNodes[0];
+        target.value = '';
+        target.innerHTML = '';
     }, []);
 
     const onPlaceClick = useCallback(e => {
-        const idx = e.currentTarget.getAttribute('idx');
+        e.preventDefault();
+        const idx = e.currentTarget.dataset.idx;
         setSelectedIndex(state => {
             let temp = [];
             for (const k of state) {
@@ -260,7 +280,8 @@ const RecommendPlace = memo(() => {
     const onDeletePlaceClick = useCallback(e => {
         e.preventDefault();
 
-        const idx = e.currentTarget.closest('span').getAttribute('idx');
+        const idx = e.currentTarget.closest('span').dataset.idx;
+        console.log(idx);
         setSelectedIndex(state => {
             let temp = [];
             for (const k of state) {
@@ -283,7 +304,7 @@ const RecommendPlace = memo(() => {
     const onSearchPlace = useCallback(e => {
         e.preventDefault();
 
-        const value = e.currentTarget.keywordInput.value.trim();
+        const value = e.currentTarget.closest('div').childNodes[0].value.trim();
         if (value === null || value ==='') {
             setKeyword(state => null);
             return;
@@ -293,36 +314,55 @@ const RecommendPlace = memo(() => {
     }, []);
 
     return (
-        <PopUpBox>
-            <button className='closePopUp'>X</button>
-            <div className='top-desc'>
-                <h3>추천할 장소를 찾아보세요</h3>
-                <p>자신이 리뷰를 남긴 장소에서 선택 가능해요</p>
-            </div>
-            <div className='selected-place'>
-                <p>선택된 장소 목록 : </p>
-                {
-                    selectedItem.map((v, i) => {
-                        return (
-                            <span key={i} idx={v.idx}>{v.title} <button onClick={onDeletePlaceClick}>X</button></span>
-                        )
-                    })
-                }
-            </div>
-            <form className='search' onSubmit={onSearchPlace}>
-                <div>
-                    <input type="text" name="keywordInput"></input>
-                    <button type='submit'>O 검색</button>
+        <Modal
+            isOpen={props.isOpen}
+            onRequestClose={props.closeModal}
+            style={modalStyle}
+            ariaHideApp={false}
+        >
+            <PopUpBox>
+                <button className='closePopUp' onClick={props.closeModal}>X</button>
+                <div className='top-desc'>
+                    <h3>추천할 장소를 찾아보세요</h3>
+                    <p>자신이 리뷰를 남긴 장소에서 선택 가능해요</p>
                 </div>
-                <button type='button' onClick={resetForm}>초기화</button>
-            </form>
-            <ul className='searched-list'>
-                {
-                    keyword ? (
-                        testData.map((v, i) => {
-                            if (v.title.indexOf(keyword) !== -1) {
+                <div className='selected-place'>
+                    <p>선택된 장소 목록 : </p>
+                    {
+                        selectedItem.map((v, i) => {
+                            return (
+                                <span key={i} data-idx={v.idx}>{v.title} <button onClick={onDeletePlaceClick}>X</button></span>
+                            )
+                        })
+                    }
+                </div>
+                <div className='search'>
+                    <div>
+                        <input type="text" name="keywordInput"></input>
+                        <button type='button' onClick={onSearchPlace}>O 검색</button>
+                    </div>
+                    <button type='button' onClick={resetForm}>초기화</button>
+                </div>
+                <ul className='searched-list'>
+                    {
+                        keyword ? (
+                            testData.map((v, i) => {
+                                if (v.title.indexOf(keyword) !== -1) {
+                                    return (
+                                        <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                            <img src={v.img} alt="장소 사진" />
+                                            <div>
+                                                <h4>{v.title}</h4>
+                                                <p>{v.address}</p>
+                                            </div>
+                                        </li>
+                                    );
+                                } else return '';
+                            })
+                        ) : (
+                            testData.map((v, i) => {
                                 return (
-                                    <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                    <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
                                         <img src={v.img} alt="장소 사진" />
                                         <div>
                                             <h4>{v.title}</h4>
@@ -330,24 +370,12 @@ const RecommendPlace = memo(() => {
                                         </div>
                                     </li>
                                 );
-                            } else return '';
-                        })
-                    ) : (
-                        testData.map((v, i) => {
-                            return (
-                                <li key={i} idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                    <img src={v.img} alt="장소 사진" />
-                                    <div>
-                                        <h4>{v.title}</h4>
-                                        <p>{v.address}</p>
-                                    </div>
-                                </li>
-                            );
-                        })
-                    )
-                }
-            </ul>
-        </PopUpBox>
+                            })
+                        )
+                    }
+                </ul>
+            </PopUpBox>
+        </Modal>
     );
 });
 
