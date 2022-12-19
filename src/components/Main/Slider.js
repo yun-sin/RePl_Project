@@ -22,12 +22,10 @@ let data = [
 // 임시데이터 배열 랜덤 처리
 data = data.sort(() => Math.random() - 0.5);
 let plusData = [...data, ...data, ...data, ...data, ...data, ...data];
-console.log(data);
-console.log(plusData);
 
 const Slider = memo(() => {
   const gliderRef = useRef(null);
-  const preventInterval = useRef(null)
+  const preventInterval = useRef(null);
   const [mouseOver, setMouseOver] = useState(false);
 
   useEffect(() => {
@@ -37,7 +35,7 @@ const Slider = memo(() => {
         return;
       }
       gliderRef.current.scrollItem(index++ % plusData.length, false);
-    }, 2000);
+    }, 2500);
     return () => {
       clearInterval(interval);
     };
