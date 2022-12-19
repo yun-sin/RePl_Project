@@ -190,27 +190,27 @@ const PopUpBox = styled.div`
 const testData = [
     {
         img: breadSample,
-        title: '장소명',
+        title: '장소명1',
         address: '서울시 어디어디'
     },
     {
         img: breadSample,
-        title: '장소명',
+        title: '장소명2',
         address: '서울시 어디어디'
     },
     {
         img: breadSample,
-        title: '장소명',
+        title: '장소명3',
         address: '서울시 어디어디'
     },
     {
         img: breadSample,
-        title: '장소명',
+        title: '장소명4',
         address: '서울시 어디어디'
     },
     {
         img: breadSample,
-        title: '장소명',
+        title: '장소명5',
         address: '서울시 어디어디'
     },
     
@@ -218,6 +218,7 @@ const testData = [
 
 const RecommendPlace = memo(() => {
     const [selectedIndex, setSelectedIndex] = useState([]);
+    const [selectedItem, setSelectedItem] = useState([]);
 
     useEffect(() => {
         setSelectedIndex(new Array(testData.length).fill(false));
@@ -244,8 +245,43 @@ const RecommendPlace = memo(() => {
         });
 
         const title = e.currentTarget.children[1].children[0].innerHTML;
-        console.log(title);
-    }, [selectedIndex]);
+        setSelectedItem(state => {
+            let temp = [], isContained = false;
+            for (const k of state) {
+                if (k.title === title) {
+                    isContained = true;
+                    continue;
+                }
+                temp.push(k);
+            }
+            const value = { title: title, idx: idx }
+            if (!isContained) temp.push(value);
+            return temp;
+        });
+    }, []);
+
+    const onDeletePlaceClick = useCallback(e => {
+        e.preventDefault();
+
+        const idx = e.currentTarget.closest('span').getAttribute('idx');
+        setSelectedIndex(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            temp[idx] = !temp[idx];
+            return temp;
+        });
+
+        setSelectedItem(state => {
+            let temp = [];
+            for (const k of state) {
+                if (k.idx === idx) continue;
+                temp.push(k);
+            }
+            return temp;
+        });
+    }, []);
 
     return (
         <PopUpBox>
@@ -256,9 +292,13 @@ const RecommendPlace = memo(() => {
             </div>
             <div className='selected-place'>
                 <p>선택된 장소 목록 : </p>
-                <span>장소명 1 <button>X</button></span>
-                <span>장소명 2 <button>X</button></span>
-                <span>장소명 3 <button>X</button></span>
+                {
+                    selectedItem.map((v, i) => {
+                        return (
+                            <span key={i} idx={v.idx}>{v.title} <button onClick={onDeletePlaceClick}>X</button></span>
+                        )
+                    })
+                }
             </div>
             <form className='search' onSubmit={onSearchPlace}>
                 <div>
