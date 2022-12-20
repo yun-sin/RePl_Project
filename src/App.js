@@ -5,7 +5,7 @@ import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
 import Map from "./pages/map/Map";
-// import MapAdd from "./pages/map/MapAdd";
+import MapAdd from "./pages/map/MapAdd";
 
 import Raffle from "./pages/raffle/Raffle";
 
@@ -21,7 +21,6 @@ import Bulletin from "./pages/bulletin/Bulletin";
 import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
 import PostView from "./pages/bulletin/PostView";
-import PlaceHashtag from "./pages/bulletin/PlaceHashtag";
 
 const App = memo(() => {
   return (
@@ -32,7 +31,7 @@ const App = memo(() => {
 
         {/* 지도 Routes */}
         <Route path="/map" element={<Map />} />
-        {/* <Route path="/map/add" element={<MapAdd />} /> */}
+        <Route path="/map/add" element={<MapAdd />} />
 
         {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />
@@ -50,7 +49,6 @@ const App = memo(() => {
         <Route path="/bulletin/mypost/:id" element={<MyPost />} />
         <Route path="/bulletin/newpost/:id" element={<NewPost />} />
         <Route path="/bulletin/postview/:id" element={<PostView />} />
-        <Route path="/bulletin/place-hashtag" element={<PlaceHashtag />} />
       </Routes>
     </div>
   );

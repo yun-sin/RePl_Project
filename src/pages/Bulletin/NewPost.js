@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import Editor from '../../components/bulletin/Editor';
 import RecommendPlace from '../../components/bulletin/RecommendPlace';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
+import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { newPost } from '../../slices/BulletinSlice';
@@ -229,18 +230,26 @@ const NewPost = memo(() => {
     /** 모달창 */
     // 모달 오픈여부
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+    const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
     // 모달창 열기 함수
     const openPlaceModal = useCallback(e => {
         e.preventDefault();
         setIsPlaceModalOpen(state => true);
     }, []);
+    const openHashtagModal = useCallback(e => {
+        e.preventDefault();
+        setIsHasgtagModalOpen(state => true);
+    }, []);
     // 모달창 닫기 함수
     const closePlaceModal = useCallback(e => {
         setIsPlaceModalOpen(state => false);
     }, []);
+    const closeHashtagModal = useCallback(e => {
+        setIsHasgtagModalOpen(state => false);
+    }, []);
     // 모달 오픈시 스크롤 방지
     useEffect(() => {
-        if (isPlaceModalOpen) {
+        if (isPlaceModalOpen || isHashtagModalOpen) {
             document.body.style.cssText = `
                 position: fixed; 
                 top: -${window.scrollY}px;
@@ -252,7 +261,7 @@ const NewPost = memo(() => {
             document.body.style.cssText = '';
             window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
         }
-    }, [isPlaceModalOpen]);
+    }, [isPlaceModalOpen, isHashtagModalOpen]);
     
     /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
@@ -341,6 +350,10 @@ const NewPost = memo(() => {
                 </RecommendPlaceArea>
 
                 <CategoryArea>
+                    <PlaceHashtag
+                        isOpen={isHashtagModalOpen}
+                        closeModal={closeHashtagModal}
+                    />
                     <div className='category-tags'>
                         <span>O 세글자</span>
                         <span>O 네글자네</span>
@@ -350,7 +363,7 @@ const NewPost = memo(() => {
                         <span>O 세글자</span>
                         <span>O 여섯글자여섯</span>
                     </div>
-                    <button type='button' className='category-addButton'>
+                    <button type='button' className='category-addButton' onClick={openHashtagModal}>
                         + 더 보기
                     </button>
                 </CategoryArea>
