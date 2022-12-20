@@ -85,15 +85,15 @@ const SidebarContainer = styled.div`
         }
       }
       .more {
-        background-color: #DDD;
+        background-color: #ddd;
         &:hover {
-        background-color: #DDD;  
+          background-color: #ddd;
         }
       }
       .active {
-          color: #fefefe;
-          background-color: #da4c1f;
-        }
+        color: #fefefe;
+        background-color: #da4c1f;
+      }
     }
   }
 `;
@@ -135,7 +135,7 @@ const whereMoreArr = [
   "연남/연희",
   "구로",
   "여의도",
-]
+];
 
 const whoArr = [
   "🧍 혼자서",
@@ -260,13 +260,20 @@ const categoryArr = [
   "호텔",
 ];
 
-
 const Sidebar = memo(() => {
   const { isActive } = useSelector((state) => state.SidebarSlice);
   const { keyword } = useSelector((state) => state.MapFinderSlice);
-  const { filter } = useSelector((state) => state.MainSlice);  
+  const { filter } = useSelector((state) => state.MainSlice);
   const [select, setSelect] = useState(false);
-  let [count, setCount] = useState(0);
+  const [selectedItems, setSelectedItems] = useState({
+    whereArr: null,
+    whoArr: null,
+    whatArr: null,
+    featureArr: null,
+    foodArr: null,
+    drinkArr: null,
+    categoryArr: null,
+  });
   const [whereMoreView, setWhereMoreView] = useState(false);
   const [whatMoreView, setWhatMoreView] = useState(false);
   const [featureMoreView, setFeatureMoreView] = useState(false);
@@ -291,25 +298,28 @@ const Sidebar = memo(() => {
 
   const dispatch = useDispatch();
 
-  const onFilterClick = useCallback((e) => {
-    console.log("before: ",select);
-
-    select===false? e.currentTarget.classList.add("active") : e.currentTarget.classList.remove("active")
-    select===false? setSelect(true) : setSelect(false)
-
-
-
-    console.log("after: ",select);
-    count++;
-    if (count<=3) {
-
-    } else {
-        window.alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
+  const onFilterClick = useCallback((e, type) => {
+    if (e.currentTarget === selectedItems[type]) {
+      selectedItems[type].classList.remove("active");
+      selectedItems[type] = null;
+      return;
     }
-
-    console.log(count);
-
+    if (Object.values(selectedItems)?.filter((v) => v)?.length >= 3) {
+      alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
+      return;
+    }
+    if (selectedItems[type]) {
+      
+      selectedItems[type].classList.remove("active");
+      selectedItems[type] = e.currentTarget;
+      selectedItems[type].classList.add("active");
+    } else {
+      selectedItems[type] = e.currentTarget;
+      selectedItems[type].classList.add("active");
+    }
   });
+
+  console.log(selectedItems);
 
   const onSearchSubmit = useCallback((e) => {
     e.preventDefault();
@@ -320,17 +330,17 @@ const Sidebar = memo(() => {
 
   const onWhereMoreView = useCallback((Where) => {
     setWhereMoreView(true);
-  })
+  });
 
   const onWhatMoreView = useCallback((Where) => {
     setWhatMoreView(true);
-  })
+  });
 
   const onFeatureMoreView = useCallback((Where) => {
     setFeatureMoreView(true);
-  })
+  });
 
-    const onAllClick = useCallback((e) => {
+  const onAllClick = useCallback((e) => {
     dispatch(setFilter(0));
     all.current.classList.add("active");
     theme.current.classList.remove("active");
@@ -351,15 +361,17 @@ const Sidebar = memo(() => {
     theme.current.classList.remove("active");
   });
 
-  const more = useCallback((whereArr) => {
+  const more = useCallback((whereArr, where) => {
+    const convertName = Object.keys( {where})[0];
+    
     return whereArr.map((v, i) => {
       return (
-        <li key={i} onClick={onFilterClick}>
+        <li key={i} onClick={(e) => onFilterClick(e, convertName)}>
           <span>{v}</span>
         </li>
       );
-    })
-  },[])
+    });
+  }, []);
 
   return (
     <SidebarContainer className={`${isActive ? "active" : ""}`}>
@@ -378,17 +390,29 @@ const Sidebar = memo(() => {
       </div>
       <div className="filter map">
         <ul>
-          <li onClick={onAllClick} ref={all}>모든지도</li>
+          <li onClick={onAllClick} ref={all}>
+            모든지도
+          </li>
 
-          <li onClick={onThemeClick} ref={theme}>테마지도</li>
-          <li onClick={onFollowingClick} ref={following}>팔로잉지도</li>
+          <li onClick={onThemeClick} ref={theme}>
+            테마지도
+          </li>
+          <li onClick={onFollowingClick} ref={following}>
+            팔로잉지도
+          </li>
         </ul>
       </div>
       <div className="filter where">
         <h3>어디로 가고싶나요?</h3>
         <ul>
-          {whereMoreView === false?  more(whereArr):  more(whereMoreArr)}
-          {whereMoreView === false? <li onClick={onWhereMoreView} className='more'>+ 더 보기</li> : ''}
+          {whereMoreView === false ? more(whereArr) : more(whereMoreArr)}
+          {whereMoreView === false ? (
+            <li onClick={onWhereMoreView} className="more">
+              + 더 보기
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
       <div className="filter who">
@@ -396,7 +420,7 @@ const Sidebar = memo(() => {
         <ul>
           {whoArr.map((v, i) => {
             return (
-              <li key={i} onClick={onFilterClick}>
+              <li key={i} onClick={(e) => onFilterClick(e, "whoArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -406,15 +430,27 @@ const Sidebar = memo(() => {
       <div className="filter what">
         <h3>무엇을 하나요?</h3>
         <ul>
-          {whatMoreView === false?  more(whatArr):  more(whatMoreArr)}
-          {whatMoreView === false? <li onClick={onWhatMoreView} className='more'>+ 더 보기</li> : ''}
+          {whatMoreView === false ? more(whatArr) : more(whatMoreArr)}
+          {whatMoreView === false ? (
+            <li onClick={onWhatMoreView} className="more">
+              + 더 보기
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
       <div className="filter feature">
         <h3>분위기와 특징</h3>
         <ul>
-          {featureMoreView === false?  more(featureArr):  more(featureMoreArr)}
-          {featureMoreView === false? <li onClick={onFeatureMoreView} className='more'>+ 더 보기</li> : ''}
+          {featureMoreView === false ? more(featureArr) : more(featureMoreArr)}
+          {featureMoreView === false ? (
+            <li onClick={onFeatureMoreView} className="more">
+              + 더 보기
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
       <div className="filter food">
@@ -422,7 +458,7 @@ const Sidebar = memo(() => {
         <ul>
           {foodArr.map((v, i) => {
             return (
-              <li key={i} onClick={onFilterClick}>
+              <li key={i} onClick={(e) => onFilterClick(e, "foodArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -434,7 +470,7 @@ const Sidebar = memo(() => {
         <ul>
           {drinkArr.map((v, i) => {
             return (
-              <li key={i} onClick={onFilterClick}>
+              <li key={i} onClick={(e) => onFilterClick(e, "drinkArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -446,7 +482,7 @@ const Sidebar = memo(() => {
         <ul>
           {categoryArr.map((v, i) => {
             return (
-              <li key={i} onClick={onFilterClick}>
+              <li key={i} onClick={(e) => onFilterClick(e, "categoryArr")}>
                 <span>{v}</span>
               </li>
             );
