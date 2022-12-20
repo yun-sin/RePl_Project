@@ -6,6 +6,7 @@ import { setActive } from "../../slices/SidebarSlice";
 import { setFilter } from "../../slices/MainSlice";
 import { setKeyword } from "../../slices/MapFinderSlice";
 
+
 const SidebarContainer = styled.div`
   width: 30%;
   /* min-width: 400px; */

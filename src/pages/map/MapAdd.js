@@ -55,9 +55,11 @@ const MapAdd = memo(({ zoomLevel }) => {
 
     // 리플에 등록된 장소데이터를 가져옵니다 (중복인지 확인 위함)
     dispatch(getMapData());
+    
 
     // 테마 데이터
     dispatch(getThemeData());
+   
 
     // 장소 검색 객체를 생성합니다
     const ps = new kakao.maps.services.Places();
@@ -300,6 +302,7 @@ const MapAdd = memo(({ zoomLevel }) => {
       </MapAddListContainer>
 
       {/* 모달창1*/}
+     
       <MapAddModal1 modalIsOpen={modalIsOpen1} data={data} location={location} theme={data2 && theme && data2[theme]} />
       {/* 모달창2 */}
       <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />

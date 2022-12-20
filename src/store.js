@@ -6,7 +6,6 @@ import MapAddSlice from "./slices/MapAddSlice";
 import SidebarSlice from "./slices/SidebarSlice";
 import BulletinSlice from "./slices/BulletinSlice";
 import MapFinderSlice from "./slices/MapFinderSlice";
-import PlaceListSlice from "./slices/PlaceListSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +16,6 @@ const store = configureStore({
     SidebarSlice: SidebarSlice,
     BulletinSlice: BulletinSlice,
     MapFinderSlice: MapFinderSlice,
-    PlaceListSlice: PlaceListSlice,
   },
 });
 

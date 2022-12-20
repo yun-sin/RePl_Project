@@ -6,14 +6,14 @@ import { cloneDeep } from "lodash";
 /** 모든 테마 데이터를 불러오는 비동기 함수 */
 export const getThemeData = createAsyncThunk("ThemeSlice/getThemeData", async (payload, { rejectWithValue }) => {
   let result = null;
-
+  
   try {
     const response = await axios.get("/theme");
     result = response.data;
   } catch (err) {
     result = rejectWithValue(err.response);
   }
-
+ 
   return result;
 });
 

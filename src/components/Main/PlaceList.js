@@ -2,7 +2,8 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getList } from "../../slices/PlaceListSlice";
+import { getMapData } from "../../slices/MapSlice";
+import { getThemeData } from "../../slices/ThemeSlice";
 
 import LocModal from "../../common/LocModal";
 
@@ -62,37 +63,46 @@ const PlaceList = memo(() => {
   const onPopUpClick = useCallback((e) => {
     // setModalContent(e.currentTarget.dataset.id);
     setModalIsOpen(true);
-    console.log("popup")
+    console.log("popup");
     /* 팝업창 추가하기 */
   });
 
-  const { data, error } = useSelector((state) => state.PlaceListSlice);
-  const randomData = data&&([...data]?.sort(() => Math.random() - 0.5));
+  const { data: data } = useSelector((state) => state.MapSlice);
+  const { data: data2 } = useSelector((state) => state.ThemeSlice);
 
+  const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getList());
-  },[]);
+    dispatch(getMapData());
+    dispatch(getThemeData());
+  }, []);
 
   return (
     <ListContainer>
       <ul>
         {randomData &&
-          randomData.map(({ id, title, address, theme }, i) => {
-            return (
-              <li key={i} onClick={onPopUpClick} data-id={id}>
-                <div>
-                  <div className="title">{title}</div>
-                  <div className="address">{address}</div>
-                  <div className="theme">{theme[0]}</div>
-                  <div className="theme">{theme[1]}</div>
-                  <div className="theme">{theme[2]}</div>
-                </div>
-              </li>
-            );
-          })?.slice(0,8)}
+          randomData
+            .map(({ id, place_name, address_name, theme }, i) => {
+              return (
+                <li key={i} onClick={onPopUpClick} data-id={id}>
+                  <div>
+                    <div className="place_name">{place_name}</div>
+                    <div className="address">{address_name}</div>
+
+                    {theme.map((v, i) => {
+                      return (
+                        <div className="theme" key={i}>
+                          {data2.find((item) => item.id === v)?.icon} {data2.find((item) => item.id === v)?.text} 
+                        </div>
+                      );
+                    })}
+                  </div>
+                </li>
+              );
+            })
+            ?.slice(0, 4)}
       </ul>
       {/* {modalIsOpen === true? <LocModal /> : ''}; */}
     </ListContainer>
