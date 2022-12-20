@@ -7,7 +7,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import iconPlus from "../assets/img/map/icon-plus-grey-sm.svg";
 
-import breadSample from '../assets/img/bulletin/bread_sample.jpg';
+import breadSample from "../assets/img/bulletin/bread_sample.jpg";
 
 export const LocModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -48,7 +48,7 @@ export const LocModalContainer = styled.div`
     ::-webkit-scrollbar {
       display: none;
     }
-    
+
     .title {
       font-size: 14px;
       font-weight: 600;
@@ -119,7 +119,7 @@ export const LocModalContainer = styled.div`
           flex-flow: row wrap;
 
           .comment__emojies {
-            input[type=radio] {
+            input[type="radio"] {
               display: none;
             }
             label {
@@ -161,9 +161,9 @@ export const LocModalContainer = styled.div`
           }
 
           .comment__contents {
-              max-height: 0px;
-              overflow: hidden;
-              transition: all 0.3s;
+            max-height: 0px;
+            overflow: hidden;
+            transition: all 0.3s;
 
             .comment__input {
               width: 320px;
@@ -230,7 +230,7 @@ export const LocModalContainer = styled.div`
             box-shadow: 1px 1px 2px rgb(0 0 0 / 40%);
             filter: brightness(97%);
           }
-          
+
           img {
             width: 100%;
             height: 60px;
@@ -251,7 +251,7 @@ export const LocModalContainer = styled.div`
               overflow: hidden;
               display: -webkit-box;
               -webkit-line-clamp: 2;
-              -webkit-box-orient: vertical; 
+              -webkit-box-orient: vertical;
               font-size: 10px;
               padding: 0 5px;
               line-height: 1.4;
@@ -317,48 +317,47 @@ export const LocModalContainer = styled.div`
 const testData = [
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
   {
     bgImg: breadSample,
-    title: '예시 게시물',
-    contents: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세',
-    hearts: 3
+    title: "예시 게시물",
+    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
+    hearts: 3,
   },
-  
-]
+];
 
 const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, theme, review }) => {
   useEffect(() => {
@@ -369,41 +368,44 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
       width: 100%;`;
     return () => {
       const scrollY = document.body.style.top;
-      document.body.style.cssText = '';
-      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     };
   }, []);
 
-  const onCommentRadioChange = useCallback(e => {
+  const onCommentRadioChange = useCallback((e) => {
     e.preventDefault();
     const current = e.currentTarget;
 
     current.children[0].checked = true;
-    const targetArray = document.querySelectorAll('input[type=radio]');
-    targetArray.forEach(v => {
+    const targetArray = document.querySelectorAll("input[type=radio]");
+    targetArray.forEach((v) => {
       if (v.checked === true) {
-        v.closest('label').classList.add('active');
+        v.closest("label").classList.add("active");
       } else {
-        v.closest('label').classList.remove('active');
+        v.closest("label").classList.remove("active");
       }
     });
 
-    document.querySelector('.comment__contents').style.maxHeight = '200px';
+    document.querySelector(".comment__contents").style.maxHeight = "200px";
   }, []);
 
-  const [commentContents, setCommentContents] = useState('');
+  const [commentContents, setCommentContents] = useState("");
 
-  const onCommentContentsChange = useCallback(e => {
-    const value = e.currentTarget.value;
-    setCommentContents(state => value);
-    if (commentContents !== '') {
-      document.querySelector('.comment__submit-button').classList.add('active');
-    } else {
-      document.querySelector('.comment__submit-button').classList.remove('active');
-    }
-  }, [commentContents]);
+  const onCommentContentsChange = useCallback(
+    (e) => {
+      const value = e.currentTarget.value;
+      setCommentContents((state) => value);
+      if (commentContents !== "") {
+        document.querySelector(".comment__submit-button").classList.add("active");
+      } else {
+        document.querySelector(".comment__submit-button").classList.remove("active");
+      }
+    },
+    [commentContents]
+  );
 
-  const onCommentSubmit = useCallback(e => {
+  const onCommentSubmit = useCallback((e) => {
     e.preventDefault();
   }, []);
 
@@ -415,19 +417,19 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
       style={{
         overlay: {
           backgroundColor: "rgba(50, 50, 50, 0.75)",
-          zIndex: 99999,          
+          zIndex: 99999,
         },
         content: {
           backgroundColor: "#F8F8F8",
           width: "700px",
           maxHeight: "1000px",
-          height: '800px',
+          height: "800px",
           left: "300px",
           borderRadius: "15px",
           padding: "40px 40px 50px",
           margin: "auto",
-          overflowY: 'hidden',
-          overscrollBehavior: "contain"
+          overflowY: "hidden",
+          overscrollBehavior: "contain",
         },
       }}>
       <LocModalContainer>
@@ -440,7 +442,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
           {/* 이미지 칸 */}
           <div className="modal-img-container">
             <div className="icon">
-              <img src={iconPlus} alt='plusIcon' />
+              <img src={iconPlus} alt="plusIcon" />
             </div>
             <div className="text">
               여기를 눌러서 장소와 관련된 사진을 올려주시면
@@ -457,7 +459,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
                 {theme?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
-                      {v}
+                      {v.icon + " " + v.text}
                     </div>
                   );
                 })}
@@ -482,52 +484,58 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
                   <div className="comment__emojies">
                     <label htmlFor="commentEmoji1" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji1' value='1'/>
+                      <input type="radio" name="commentEmoji" id="commentEmoji1" value="1" />
                     </label>
                     <label htmlFor="commentEmoji2" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji2' value='2' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji2" value="2" />
                     </label>
                     <label htmlFor="commentEmoji3" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji3' value='3' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji3" value="3" />
                     </label>
                     <label htmlFor="commentEmoji4" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji4' value='4' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji4" value="4" />
                     </label>
                     <label htmlFor="commentEmoji5" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji5' value='5' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji5" value="5" />
                     </label>
                     <label htmlFor="commentEmoji6" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji6' value='6' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji6" value="6" />
                     </label>
                     <label htmlFor="commentEmoji7" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji7' value='7' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji7" value="7" />
                     </label>
                     <label htmlFor="commentEmoji8" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji8' value='8' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji8" value="8" />
                     </label>
                     <label htmlFor="commentEmoji9" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji9' value='9' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji9" value="9" />
                     </label>
                     <label htmlFor="commentEmoji10" onClick={onCommentRadioChange}>
                       O
-                      <input type="radio" name='commentEmoji' id='commentEmoji10' value='10' />
+                      <input type="radio" name="commentEmoji" id="commentEmoji10" value="10" />
                     </label>
                   </div>
                   <div className="comment__desc">
-                    <span>ㅠㅠ</span><span>...?</span><span>괜찮아요</span><span>좋았어요!</span><span>완벽해요!!</span>
+                    <span>ㅠㅠ</span>
+                    <span>...?</span>
+                    <span>괜찮아요</span>
+                    <span>좋았어요!</span>
+                    <span>완벽해요!!</span>
                   </div>
                   <div className="comment__contents">
-                    <textarea name="comment__input" className='comment__input' placeholder='여기에 의견을 입력해주세요' rows='5' onChange={onCommentContentsChange}></textarea>
+                    <textarea name="comment__input" className="comment__input" placeholder="여기에 의견을 입력해주세요" rows="5" onChange={onCommentContentsChange}></textarea>
                   </div>
-                  <button type='submit' className='comment__submit-button'>저장하기</button>
+                  <button type="submit" className="comment__submit-button">
+                    저장하기
+                  </button>
                 </form>
               </div>
             </div>
@@ -536,8 +544,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
           <div className="modal-bullet-container">
             <div className="title">이 장소를 추천한 게시글 목록</div>
             <ul className="posts">
-             {
-              testData.map((v, i) => {
+              {testData.map((v, i) => {
                 return (
                   <li key={i}>
                     <img src={v.bgImg} alt="미리보기 이미지" />
@@ -546,12 +553,13 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, t
                       <p>{v.contents}</p>
                     </div>
                     <div className="posts_fb">
-                      <p>♡<span>{v.hearts}</span></p>
+                      <p>
+                        ♡<span>{v.hearts}</span>
+                      </p>
                     </div>
                   </li>
-                 )
-              })
-             }
+                );
+              })}
             </ul>
           </div>
         </div>
