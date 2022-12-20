@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import styled from 'styled-components';
 import PageContainer from '../../components/mypage/PageContainer';
 import PageInputBox from '../../components/mypage/PageInputBox';
 import PageButton from '../../components/mypage/PageButton';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getInfo } from '../../slices/InfoSlice';
 
 const InfoBox = styled(PageContainer)`
     
@@ -32,11 +35,19 @@ const InfoBox = styled(PageContainer)`
         }
     }
 
-
-
 `
 
 const Info = memo(() => {
+
+    const dispatch = useDispatch();
+    const { data, loading, error} = useSelector((state) => state.InfoSlice);
+    
+    useEffect(()=> {
+        dispatch(getInfo());
+    }, [dispatch])
+    
+    console.log("data", data);
+
     return (
         
         <InfoBox>
