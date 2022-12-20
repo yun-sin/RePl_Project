@@ -86,9 +86,9 @@ const MapFinderTitle = memo(() => {
 
   const dispatch = useDispatch();
 
-  const all = React.useRef();
-  const theme = React.useRef();
-  const following = React.useRef();
+  const all = useRef();
+  const theme = useRef();
+  const following = useRef();
 
   useEffect(() => {
     switch (filter) {
@@ -102,7 +102,7 @@ const MapFinderTitle = memo(() => {
         onFollowingClick();
         break;
     }
-  }, []);
+  }, [filter]);
 
   const onAllClick = useCallback((e) => {
     dispatch(setFilter(0));
@@ -128,10 +128,9 @@ const MapFinderTitle = memo(() => {
   // 사이드바 이벤트
   const onSearch = useCallback(() => {
     dispatch(setActive(true));
-    console.log(isActive);
   }, [keyword]);
 
-  console.log(keyword);
+  // console.log(keyword);
   return (
     <TitleContainer>
       <Sidebar />

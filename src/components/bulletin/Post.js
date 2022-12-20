@@ -7,28 +7,33 @@ const PostCard = styled.div`
     width: 260px;
     margin: 0 10px 15px;
     position: relative;
-    border: 1px solid #ccc;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
+    border-radius: 12px;
+    transition: all 0.3s;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgb(0 0 0 / 40%);
+        scale: 0.99;
+    }
     
     img {
         width: 260px;
         height: 180px;
         margin-bottom: -2px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
     }
 
     .post__title {
         padding: 5px;
-
         text-align: right;
         font-size: 18px;
         font-weight: 600;
         line-height: 1.5;
-
-        background-color: #2861da;
+        background-color: #0581bb;
         color: white;
-
-        &:hover {
-            cursor: pointer;
-        }
     }
 
     .post__desc {
@@ -56,6 +61,8 @@ const PostCard = styled.div`
         text-align: right;
         padding: 10px;
         background-color: lightgray;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
 
         span {
             margin-left: 5px;
@@ -63,11 +70,12 @@ const PostCard = styled.div`
     }
 
     .hover__preview {
-        display: none;
+        opacity: 0;
         &.active {
-            display: flex;
+            opacity: 1;
         }
 
+        display: flex;
         flex-flow: column nowrap;
         width: 260px;
         height: 180px;
@@ -76,6 +84,9 @@ const PostCard = styled.div`
         align-items: center;
         justify-content: center;
         text-align: center;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        transition: all 0.3s;
 
         position: absolute;
         top: 0;
@@ -115,16 +126,13 @@ const Post = memo(props => {
     }, []);
 
     return (
-        <PostCard>
-            <div className={classNames('hover__preview', {active: isHover})}
-            onMouseLeave={() => setIsHover(false)}
-            onClick={onLinkClick}
-            >
+        <PostCard onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} onClick={onLinkClick}>
+            <div className={classNames('hover__preview', {active: isHover})}>
                 <h3>{props.title}</h3>
                 <p>게시물 바로가기</p>
             </div>
 
-            <img src={props.img} alt="게시물 이미지" onMouseOver={() => setIsHover(true)}/>
+            <img src={props.img} alt="게시물 이미지" />
             <h3 className='post__title' onClick={onLinkClick}>{props.title}</h3>
             <div className='post__desc'>
                 <h4>{props.publisher}</h4>

@@ -7,7 +7,7 @@ import img from "../../assets/img/main/magnifyingglass.png";
 
 const SearchContainer = styled.div`
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
   form {
     div {
       max-width: 360px;

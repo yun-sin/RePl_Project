@@ -1,0 +1,382 @@
+import React, { memo, useCallback, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import classNames from 'classnames';
+
+import Modal from 'react-modal';
+
+import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+
+const modalStyle = {
+    overlay: {
+        backgroundColor: "rgba(50, 50, 50, 0.75)",
+        zIndex: 99999,          
+    },
+    content: {
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '400px',
+        height: '500px',
+        padding: '0',
+        border: 'none',
+    },
+};
+
+const PopUpBox = styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    .closePopUp {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        font-size: 25px;
+        
+        &:hover {
+            cursor: pointer;
+            background-color: #ccc;
+        }
+    }
+
+    .top-desc {
+        margin-bottom: 15px;
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }
+
+    .selected-place {
+        width: 100%;
+        margin: auto;
+        min-height: 100px;
+        background-color: #eee;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border-radius: 2px;
+
+        p {
+            font-size: 14px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        span {
+            display: inline-block;
+            background-color: #ccc;
+            padding: 2px;
+            margin: 0 10px 10px 0;
+            border-radius: 3px;
+            font-size: 12px;
+
+            button {
+                background: none;
+                border: none;
+                margin: 0 2px 0 2px;
+                font-size: 10px;
+
+                &:hover {
+                    cursor: pointer;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .search {
+        display: flex;
+        flex-flow: row nowrap;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        
+        * {
+            line-height: 1.6;
+            padding: 5px;
+            border-radius: 2px;
+            background-color: #eee;
+            font-size: 12px;
+        }
+
+        div {
+            flex: 1 1 auto;
+            padding: 5px;
+            margin-right: 5px;
+            display: flex;
+            flex-flow: row nowrap;
+
+            input {
+                flex: 1 1 auto;
+                border: none;
+                background: none;
+            }
+        }
+
+        button {
+            border: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .searched-list {
+        width: 100%;
+        max-height: 250px;
+        box-sizing: border-box;
+        padding-bottom: 15px;
+        overflow-y: scroll;
+        ::-webkit-scrollbar { 
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #777;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-track { 
+            background: none;
+        }
+
+        li {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            display: flex;
+            flex-flow: row nowrap;
+            transition: all 0.2s;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+
+            &.active {
+                background-color: #0581bb;
+                
+                div {
+                    h4, p { color: white; }
+                }
+            }
+
+            img {
+                width: 90px;
+                height: 60px;
+                object-fit: cover;
+                margin-right: 20px;
+            }
+
+            div {
+                display: flex;
+                flex-flow: column wrap;
+                justify-content: space-between;
+                padding: 5px 0;
+                padding-bottom: 10px;
+
+                h4 {
+                    color: skyblue;
+                    font-weight: 600;
+                    font-size: 18px;
+                }
+
+                p {
+                    font-size: 14px;
+                    color: darkgray;
+                }
+            }
+        }
+    }
+`;
+
+const testData = [
+    {
+        img: breadSample,
+        title: '장소명1',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명2',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명3',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명4',
+        address: '서울시 어디어디'
+    },
+    {
+        img: breadSample,
+        title: '장소명5',
+        address: '서울시 어디어디'
+    },
+    
+]
+
+const RecommendPlace = memo(props => {
+    const [selectedIndex, setSelectedIndex] = useState([]);
+    const [selectedItem, setSelectedItem] = useState([]);
+    const [keyword, setKeyword] = useState('');
+
+    useEffect(() => {
+        setSelectedIndex(new Array(testData.length).fill(false));
+    }, []);
+
+    const resetForm = useCallback(e => {
+        e.preventDefault();
+        const target =  e.currentTarget.closest('div').childNodes[0].childNodes[0];
+        target.value = '';
+        target.innerHTML = '';
+    }, []);
+
+    const onPlaceClick = useCallback(e => {
+        e.preventDefault();
+        const idx = e.currentTarget.dataset.idx;
+        setSelectedIndex(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            temp[idx] = !temp[idx];
+            return temp;
+        });
+
+        const title = e.currentTarget.children[1].children[0].innerHTML;
+        setSelectedItem(state => {
+            let temp = [], isContained = false;
+            for (const k of state) {
+                if (k.title === title) {
+                    isContained = true;
+                    continue;
+                }
+                temp.push(k);
+            }
+            const value = { title: title, idx: idx }
+            if (!isContained) temp.push(value);
+            return temp;
+        });
+    }, []);
+
+    const onDeletePlaceClick = useCallback(e => {
+        e.preventDefault();
+
+        const idx = e.currentTarget.closest('span').dataset.idx;
+        console.log(idx);
+        setSelectedIndex(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            temp[idx] = !temp[idx];
+            return temp;
+        });
+
+        setSelectedItem(state => {
+            let temp = [];
+            for (const k of state) {
+                if (k.idx === idx) continue;
+                temp.push(k);
+            }
+            return temp;
+        });
+    }, []);
+
+    const onSearchPlace = useCallback(e => {
+        e.preventDefault();
+
+        const value = e.currentTarget.closest('div').childNodes[0].value.trim();
+        if (value === null || value ==='') {
+            setKeyword(state => null);
+            return;
+        };
+
+        setKeyword(state => value);
+    }, []);
+
+    return (
+        <Modal
+            isOpen={props.isOpen}
+            onRequestClose={props.closeModal}
+            style={modalStyle}
+            ariaHideApp={false}
+        >
+            <PopUpBox>
+                <button className='closePopUp' onClick={props.closeModal}>X</button>
+                <div className='top-desc'>
+                    <h3>추천할 장소를 찾아보세요</h3>
+                    <p>자신이 리뷰를 남긴 장소에서 선택 가능해요</p>
+                </div>
+                <div className='selected-place'>
+                    <p>선택된 장소 목록 : </p>
+                    {
+                        selectedItem.map((v, i) => {
+                            return (
+                                <span key={i} data-idx={v.idx}>{v.title} <button onClick={onDeletePlaceClick}>X</button></span>
+                            )
+                        })
+                    }
+                </div>
+                <div className='search'>
+                    <div>
+                        <input type="text" name="keywordInput"></input>
+                        <button type='button' onClick={onSearchPlace}>O 검색</button>
+                    </div>
+                    <button type='button' onClick={resetForm}>초기화</button>
+                </div>
+                <ul className='searched-list'>
+                    {
+                        keyword ? (
+                            testData.map((v, i) => {
+                                if (v.title.indexOf(keyword) !== -1) {
+                                    return (
+                                        <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                            <img src={v.img} alt="장소 사진" />
+                                            <div>
+                                                <h4>{v.title}</h4>
+                                                <p>{v.address}</p>
+                                            </div>
+                                        </li>
+                                    );
+                                } else return '';
+                            })
+                        ) : (
+                            testData.map((v, i) => {
+                                return (
+                                    <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                        <img src={v.img} alt="장소 사진" />
+                                        <div>
+                                            <h4>{v.title}</h4>
+                                            <p>{v.address}</p>
+                                        </div>
+                                    </li>
+                                );
+                            })
+                        )
+                    }
+                </ul>
+            </PopUpBox>
+        </Modal>
+    );
+});
+
+export default RecommendPlace;

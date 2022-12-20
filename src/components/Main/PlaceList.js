@@ -80,9 +80,9 @@ const PlaceList = memo(() => {
     <ListContainer>
       <ul>
         {randomData &&
-          randomData.map(({ title, address, theme }, i) => {
+          randomData.map(({ id, title, address, theme }, i) => {
             return (
-              <li key={i} onClick={onPopUpClick}>
+              <li key={i} onClick={onPopUpClick} data-id={id}>
                 <div>
                   <div className="title">{title}</div>
                   <div className="address">{address}</div>
