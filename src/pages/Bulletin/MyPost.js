@@ -57,7 +57,13 @@ const BannerArea = styled.div`
       padding: 6px 10px;
       background-color: white;
       text-decoration: none;
-      color: #39f;
+      color: #0581bb;
+      border-radius: 12px;
+
+      &:hover {
+        background-color: #0581bb;
+        color: #fff;
+      }
     }
   }
 `;
@@ -80,6 +86,7 @@ const MainArea = styled.section`
       background-color: #fff;
       margin: 0 5px;
       padding: 5px;
+      font-size: 12px;
     }
   }
 `;
@@ -217,6 +224,7 @@ const MyPost = memo(() => {
                     testData.map((v, i) => {
                       return (
                         <Post
+                          key={i}
                           targetId={v.targetId}
                           title={v.title}
                           img={v.img}
