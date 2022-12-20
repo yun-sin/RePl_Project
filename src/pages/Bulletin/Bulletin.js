@@ -57,7 +57,13 @@ const BannerArea = styled.div`
       padding: 6px 10px;
       background-color: #fff;
       text-decoration: none;
-      color: #39f;
+      color: #0581bb;
+      border-radius: 12px;
+
+      &:hover {
+        background-color: #0581bb;
+        color: #fff;
+      }
     }
   }
 `;
@@ -80,6 +86,7 @@ const MainArea = styled.section`
       background-color: #fff;
       margin: 0 5px;
       padding: 5px;
+      font-size: 12px;
     }
   }
 `;

@@ -7,7 +7,7 @@ import img from "../../assets/img/main/magnifyingglass.png";
 
 const SearchContainer = styled.div`
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
   form {
     div {
       max-width: 360px;
@@ -28,7 +28,9 @@ const SearchContainer = styled.div`
         flex: none;
         font-size: 17px;
         &:focus {
-          outline: none;
+        outline: none;
+        background-color: #f8f8f8;
+
         }
       }
       button {
@@ -39,12 +41,15 @@ const SearchContainer = styled.div`
         border: none;
         font-size: 16px;
         height: 60px;
+        background-color: #f8f8f8;
+
 
         img {
           height: auto;
           box-sizing: border-box;
           object-fit: cover;
           vertical-align: middle;
+
         }
       }
     }
@@ -55,8 +60,12 @@ const SearchContainer = styled.div`
     height: 65px;
     margin: auto;
     border-radius: 12px;
-    background-color: #c4441c;
+    background-color: #da4c1f;
     box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
+    &:hover {
+        background-color: #c4441c;
+        transition: all .2s;
+      }
 
     a {
       display: block;
@@ -66,6 +75,7 @@ const SearchContainer = styled.div`
       text-decoration: none;
       display: flex;
       align-items: center;
+      
       span {
         margin: auto;
         color: #fff;

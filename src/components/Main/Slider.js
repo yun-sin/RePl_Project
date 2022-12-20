@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useCallback, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 /** glider
@@ -21,22 +21,42 @@ let data = [
 ];
 // 임시데이터 배열 랜덤 처리
 data = data.sort(() => Math.random() - 0.5);
+let plusData = [...data, ...data, ...data, ...data, ...data, ...data];
 
 const Slider = memo(() => {
-  const gliderRef = React.useRef(null);
+  const gliderRef = useRef(null);
+  const preventInterval = useRef(null);
+  const [mouseOver, setMouseOver] = useState(false);
+
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      gliderRef.current.scrollItem(index++ % data.length, false);
-    }, 3000);
+      if(preventInterval.current) {
+        return;
+      }
+      gliderRef.current.scrollItem(index++ % plusData.length, false);
+    }, 2500);
     return () => {
       clearInterval(interval);
     };
-  },[]);
+  },[])
+  
+  const onMouseOver = useCallback(() => {
+    setMouseOver(true);
+    preventInterval.current = true
+  },[mouseOver]);
+
+  const onMouseOut = useCallback(() => {
+    setMouseOver(false);
+    preventInterval.current = false
+  },[mouseOver]);
 
   return (
-    <div className="container">
-      <Glider
+    <div className="container" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+      
+      {mouseOver === true? 
+      (
+        <Glider
         className="glider-container"
         draggable
         hasArrows
@@ -44,7 +64,7 @@ const Slider = memo(() => {
         slidesToScroll={1}
         ref={gliderRef}
       >
-        {data.map(({ id, emoji, title, desc }, i) => {
+        {plusData.map(({ id, emoji, title, desc }, i) => {
           return (
             <div key={i}>
               <NavLink to={`/theme/${id}`}>
@@ -56,6 +76,30 @@ const Slider = memo(() => {
           );
         })}
       </Glider>
+      ): 
+       (
+        <Glider
+        className="glider-container"
+        draggable
+        hasArrows={false}
+        slidesToShow={1}
+        slidesToScroll={1}
+        ref={gliderRef}
+       
+      >
+        {plusData.map(({ id, emoji, title, desc }, i) => {
+          return (
+            <div key={i}>
+              <NavLink to={`/theme/${id}`}>
+                <div className="emoji">{emoji}</div>
+                <div className="title">{title}</div>
+                <div className="desc">{desc}</div>
+              </NavLink>
+            </div>
+          );
+        })}
+      </Glider>
+      )}
     </div>
   );
 });

@@ -6,22 +6,20 @@ import { setFilter } from "../../slices/MainSlice";
 import { setActive } from "../../slices/SidebarSlice";
 import Sidebar from "./Sidebar";
 
-import img from '../../assets/img/main/magnifyingglass2.png';
+import img from "../../assets/img/main/magnifyingglass2.png";
+import { setKeyword } from "../../slices/MapFinderSlice";
 
 const TitleContainer = styled.div`
-  //임시 배경색상
-  /* background-color: rgba(0, 0, 0, 0.4); */
-  /* padding: 0 80px; */
-    width: 60%;
-    margin: auto;
-    padding-top: 150px;
+  width: 60%;
+  margin: auto;
+  padding-top: 150px;
 
   .title {
     margin-bottom: 60px;
     .icon {
       font-size: 37px;
       text-align: left;
-
+      margin-bottom: 10px;
     }
     a {
       font-size: 30px;
@@ -67,13 +65,6 @@ const TitleContainer = styled.div`
           }
         }
 
-        &:first-child {
-          button {
-            color: #fefefe;
-            background-color: #da4c1f;
-          }
-        }
-
         .active {
           color: #fefefe;
           background-color: #da4c1f;
@@ -91,85 +82,93 @@ const TitleContainer = styled.div`
 const MapFinderTitle = memo(() => {
   const { filter } = useSelector((state) => state.MainSlice);
   const { isActive } = useSelector((state) => state.SidebarSlice);
-
   const { keyword } = useSelector((state) => state.MapFinderSlice);
- 
 
-
-
-  
   const dispatch = useDispatch();
 
-  const all = React.useRef();
-  const theme = React.useRef();
-  const following = React.useRef();
+  const all = useRef();
+  const theme = useRef();
+  const following = useRef();
+
+  useEffect(() => {
+    switch (filter) {
+      case 0:
+        onAllClick();
+        break;
+      case 1:
+        onThemeClick();
+        break;
+      default:
+        onFollowingClick();
+        break;
+    }
+  }, [filter]);
 
   const onAllClick = useCallback((e) => {
     dispatch(setFilter(0));
-    theme.classList.remove("active");
-    following.classList.remove("active");
+    all.current.classList.add("active");
+    theme.current.classList.remove("active");
+    following.current.classList.remove("active");
   });
 
   const onThemeClick = useCallback((e) => {
     dispatch(setFilter(1));
-    e.currentTarget.classList.add("active");
-    all.classList.remove("active");
-    following.classList.remove("active");
+    theme.current.classList.add("active");
+    all.current.classList.remove("active");
+    following.current.classList.remove("active");
   });
 
   const onFollowingClick = useCallback((e) => {
     dispatch(setFilter(2));
-
-    e.currentTarget.classList.add("active");
-    all.classList.remove("active");
-    following.classList.remove("active");
+    following.current.classList.add("active");
+    all.current.classList.remove("active");
+    theme.current.classList.remove("active");
   });
-
 
   // 사이드바 이벤트
   const onSearch = useCallback(() => {
     dispatch(setActive(true));
-    console.log(isActive);
-  });
+  }, [keyword]);
 
-
+  // console.log(keyword);
   return (
     <TitleContainer>
-        <Sidebar />
-        <div className="title">
-          <div className="icon">🗺</div>
-          <NavLink to="/map_finder">지도 찾기</NavLink>
-        </div>
+      <Sidebar />
+      <div className="title">
+        <div className="icon">🗺</div>
+        <NavLink to="/map_finder">지도 찾기</NavLink>
+      </div>
 
-        <div className="theme_search">
-          <div onClick={onSearch}>
-            <img src={img} alt="img" />
-            { keyword === null? 
-              <h2>상황에 맞는 지도를 찾아보세요.</h2>
-            : <h2>{keyword}</h2>}
-
-          </div>
+      <div className="theme_search">
+        <div onClick={onSearch}>
+          <img src={img} alt="img" />
+          {keyword == "" ? (
+            <h2>상황에 맞는 지도를 찾아보세요.</h2>
+          ) : (
+            <h2>{keyword}</h2>
+          )}
         </div>
+      </div>
 
-        <div className="filter">
-          <ul>
-            <li>
-              <button type="button" onClick={onAllClick} ref={all}>
-                모든지도
-              </button>
-            </li>
-            <li>
-              <button type="button" onClick={onThemeClick} ref={theme}>
-                🗺테마지도
-              </button>
-            </li>
-            <li>
-              <button type="button" onClick={onFollowingClick} ref={following}>
-                👫팔로잉지도
-              </button>
-            </li>
-          </ul>
-        </div>
+      <div className="filter">
+        <ul>
+          <li>
+            <button type="button" onClick={onAllClick} ref={all}>
+              모든지도
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={onThemeClick} ref={theme}>
+              🗺테마지도
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={onFollowingClick} ref={following}>
+              👫팔로잉지도
+            </button>
+          </li>
+        </ul>
+      </div>
     </TitleContainer>
   );
 });

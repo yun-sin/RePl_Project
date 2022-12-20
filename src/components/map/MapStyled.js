@@ -1,7 +1,35 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 /** MapContainer */
 export const MapContainer = styled.div`
+  .theme {
+    position: fixed;
+    right: 0;
+    top: 70px;
+    background-color: #fefefe;
+    z-index: 1;
+    padding: 8px 20px;
+    box-sizing: border-box;
+    height: 57.5px;
+    font-size: 16px;
+    line-height: 41.5px;
+    border-radius: 12px 0 0 12px;
+    box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
+    font-weight: 600;
+    transition: 2s;
+
+    span {
+      padding-right: 8px;
+      margin-right: 8px;
+      border-right: 3px solid #ccc;
+    }
+    a {
+      text-decoration: none;
+      color: #0581bb;
+    }
+  }
+
   .yourLoc {
     font-size: 50px;
     color: red;
@@ -111,6 +139,18 @@ export const ListContainer = styled.div`
       line-height: 30.4px;
     }
 
+    span {
+      font-size: 11px;
+      color: #545454;
+
+      &.address {
+        text-align: right;
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+      }
+    }
+
     h4 {
       font-size: 11px;
       margin-bottom: 12px;
@@ -123,15 +163,12 @@ export const ListContainer = styled.div`
       font-size: 12px;
       color: #545454;
       font-weight: 200;
+      display: block;
     }
 
     &.hover {
       background-color: #ccc;
       color: white;
-
-      h3 {
-        color: white;
-      }
 
       h4 {
         color: #fff;
@@ -150,6 +187,16 @@ export const ListContainer = styled.div`
         color: #fff;
       }
     }
+
+    .no_result {
+      text-align: center;
+      font-weight: 600;
+      line-height: 40px;
+
+      span {
+        font-size: 30px;
+      }
+    }
   }
 
   .modal-bg {
@@ -158,40 +205,5 @@ export const ListContainer = styled.div`
     /* background-color: red; */
     position: fixed;
     top: 0;
-  }
-`;
-
-export const SearchLoc = styled.div`
-  width: 200px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #da4c1f;
-  z-index: 1;
-  position: fixed;
-  line-height: 1.8;
-  font-weight: bold;
-  color: white;
-  bottom: 4vw;
-  left: 50%;
-  transform: translate(-50%, 0);
-  opacity: 0.8;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  span {
-    width: 80%;
-  }
-
-  input,
-  svg {
-    width: 20%;
-    margin: 6.5px 0;
   }
 `;

@@ -2,23 +2,31 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
-import { MapContainer, ListContainer, SearchLoc, ModalContainer } from "../../components/map/MapStyled";
+import { getThemeData } from "../../slices/ThemeSlice";
+
+import { MapContainer, ListContainer } from "../../components/map/MapStyled";
 import LocModal from "../../common/LocModal";
+import SearchLoc from "../../components/map/SearchLoc";
+import MapAddLink from "../../components/map/MapAddLink";
 import Spinner from "../../common/Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationCrosshairs, faMagnifyingGlassLocation, faX } from "@fortawesome/free-solid-svg-icons";
+import { faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 
 import markerStar from "../../assets/img/map/markerStar.png";
 import markerRed from "../../assets/img/map/markerRed.png";
 import markerBlue from "../../assets/img/map/markerBlue.png";
 import iconMore from "../../assets/img/map/icon-more.svg";
 
+import { useQueryString } from "../../hooks/useQueryString";
+
 import "animate.css";
 
 const Map = memo(() => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.MapSlice);
+  const { data: data, loading: loading, error: error } = useSelector((state) => state.MapSlice);
+  const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
+  const { theme } = useQueryString();
 
   const yourLoc = useRef();
   const [yourCoord, setYourCoord] = useState();
@@ -35,6 +43,7 @@ const Map = memo(() => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [LocData, setLocData] = useState();
+  const [ThemeData, setThemeData] = useState();
 
   /**
    * 처음 열릴때 지도를 렌더링하고 전체 데이터를 가져옴 (1회)
@@ -50,7 +59,13 @@ const Map = memo(() => {
     setReplMap(map);
     console.log("🗺️ 지도 렌더링");
 
+    // 장소 데이터
     dispatch(getMapData());
+
+    // 테마 데이터
+    dispatch(getThemeData()).then((e) => {
+      setThemeData(e.payload);
+    });
   }, []);
 
   /**
@@ -66,24 +81,32 @@ const Map = memo(() => {
     };
     const map = new kakao.maps.Map(container, options);
     setReplMap(map);
-    console.log(centerCoord);
     console.log("♻️ 지도 재 렌더링");
 
     if (data) {
       setLocData((LocData) => {
         const newData = [];
 
-        data.forEach((v, i) => {
-          // 지도 범위 제한
-          if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1]) {
-            newData.push(v);
-          }
-        });
+        if (theme) {
+          data.forEach((v, i) => {
+            // 지도 범위 제한 , 테마 별로 필터링(querystring 존재할 시)
+            if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1] && v.theme.includes(+theme)) {
+              newData.push(v);
+            }
+          });
+        } else {
+          data.forEach((v, i) => {
+            // 지도 범위 제한
+            if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1]) {
+              newData.push(v);
+            }
+          });
+        }
 
         return newData;
       });
     }
-  }, [data, centerCoord]);
+  }, [data, centerCoord, theme]);
 
   /**
    * 데이터가 바뀔때 마다 마커와 목록을 출력
@@ -121,7 +144,7 @@ const Map = memo(() => {
          * 마커에 mouseover, mouseout 이벤트
          */
         // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-        var iwContent = `<div style="padding:5px;">${v.title}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        var iwContent = `<div style="padding:5px;">${v.place_name}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
         // 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({
@@ -198,16 +221,11 @@ const Map = memo(() => {
    * 현재 범위로 찾기
    */
   const onSearchLoc = useCallback((e) => {
-    // 지도의 현재 중심좌표를 얻어옵니다
-    var center = replMap.getCenter();
-    // 지도의 현재 영역을 얻어옵니다
-    var bounds = replMap.getBounds();
-    // 영역의 남서쪽 좌표를 얻어옵니다
-    var swLatLng = bounds.getSouthWest();
-    // 영역의 북동쪽 좌표를 얻어옵니다
-    var neLatLng = bounds.getNorthEast();
-    // 지도의 확대 수준을 얻어옵니다.
-    var level = replMap.getLevel();
+    var center = replMap.getCenter(); // 지도의 현재 중심좌표를 얻어옵니다
+    var bounds = replMap.getBounds(); // 지도의 현재 영역을 얻어옵니다
+    var swLatLng = bounds.getSouthWest(); // 영역의 남서쪽 좌표를 얻어옵니다
+    var neLatLng = bounds.getNorthEast(); // 영역의 북동쪽 좌표를 얻어옵니다
+    var level = replMap.getLevel(); // 지도의 확대 수준을 얻어옵니다.
 
     console.log("현재 영역의 남서쪽 좌표 : " + swLatLng + ", 북동쪽 좌표 : " + neLatLng);
 
@@ -286,26 +304,34 @@ const Map = memo(() => {
     <MapContainer>
       <Spinner loading={loading} />
 
+      {/* 지도 */}
       <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
+
+      {/* 보고있는 테마 */}
+      <div className={`${"theme"} ${"animate__animated"} ${"animate__fadeInRight"} ${"animate__faster"}`}>
+        {theme && ThemeData && <span>{ThemeData[theme].icon + " " + ThemeData[theme].text}</span>}
+        <a href="/map_finder">지도 찾기</a>
+      </div>
 
       {/* 내 위치 찾기 버튼 */}
       <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} onClick={onYourLoc} />
 
-      {/* 이 위치에서 다시 찾기*/}
-      <SearchLoc onClick={onSearchLoc}>
-        <span>현재 범위로 찾기</span>
-        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
-      </SearchLoc>
+      {/* 현재 범위로 찾기 버튼 */}
+      <SearchLoc onClick={onSearchLoc} />
 
+      {/* 장소 추가하기 링크 */}
+      {theme && <MapAddLink theme={theme} />}
+
+      {/* 장소 목록 */}
       <ListContainer id="container">
-        {LocData && LocData.length > 0 && yourCoord && <div className="sort">정렬</div>}
-        {yourCoord && LocData.length > 0 && <div className="sort-by-distance">거리순</div>}
         {LocData?.map((v, i) => {
           return (
             <div key={i} data-loc={v.latlng} data-title={v.title} className={`${"list_item"} ${"loc" + i} ${i == btnActive ? "active" : ""}  ${"animate__faster"}`} style={{ animationDelay: i * 40 + "ms" }}>
-              <h3>{v.title}</h3>
-              <h4>{v.address}</h4>
-              <a>{v.theme[0]}</a>
+              <h3>{v.place_name}</h3>
+              <span className="category">{v.category_item_name}</span>
+              <br />
+              <span className="address">{v.road_address_name ? v.road_address_name : v.address_name}</span>
+              <a>{v.theme && ThemeData && !theme && ThemeData[v.theme[0]]?.icon + " " + ThemeData[v.theme[0]]?.text}</a>
               <div className="more_btn" onClick={onModalIsOpen} data-id={v.id}>
                 <img src={iconMore} />
               </div>
@@ -313,8 +339,26 @@ const Map = memo(() => {
           );
         })}
 
+        {LocData?.length == 0 && (
+          <div className={`${"list_item"}  ${"animate__faster"}  ${"animate__animated"} ${"animate__flipInX"}`}>
+            <div className={`${"no_result"} ${"animate__infinite"} ${"animate__animated"} ${"animate__pulse"} ${"animate__slow"}`}>
+              <span>😥</span>
+              <br />
+              검색 결과가 없습니다.
+            </div>
+          </div>
+        )}
+
+        {/* 장소 정보 모달창 */}
         {LocData?.map((v, i) => {
-          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v.title} address={v.address} onClick={() => setModalIsOpen(false)} theme={v.theme} review={v.review} />;
+          let themeList = [];
+          if (ThemeData) {
+            v.theme.forEach((v2, i2) => {
+              themeList.push(ThemeData[v2]);
+            });
+          }
+
+          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v.place_name} address={v.road_address_name ? v.road_address_name : v.address_name} onClick={() => setModalIsOpen(false)} theme={themeList} review={v.review} />;
         })}
       </ListContainer>
     </MapContainer>

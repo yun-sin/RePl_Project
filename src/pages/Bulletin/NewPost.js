@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 
 import Editor from '../../components/bulletin/Editor';
+import RecommendPlace from '../../components/bulletin/RecommendPlace';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
+import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { newPost } from '../../slices/BulletinSlice';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import { useEffect } from 'react';
 
 const MainForm = styled.form`
     width: 100%;
@@ -204,21 +207,63 @@ const CategoryArea = styled.div`
 `;
 
 const NewPost = memo(() => {
-    const [content, setContent] = useState('');
+    /** 슬라이스 */
     const { data, loading, error } = useSelector(state => state.BulletinSlice);
-
     const dispatch = useDispatch();
 
-    const setContentFunc = useCallback(v => {
-        setContent(v);
-    }, []);
-
+    /** 상단 제목란 배경색 변경 */
+    // 배경색 저장할 state
     const [backgroundColor, setBackgroundColor] = useState('#fff');
-
+    // 사용자 컬러 인풋 바뀌면 state 변경
     const onBackgroundColorInputChange = useCallback(e => {
         setBackgroundColor(e.currentTarget.value);
     }, []);
 
+    /** 게시글 본문 내용 */
+    // 내용 저장용 state
+    const [content, setContent] = useState('');
+    // 본문 내용 state에 set
+    const setContentFunc = useCallback(v => {
+        setContent(v);
+    }, []);
+
+    /** 모달창 */
+    // 모달 오픈여부
+    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+    const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
+    // 모달창 열기 함수
+    const openPlaceModal = useCallback(e => {
+        e.preventDefault();
+        setIsPlaceModalOpen(state => true);
+    }, []);
+    const openHashtagModal = useCallback(e => {
+        e.preventDefault();
+        setIsHasgtagModalOpen(state => true);
+    }, []);
+    // 모달창 닫기 함수
+    const closePlaceModal = useCallback(e => {
+        setIsPlaceModalOpen(state => false);
+    }, []);
+    const closeHashtagModal = useCallback(e => {
+        setIsHasgtagModalOpen(state => false);
+    }, []);
+    // 모달 오픈시 스크롤 방지
+    useEffect(() => {
+        if (isPlaceModalOpen || isHashtagModalOpen) {
+            document.body.style.cssText = `
+                position: fixed; 
+                top: -${window.scrollY}px;
+                overflow-y: scroll;
+                width: 100%;
+            `;
+        } else {
+            const scrollY = document.body.style.top;
+            document.body.style.cssText = '';
+            window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        }
+    }, [isPlaceModalOpen, isHashtagModalOpen]);
+    
+    /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
         e.preventDefault();
 
@@ -274,9 +319,13 @@ const NewPost = memo(() => {
             <PostingArea>
                 <Editor id='editor' setContent={setContentFunc} />
                 <RecommendPlaceArea>
+                    <RecommendPlace
+                        isOpen={isPlaceModalOpen}
+                        closeModal={closePlaceModal}
+                    />
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>
-                        <button>장소 추가하기</button>
+                        <button onClick={openPlaceModal}>장소 추가하기</button>
                     </div>
                     <div className='recommend-place-body'>
                         <ul>
@@ -301,6 +350,10 @@ const NewPost = memo(() => {
                 </RecommendPlaceArea>
 
                 <CategoryArea>
+                    <PlaceHashtag
+                        isOpen={isHashtagModalOpen}
+                        closeModal={closeHashtagModal}
+                    />
                     <div className='category-tags'>
                         <span>O 세글자</span>
                         <span>O 네글자네</span>
@@ -310,13 +363,13 @@ const NewPost = memo(() => {
                         <span>O 세글자</span>
                         <span>O 여섯글자여섯</span>
                     </div>
-                    <button type='button' className='category-addButton'>
+                    <button type='button' className='category-addButton' onClick={openHashtagModal}>
                         + 더 보기
                     </button>
                 </CategoryArea>
 
                 <div className='send-post'>
-                    <button className='send-post__button'>저장하기</button>
+                    <button type='submit' className='send-post__button'>저장하기</button>
                 </div>
             </PostingArea>
         </MainForm>

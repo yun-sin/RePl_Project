@@ -14,6 +14,7 @@ const CreateMapContainer = styled.div`
         border-radius: 100px;
         text-decoration: none;
         color: #fefefe;
+        letter-spacing: -0.5px;
         box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
         &:hover {
             background-color: #c4441c;
