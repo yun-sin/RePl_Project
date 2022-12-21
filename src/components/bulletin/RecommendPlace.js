@@ -2,6 +2,9 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getMyReview } from '../../slices/BulletinSlice';
+
 import Modal from 'react-modal';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
@@ -206,51 +209,82 @@ const PopUpBox = styled.div`
 
 const testData = [
     {
+        place_id: 1,
         img: breadSample,
         title: '장소명1',
-        address: '서울시 어디어디'
+        address: '서울시 어디어디',
+        like: 2,
+        rating: 5,
     },
     {
+        place_id: 2,
         img: breadSample,
         title: '장소명2',
-        address: '서울시 어디어디'
+        address: '서울시 어디어디',
+        like: 2,
+        rating: 5,
     },
     {
+        place_id: 3,
         img: breadSample,
         title: '장소명3',
-        address: '서울시 어디어디'
+        address: '서울시 어디어디',
+        like: 2,
+        rating: 5,
     },
     {
+        place_id: 4,
         img: breadSample,
         title: '장소명4',
-        address: '서울시 어디어디'
+        address: '서울시 어디어디',
+        like: 2,
+        rating: 5,
     },
     {
+        place_id: 5,
         img: breadSample,
         title: '장소명5',
-        address: '서울시 어디어디'
+        address: '서울시 어디어디',
+        like: 2,
+        rating: 5,
     },
-    
 ]
 
 const RecommendPlace = memo(props => {
+    /** slice 연동, 내가 리뷰한 장소 목록 불러오기 */
+    /** To Do: 아직 완벽하지 않음. 장소 그냥 다 불러옴 */
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+
+    /** 장소 선택하기 */
+    // 선택 장소 정보 저장
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [selectedItem, setSelectedItem] = useState([]);
+    // 장소 검색 input data 저장
     const [keyword, setKeyword] = useState('');
 
+    // 처음 내가 쓴 전체 게시글 불러오기
     useEffect(() => {
-        setSelectedIndex(new Array(testData.length).fill(false));
+        dispatch(getMyReview());
     }, []);
+    useEffect(() => {
+        if (data) setSelectedIndex(new Array(data.length).fill(false));
+    }, [data]);
 
+    // 검색창 초기화(비우기, 목록 전체로 갱신)
     const resetForm = useCallback(e => {
         e.preventDefault();
         const target =  e.currentTarget.closest('div').childNodes[0].childNodes[0];
         target.value = '';
         target.innerHTML = '';
+        setKeyword(state => null);
     }, []);
 
+    // 각 장소 눌렀을 때
     const onPlaceClick = useCallback(e => {
         e.preventDefault();
+
+        // 선택된 장소 인덱스 저장하는 state 해당 위치 boolean 반전
         const idx = e.currentTarget.dataset.idx;
         setSelectedIndex(state => {
             let temp = [];
@@ -261,6 +295,7 @@ const RecommendPlace = memo(props => {
             return temp;
         });
 
+        // 선택된 장소명과 같은게 이미 선택되었는지(state에 존재) 검사 및 추가
         const title = e.currentTarget.children[1].children[0].innerHTML;
         setSelectedItem(state => {
             let temp = [], isContained = false;
@@ -277,6 +312,7 @@ const RecommendPlace = memo(props => {
         });
     }, []);
 
+    // 선택된 장소에서 x 버튼 눌러서 없애기 했을 때
     const onDeletePlaceClick = useCallback(e => {
         e.preventDefault();
 
@@ -301,16 +337,31 @@ const RecommendPlace = memo(props => {
         });
     }, []);
 
+    // 장소 검색
     const onSearchPlace = useCallback(e => {
-        e.preventDefault();
+        e?.preventDefault();
 
-        const value = e.currentTarget.closest('div').childNodes[0].value.trim();
+        const value = document.querySelector('.search').childNodes[0].childNodes[0].value.trim();
         if (value === null || value ==='') {
             setKeyword(state => null);
             return;
         };
 
         setKeyword(state => value);
+    }, []);
+
+    const onClosePopup = useCallback(e => {
+        const items = [];
+        for (let i = 0; i < selectedIndex.length; i++) {
+            if (selectedIndex[i] === true) {
+                items.push(data[i]);
+            }
+        }
+
+        /** To Do: 뭔가 이상함... 아이템 전달이 제대로 안됨 여기 수정해야함 */
+        console.log(items);
+        props.setSelectedPlaces(state => items);
+        props.closeModal();
     }, []);
 
     return (
@@ -321,7 +372,7 @@ const RecommendPlace = memo(props => {
             ariaHideApp={false}
         >
             <PopUpBox>
-                <button className='closePopUp' onClick={props.closeModal}>X</button>
+                <button className='closePopUp' onClick={onClosePopup}>X</button>
                 <div className='top-desc'>
                     <h3>추천할 장소를 찾아보세요</h3>
                     <p>자신이 리뷰를 남긴 장소에서 선택 가능해요</p>
@@ -338,39 +389,49 @@ const RecommendPlace = memo(props => {
                 </div>
                 <div className='search'>
                     <div>
-                        <input type="text" name="keywordInput"></input>
-                        <button type='button' onClick={onSearchPlace}>O 검색</button>
+                        <input type="text" name="keywordInput"
+                            onKeyDown={e => {
+                                if (e.key === 'Enter') onSearchPlace();
+                            }}
+                        ></input>
+                        <button type='button' onClick={onSearchPlace}>
+                            O 검색
+                        </button>
                     </div>
                     <button type='button' onClick={resetForm}>초기화</button>
                 </div>
                 <ul className='searched-list'>
                     {
                         keyword ? (
-                            testData.map((v, i) => {
-                                if (v.title.indexOf(keyword) !== -1) {
+                            data && (
+                                data.map((v, i) => {
+                                    if (v.place_name.indexOf(keyword) !== -1) {
+                                        return (
+                                            <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                                <img src={v?.place_img[0]} alt="장소 사진" />
+                                                <div>
+                                                    <h4>{v.place_name}</h4>
+                                                    <p>{v.address_name}</p>
+                                                </div>
+                                            </li>
+                                        );
+                                    } else return '';
+                                })
+                            )
+                        ) : (
+                            data && (
+                                data.map((v, i) => {
                                     return (
                                         <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                            <img src={v.img} alt="장소 사진" />
+                                            <img src={v?.place_img[0]} alt="장소 사진" />
                                             <div>
-                                                <h4>{v.title}</h4>
-                                                <p>{v.address}</p>
+                                                <h4>{v.place_name}</h4>
+                                                <p>{v.address_name}</p>
                                             </div>
                                         </li>
                                     );
-                                } else return '';
-                            })
-                        ) : (
-                            testData.map((v, i) => {
-                                return (
-                                    <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                        <img src={v.img} alt="장소 사진" />
-                                        <div>
-                                            <h4>{v.title}</h4>
-                                            <p>{v.address}</p>
-                                        </div>
-                                    </li>
-                                );
-                            })
+                                })
+                            )
                         )
                     }
                 </ul>

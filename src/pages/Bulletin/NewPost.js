@@ -262,6 +262,10 @@ const NewPost = memo(() => {
             window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
         }
     }, [isPlaceModalOpen, isHashtagModalOpen]);
+
+    /** 추천 장소 선택하기 */
+    // 선택한 장소 목록
+    const [selectedPlaces, setSelectedPlaces] = useState([]);
     
     /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
@@ -291,7 +295,11 @@ const NewPost = memo(() => {
         }
 
         dispatch(newPost(data));
-    }, [content, dispatch]);
+    }, [backgroundColor, content]);
+
+    const test = useEffect(() => {
+        console.log(selectedPlaces);
+    }, [selectedPlaces]);
 
     return (
         <MainForm onSubmit={onPosting}>
@@ -322,6 +330,7 @@ const NewPost = memo(() => {
                     <RecommendPlace
                         isOpen={isPlaceModalOpen}
                         closeModal={closePlaceModal}
+                        setSelectedPlaces={setSelectedPlaces}
                     />
                     <div className='recommend-place-top'>
                         <h3>이 글에서 추천한 장소들</h3>
