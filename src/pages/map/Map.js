@@ -5,6 +5,7 @@ import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
 
 import { MapContainer, ListContainer } from "../../components/map/MapStyled";
+import MapThemeBar from "../../components/map/MapThemeBar";
 import LocModal from "../../common/LocModal";
 import SearchLoc from "../../components/map/SearchLoc";
 import MapAddLink from "../../components/map/MapAddLink";
@@ -308,10 +309,7 @@ const Map = memo(() => {
       <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
 
       {/* 보고있는 테마 */}
-      <div className={`${"theme"} ${"animate__animated"} ${"animate__fadeInRight"} ${"animate__faster"}`}>
-        {theme && ThemeData && <span>{ThemeData[theme].icon + " " + ThemeData[theme].text}</span>}
-        <a href="/map_finder">지도 찾기</a>
-      </div>
+      <MapThemeBar theme={theme} ThemeData={ThemeData} />
 
       {/* 내 위치 찾기 버튼 */}
       <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} onClick={onYourLoc} />

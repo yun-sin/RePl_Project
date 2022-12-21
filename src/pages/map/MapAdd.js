@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
 
+import MapThemeBar from "../../components/map/MapThemeBar";
+
 import MapAddModal1 from "../../components/map/MapAddModal1";
 import MapAddModal2 from "../../components/map/MapAddModal2";
 import MapAddModal3 from "../../components/map/MapAddModal3";
@@ -278,6 +280,9 @@ const MapAdd = memo(({ zoomLevel }) => {
     <div className="map_wrap">
       <div id="map" style={{ width: "100%", height: "95vh", position: "relative" }}></div>
 
+      {/* 보고있는 테마 */}
+      <MapThemeBar theme={theme} ThemeData={data2} />
+
       <MapAddListContainer>
         <div className="title">장소 등록하기</div>
         <div id="menu_wrap">
@@ -300,7 +305,7 @@ const MapAdd = memo(({ zoomLevel }) => {
       </MapAddListContainer>
 
       {/* 모달창1*/}
-      <MapAddModal1 modalIsOpen={modalIsOpen1} data={data} location={location} theme={data2 && theme && data2[theme]} />
+      <MapAddModal1 modalIsOpen={modalIsOpen1} data={data} location={location} theme={theme && theme} />
       {/* 모달창2 */}
       <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />
       {/* 모달창2 */}

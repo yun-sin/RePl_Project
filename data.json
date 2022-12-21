@@ -116,14 +116,95 @@
       "lng": 126.69241740433,
       "theme": [
         {
-          "id": 3,
-          "icon": "🍔",
-          "text": "햄버거가 맛있는 곳",
-          "user_number": 40
+          "id": 2,
+          "icon": "🍞",
+          "text": "빵지순례 필수코스",
+          "user_number": 30
         }
       ],
       "review": [],
       "id": 13
+    },
+    {
+      "address_name": "인천 남동구 고잔동 629",
+      "category_group_code": "",
+      "category_name": "교통,수송 > 자동차 > 자동차검사소",
+      "category_group_name": "",
+      "category_item_name": "자동차검사소",
+      "phone": "032-822-2002",
+      "place_name": "카123텍",
+      "place_url": "http://place.map.kakao.com/1344772608",
+      "place_id": "1344772608",
+      "road_address_name": "인천 남동구 남동서로 202",
+      "lat": 37.4077134806326,
+      "lng": 126.69241740433,
+      "theme": [
+        {
+          "id": 2,
+          "icon": "🍞",
+          "text": "빵지순례 필수코스",
+          "user_number": 30
+        }
+      ],
+      "review": [],
+      "id": 14
+    },
+    {
+      "address_name": "서울 송파구 방이동 117",
+      "category_group_code": "FD6",
+      "category_name": "음식점 > 한식 > 해물,생선",
+      "category_group_name": "음식점",
+      "category_item_name": "해물,생선",
+      "phone": "02-419-3455",
+      "place_name": "123생선구이",
+      "place_url": "http://place.map.kakao.com/21404390",
+      "place_id": "21404390",
+      "road_address_name": "서울 송파구 가락로33길 30",
+      "lat": 37.509872607639835,
+      "lng": 127.11435995461524,
+      "theme": [
+        2
+      ],
+      "review": [],
+      "id": 16
+    },
+    {
+      "address_name": "충남 부여군 석성면 정각리 228-5",
+      "category_group_code": "OL7",
+      "category_name": "교통,수송 > 자동차 > 주유,가스 > 주유소 > SK주유소",
+      "category_group_name": "주유소,충전소",
+      "category_item_name": "SK주유소",
+      "phone": "041-835-7873",
+      "place_name": "123주유소",
+      "place_url": "http://place.map.kakao.com/11378324",
+      "place_id": "11378324",
+      "road_address_name": "충남 부여군 석성면 왕릉로 422",
+      "lat": 36.2683449330765,
+      "lng": 126.979496365514,
+      "theme": [
+        2
+      ],
+      "review": [],
+      "id": 17
+    },
+    {
+      "address_name": "충남 부여군 석성면 정각리 228-5",
+      "category_group_code": "OL7",
+      "category_name": "교통,수송 > 자동차 > 주유,가스 > 주유소 > SK주유소",
+      "category_group_name": "주유소,충전소",
+      "category_item_name": "SK주유소",
+      "phone": "041-835-7873",
+      "place_name": "123주유소",
+      "place_url": "http://place.map.kakao.com/11378324",
+      "place_id": "11378324",
+      "road_address_name": "충남 부여군 석성면 왕릉로 422",
+      "lat": 36.2683449330765,
+      "lng": 126.979496365514,
+      "theme": [
+        3
+      ],
+      "review": [],
+      "id": 18
     }
   ],
   "theme": [
