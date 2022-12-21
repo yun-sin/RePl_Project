@@ -173,7 +173,6 @@ const Map = memo(() => {
 
         /** 마커 마우스클릭 이벤트 */
         kakao.maps.event.addListener(marker, "click", function () {
-          // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
           infowindow.open(replMap, marker);
           listItem.scrollIntoView({ behavior: "smooth" });
           setBtnActive(i);
@@ -337,6 +336,7 @@ const Map = memo(() => {
           );
         })}
 
+        {/* 검색 데이터 없을 경우 */}
         {LocData?.length == 0 && (
           <div className={`${"list_item"}  ${"animate__faster"}  ${"animate__animated"} ${"animate__flipInX"}`}>
             <div className={`${"no_result"} ${"animate__infinite"} ${"animate__animated"} ${"animate__pulse"} ${"animate__slow"}`}>
@@ -356,7 +356,7 @@ const Map = memo(() => {
             });
           }
 
-          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} title={v.place_name} address={v.road_address_name ? v.road_address_name : v.address_name} onClick={() => setModalIsOpen(false)} theme={themeList} review={v.review} />;
+          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClick={() => setModalIsOpen(false)} data={v} theme={themeList} />;
         })}
       </ListContainer>
     </MapContainer>

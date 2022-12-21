@@ -71,16 +71,23 @@ export const MapAddModalContainer = styled.div`
       background-color: #f8f8f8;
       padding: 11.5px;
       box-sizing: border-box;
-
       margin-bottom: 15px;
       border-radius: 12px;
-
       margin-right: 15px;
+      transition: all 0.3s;
+
       &:nth-of-type(5n) {
         margin-right: 0;
       }
       img {
         width: 22px;
+      }
+
+      &:hover {
+        background-color: #eee;
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgb(0 0 0 / 40%);
+        transition: all 0.4s;
       }
 
       &.active {
@@ -159,7 +166,7 @@ const MapAddModal2 = memo(({ modalIsOpen }) => {
   const onRatingClick = useCallback((e) => {
     const current = e.currentTarget;
     const index = current.dataset.rating;
-    console.log(+index + 1);
+    console.log("rating : " + (+index + 1));
     setRating(index);
 
     document.getElementById("comment_text")?.focus();

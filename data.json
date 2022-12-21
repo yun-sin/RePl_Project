@@ -125,65 +125,91 @@
       "id": 13
     },
     {
-      "address_name": "인천 남동구 고잔동 629",
-      "category_group_code": "",
-      "category_name": "교통,수송 > 자동차 > 자동차검사소",
-      "category_group_name": "",
-      "category_item_name": "자동차검사소",
-      "phone": "032-822-2002",
-      "place_name": "카123텍",
-      "place_url": "http://place.map.kakao.com/1344772608",
-      "place_id": "1344772608",
-      "road_address_name": "인천 남동구 남동서로 202",
-      "lat": 37.4077134806326,
-      "lng": 126.69241740433,
+      "address_name": "서울 강남구 역삼동 616-18",
+      "category_group_code": "FD6",
+      "category_name": "음식점 > 양식 > 이탈리안",
+      "category_group_name": "음식점",
+      "category_item_name": "이탈리안",
+      "phone": "02-568-8003",
+      "place_name": "어거스트힐 강남점",
+      "place_url": "http://place.map.kakao.com/1124684582",
+      "place_id": "1124684582",
+      "road_address_name": "서울 강남구 강남대로106길 25",
+      "lat": 37.5033762340549,
+      "lng": 127.027613205009,
       "theme": [
-        {
-          "id": 2,
-          "icon": "🍞",
-          "text": "빵지순례 필수코스",
-          "user_number": 30
-        }
+        1
       ],
       "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
       "id": 14
     },
     {
-      "address_name": "서울 송파구 방이동 117",
+      "address_name": "서울 강남구 역삼동 617-6",
       "category_group_code": "FD6",
-      "category_name": "음식점 > 한식 > 해물,생선",
+      "category_name": "음식점 > 퓨전요리",
       "category_group_name": "음식점",
-      "category_item_name": "해물,생선",
-      "phone": "02-419-3455",
-      "place_name": "123생선구이",
-      "place_url": "http://place.map.kakao.com/21404390",
-      "place_id": "21404390",
-      "road_address_name": "서울 송파구 가락로33길 30",
-      "lat": 37.509872607639835,
-      "lng": 127.11435995461524,
+      "category_item_name": "퓨전요리",
+      "phone": "02-539-1979",
+      "place_name": "구구당",
+      "place_url": "http://place.map.kakao.com/260283466",
+      "place_id": "260283466",
+      "road_address_name": "서울 강남구 강남대로102길 35",
+      "lat": 37.5032428278838,
+      "lng": 127.027857440016,
       "theme": [
-        2
+        1
       ],
       "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 15
+    },
+    {
+      "address_name": "서울 강남구 역삼동 618-11",
+      "category_group_code": "CE7",
+      "category_name": "음식점 > 카페",
+      "category_group_name": "카페",
+      "category_item_name": "카페",
+      "phone": "02-566-6181",
+      "place_name": "알베르",
+      "place_url": "http://place.map.kakao.com/22837049",
+      "place_id": "22837049",
+      "road_address_name": "서울 강남구 강남대로102길 34",
+      "lat": 37.5029796720996,
+      "lng": 127.028119720582,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
       "id": 16
     },
     {
-      "address_name": "충남 부여군 석성면 정각리 228-5",
-      "category_group_code": "OL7",
-      "category_name": "교통,수송 > 자동차 > 주유,가스 > 주유소 > SK주유소",
-      "category_group_name": "주유소,충전소",
-      "category_item_name": "SK주유소",
-      "phone": "041-835-7873",
-      "place_name": "123주유소",
-      "place_url": "http://place.map.kakao.com/11378324",
-      "place_id": "11378324",
-      "road_address_name": "충남 부여군 석성면 왕릉로 422",
-      "lat": 36.2683449330765,
-      "lng": 126.979496365514,
+      "address_name": "서울 강남구 역삼동 618-18",
+      "category_group_code": "FD6",
+      "category_name": "음식점 > 양식",
+      "category_group_name": "음식점",
+      "category_item_name": "양식",
+      "phone": "02-3452-1515",
+      "place_name": "바비레드 강남본점",
+      "place_url": "http://place.map.kakao.com/18076495",
+      "place_id": "18076495",
+      "road_address_name": "서울 강남구 봉은사로6길 39",
+      "lat": 37.502644547372164,
+      "lng": 127.02791150266208,
       "theme": [
-        2
+        1
       ],
       "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
       "id": 17
     },
     {
@@ -200,10 +226,123 @@
       "lat": 36.2683449330765,
       "lng": 126.979496365514,
       "theme": [
-        3
+        1
       ],
       "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
       "id": 18
+    },
+    {
+      "address_name": "서울 동작구 사당동 1006-43",
+      "category_group_code": "",
+      "category_name": "문화,예술 > 사진 > 사진관,포토스튜디오",
+      "category_group_name": "",
+      "category_item_name": "사진관,포토스튜디오",
+      "phone": "",
+      "place_name": "ㅁ ㅁ 스튜디오",
+      "place_url": "http://place.map.kakao.com/584560916",
+      "place_id": "584560916",
+      "road_address_name": "서울 동작구 동작대로19길 36",
+      "lat": 37.4835807917715,
+      "lng": 126.979716162617,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 19
+    },
+    {
+      "address_name": "서울 광진구 중곡동 59-21",
+      "category_group_code": "",
+      "category_name": "가정,생활 > 패션 > 의류수선",
+      "category_group_name": "",
+      "category_item_name": "의류수선",
+      "phone": "",
+      "place_name": "가라ㅁ",
+      "place_url": "http://place.map.kakao.com/166692743",
+      "place_id": "166692743",
+      "road_address_name": "서울 광진구 용마산로8길 21",
+      "lat": 37.5597099780928,
+      "lng": 127.088837084073,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 20
+    },
+    {
+      "address_name": "경기 고양시 덕양구 동산동 53-124",
+      "category_group_code": "",
+      "category_name": "스포츠,레저 > 골프 > 골프장",
+      "category_group_name": "",
+      "category_item_name": "골프장",
+      "phone": "02-359-0123",
+      "place_name": "123골프클럽",
+      "place_url": "http://place.map.kakao.com/7918217",
+      "place_id": "7918217",
+      "road_address_name": "경기 고양시 덕양구 통일로 43-168",
+      "lat": 37.641468460269,
+      "lng": 126.906379407867,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 21
+    },
+    {
+      "address_name": "서울 송파구 방이동 34-2",
+      "category_group_code": "",
+      "category_name": "가정,생활 > 목욕탕,사우나",
+      "category_group_name": "",
+      "category_item_name": "목욕탕,사우나",
+      "phone": "",
+      "place_name": "사우나123",
+      "place_url": "http://place.map.kakao.com/1149707328",
+      "place_id": "1149707328",
+      "road_address_name": "서울 송파구 오금로11길 11-8",
+      "lat": 37.514995606728,
+      "lng": 127.108750620091,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 22
+    },
+    {
+      "address_name": "인천 부평구 십정동 557-8",
+      "category_group_code": "",
+      "category_name": "교통,수송 > 자동차 > 자동차정비",
+      "category_group_name": "",
+      "category_item_name": "자동차정비",
+      "phone": "032-821-2002",
+      "place_name": "카123테크엔지니어링",
+      "place_url": "http://place.map.kakao.com/18613409",
+      "place_id": "18613409",
+      "road_address_name": "인천 부평구 백범로 573",
+      "lat": 37.47433437368076,
+      "lng": 126.68969365966095,
+      "theme": [
+        1
+      ],
+      "review": [],
+      "place_img": [],
+      "like": 0,
+      "rating": [],
+      "id": 23
     }
   ],
   "theme": [
