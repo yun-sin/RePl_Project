@@ -297,10 +297,6 @@ const NewPost = memo(() => {
         dispatch(newPost(data));
     }, [backgroundColor, content]);
 
-    const test = useEffect(() => {
-        console.log(selectedPlaces);
-    }, [selectedPlaces]);
-
     return (
         <MainForm onSubmit={onPosting}>
             <TitleArea style={{ backgroundColor: backgroundColor }}>

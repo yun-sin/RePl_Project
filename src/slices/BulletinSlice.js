@@ -52,6 +52,20 @@ export const getMyReview = createAsyncThunk('BulletinSlice/getMyReview', async (
     return result;
 });
 
+export const getTags = createAsyncThunk('BulletinSlice/getTags', async (payload, { rejectWithValue }) => {
+    let result = null;
+
+    try {
+        const response = await axios.get(process.env.REACT_APP_WHOLE_TAGS);
+
+        result = response.data;
+    } catch (err) {
+        result = rejectWithValue(err.response);
+    }
+    
+    return result;
+});
+
 const BulletinSlice = createSlice({
     name: 'BulletinSlice',
     initialState: {
