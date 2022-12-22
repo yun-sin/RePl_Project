@@ -7,10 +7,9 @@ export const MapAddListContainer = styled.div`
   z-index: 1;
   width: 270px;
   max-height: 95vh;
-  overflow: scroll;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 10px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-
+  overflow: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 
@@ -73,6 +72,30 @@ export const MapAddListContainer = styled.div`
       }
     }
 
+    .info_already {
+      color: #da4c1f;
+      font-size: 13px;
+      display: flex;
+      margin-bottom: 10px;
+      line-height: 20.8px;
+      word-break: break-all;
+
+      .fa-circle-info {
+        display: block;
+        padding-top: 10px;
+        /* box-sizing: border-box; */
+        font-size: 20px;
+        line-height: 41.5px;
+      }
+
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    #placesList {
+    }
+
     #pagination {
       text-align: center;
       position: sticky;
@@ -101,6 +124,10 @@ export const MapAddListContainer = styled.div`
     position: relative;
 
     &:hover {
+      background-color: #eee;
+    }
+
+    &.hover {
       background-color: #eee;
     }
 
@@ -171,11 +198,7 @@ export const MapAddListContainer = styled.div`
       }
     }
 
-    .choiceBtn {
-      &:hover {
-        background-color: #0581bb;
-      }
-
+    .btn {
       cursor: pointer;
       display: block;
       width: 20px;
@@ -184,13 +207,21 @@ export const MapAddListContainer = styled.div`
       line-height: 20px;
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: 15px;
 
-      font-size: 2 0px;
-      background-color: #bbb;
-      border-radius: 5px;
-      color: white;
-      font-weight: 600;
+      font-size: 20px;
+
+      &.choice {
+        background-color: #bbb;
+        border-radius: 5px;
+        color: white;
+        font-weight: 600;
+        right: 10px;
+
+        &:hover {
+          background-color: #0581bb;
+        }
+      }
     }
   }
 `;

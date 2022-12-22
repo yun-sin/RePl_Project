@@ -37,6 +37,9 @@ export const postLoc = createAsyncThunk("DepartmentSlice/postLoc", async (payloa
       lng: +payload.location.x,
       theme: [payload.theme],
       review: [],
+      place_img: [],
+      like: 0,
+      rating: [],
     });
     result = response.data;
   } catch (err) {

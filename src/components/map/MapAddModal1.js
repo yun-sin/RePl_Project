@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 
@@ -86,25 +86,16 @@ export const MapAddModalContainer = styled.div`
   }
 `;
 
-const MapAddModal1 = memo(({ modalIsOpen, location, theme, data }) => {
+const MapAddModal1 = memo(({ modalIsOpen, location, theme }) => {
   const dispatch = useDispatch();
 
   const onSaveClick = useCallback((e) => {
+    dispatch(postLoc({ location: location, theme: theme.id }));
+    console.group("장소 추가 : " + location?.place_name);
+    console.log(location);
+    console.groupEnd();
+
     dispatch(modalOpen2());
-
-    const idList = [];
-    data.forEach((v, i) => {
-      v.place_id && idList.push(v.place_id);
-    });
-
-    if (idList.includes(location.id)) {
-      console.log(location.place_name + "는 이미 저장되어 있는 장소입니다.");
-    } else {
-      dispatch(postLoc({ location: location, theme: theme }));
-      console.group("장소 추가 : " + location.place_name);
-      console.log(location);
-      console.groupEnd();
-    }
   });
 
   return (
@@ -133,7 +124,7 @@ const MapAddModal1 = memo(({ modalIsOpen, location, theme, data }) => {
         <MapAddModalContainer>
           <div className="place_name">{location?.place_name}</div>
           <div className="theme">
-            {theme?.icon ? (
+            {theme ? (
               <div>
                 {theme?.icon}
                 <b> {theme?.text}</b>에 선택한 장소를 저장하시겠습니까?

@@ -3,33 +3,6 @@ import { Link } from "react-router-dom";
 
 /** MapContainer */
 export const MapContainer = styled.div`
-  .theme {
-    position: fixed;
-    right: 0;
-    top: 70px;
-    background-color: #fefefe;
-    z-index: 1;
-    padding: 8px 20px;
-    box-sizing: border-box;
-    height: 57.5px;
-    font-size: 16px;
-    line-height: 41.5px;
-    border-radius: 12px 0 0 12px;
-    box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
-    font-weight: 600;
-    transition: 2s;
-
-    span {
-      padding-right: 8px;
-      margin-right: 8px;
-      border-right: 3px solid #ccc;
-    }
-    a {
-      text-decoration: none;
-      color: #0581bb;
-    }
-  }
-
   .yourLoc {
     font-size: 50px;
     color: red;

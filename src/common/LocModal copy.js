@@ -359,7 +359,7 @@ const testData = [
   },
 ];
 
-const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) => {
+const LocModal = memo(({ modalIsOpen, onRequestClose, title, address, onClick, theme, review }) => {
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed; 
@@ -372,14 +372,6 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
       window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     };
   }, []);
-
-  useEffect(() => {
-    if (modalIsOpen) {
-      console.group("리뷰 모달창 열림 : " + data.place_name);
-      console.log(data);
-      console.groupEnd();
-    }
-  }, [modalIsOpen]);
 
   const onCommentRadioChange = useCallback((e) => {
     e.preventDefault();
@@ -442,8 +434,8 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
       }}>
       <LocModalContainer>
         <div className="modal-header">
-          <h3>{data?.place_name}</h3>
-          <span>{data?.road_address_name ? data?.road_address_name : data?.address_name}</span>
+          <h3>{title}</h3>
+          <span>{address}</span>
           <FontAwesomeIcon className="faX" icon={faX} onClick={onClick} />
         </div>
         <div className="modal-body">
@@ -467,7 +459,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
                 {theme?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
-                      {v?.icon + " " + v?.text}
+                      {v.icon + " " + v.text}
                     </div>
                   );
                 })}
@@ -478,7 +470,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
             <div className="info">
               <div className="info-item">
                 <div className="title">이 장소에 대한 후기들!</div>
-                {data?.review?.map((v, i) => {
+                {review?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card">
                       {v}
