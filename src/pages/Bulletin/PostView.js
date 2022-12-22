@@ -7,7 +7,7 @@ import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 
-import { getPost } from '../../slices/BulletinSlice';
+import { getPost } from '../../slices/bulletin/BulletinSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getTags } from '../../slices/BulletinSlice';
+import { getTags } from '../../slices/bulletin/HashtagSlice';
 
 import Modal from 'react-modal';
 
@@ -77,7 +77,7 @@ const SelectHashtagBox = styled.div`
 `
 
 const PlaceHashtag = memo(props => {
-    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+    const { data: data_hashtag, loading: loading_hashtag, error: error_hashtag } = useSelector(state => state.HashtagSlice);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -110,10 +110,13 @@ const PlaceHashtag = memo(props => {
                     <h3>이 장소는 어떤 곳인가요?</h3>
                     <p>어울리는 태그를 선택해주세요</p>
                 </div>
-                
-                <TagBox title='누구와 함께하나요?' />
-                <TagBox title='무엇을 하나요?' />
-                <TagBox title='분위기는 어떤가요?' />
+                {
+                    data_hashtag && data_hashtag.map((v, i) => {
+                        return (
+                            <TagBox key={i} subject={v.subject} values={v.values}/>
+                        );
+                    })
+                }
             </SelectHashtagBox>
         </Modal>
     );

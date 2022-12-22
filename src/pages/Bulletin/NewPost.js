@@ -8,7 +8,7 @@ import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { newPost } from '../../slices/BulletinSlice';
+import { newPost } from '../../slices/bulletin/BulletinSlice';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 import { useEffect } from 'react';

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getMyReview } from '../../slices/BulletinSlice';
+import { getMyReview } from '../../slices/bulletin/RecommendPlaceSlice';
 
 import Modal from 'react-modal';
 
@@ -207,54 +207,16 @@ const PopUpBox = styled.div`
     }
 `;
 
-const testData = [
-    {
-        place_id: 1,
-        img: breadSample,
-        title: '장소명1',
-        address: '서울시 어디어디',
-        like: 2,
-        rating: 5,
-    },
-    {
-        place_id: 2,
-        img: breadSample,
-        title: '장소명2',
-        address: '서울시 어디어디',
-        like: 2,
-        rating: 5,
-    },
-    {
-        place_id: 3,
-        img: breadSample,
-        title: '장소명3',
-        address: '서울시 어디어디',
-        like: 2,
-        rating: 5,
-    },
-    {
-        place_id: 4,
-        img: breadSample,
-        title: '장소명4',
-        address: '서울시 어디어디',
-        like: 2,
-        rating: 5,
-    },
-    {
-        place_id: 5,
-        img: breadSample,
-        title: '장소명5',
-        address: '서울시 어디어디',
-        like: 2,
-        rating: 5,
-    },
-]
-
 const RecommendPlace = memo(props => {
     /** slice 연동, 내가 리뷰한 장소 목록 불러오기 */
     /** To Do: 아직 완벽하지 않음. 장소 그냥 다 불러옴 */
+    const { data: data_place, loading: loading_place, error: error_place } = useSelector(state => state.RecommendPlaceSlice);
     const dispatch = useDispatch();
-    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+
+    // 처음 내가 쓴 전체 게시글 불러오기
+    useEffect(() => {
+        dispatch(getMyReview());
+    }, []);
 
     /** 장소 선택하기 */
     // 선택 장소 정보 저장
@@ -263,13 +225,10 @@ const RecommendPlace = memo(props => {
     // 장소 검색 input data 저장
     const [keyword, setKeyword] = useState('');
 
-    // 처음 내가 쓴 전체 게시글 불러오기
+    // 내 리뷰 남긴 장소 수만큼 배열 생성
     useEffect(() => {
-        dispatch(getMyReview());
-    }, []);
-    useEffect(() => {
-        if (data) setSelectedIndex(new Array(data.length).fill(false));
-    }, [data]);
+        if (data_place) setSelectedIndex(new Array(data_place.length).fill(false));
+    }, [data_place]);
 
     // 검색창 초기화(비우기, 목록 전체로 갱신)
     const resetForm = useCallback(e => {
@@ -353,7 +312,7 @@ const RecommendPlace = memo(props => {
         const items = [];
         for (let i = 0; i < selectedIndex.length; i++) {
             if (selectedIndex[i] === true) {
-                items.push(data[i]);
+                items.push(data_place[i]);
             }
         }
 
@@ -400,24 +359,8 @@ const RecommendPlace = memo(props => {
                 <ul className='searched-list'>
                     {
                         keyword ? (
-                            data && (
-                                data.map((v, i) => {
-                                    if (v.place_name.indexOf(keyword) !== -1) {
-                                        return (
-                                            <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                                <img src={v?.place_img[0]} alt="장소 사진" />
-                                                <div>
-                                                    <h4>{v.place_name}</h4>
-                                                    <p>{v.address_name}</p>
-                                                </div>
-                                            </li>
-                                        );
-                                    } else return '';
-                                })
-                            )
-                        ) : (
-                            data && (
-                                data.map((v, i) => {
+                            data_place && data_place.map((v, i) => {
+                                if (v.place_name.indexOf(keyword) !== -1) {
                                     return (
                                         <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
                                             <img src={v?.place_img[0]} alt="장소 사진" />
@@ -427,8 +370,20 @@ const RecommendPlace = memo(props => {
                                             </div>
                                         </li>
                                     );
-                                })
-                            )
+                                } else return '';
+                            })
+                        ) : (
+                            data_place && data_place.map((v, i) => {
+                                return (
+                                    <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
+                                        <img src={v?.place_img[0]} alt="장소 사진" />
+                                        <div>
+                                            <h4>{v.place_name}</h4>
+                                            <p>{v.address_name}</p>
+                                        </div>
+                                    </li>
+                                );
+                            })
                         )
                     }
                 </ul>

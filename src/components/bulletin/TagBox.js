@@ -76,40 +76,14 @@ const SubjectBox = styled.div`
     }
 `;
 
-const testData = [
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-]
-
 const TagBox = memo(props => {
     const [isOver, setIsOver] = useState(false);
     const tagbox = useRef();
     const moreTags = useRef();
+
+    useEffect(() => {
+        console.log(props.subject);
+    }, []);
 
     useEffect(() => {
         const target = tagbox.current;
@@ -138,12 +112,12 @@ const TagBox = memo(props => {
     return (
         <SubjectBox className='tagbox'>
             <div>
-                <h4>{props.title}</h4>
+                <h4>{props.subject}</h4>
                 <button className={classNames('moreTags', {show: isOver})} onClick={onMoreTagsClick} ref={moreTags}>더보기</button>
             </div>
             <ul ref={tagbox}>
                 {
-                    testData.map((v, i) => {
+                    props.values.map((v, i) => {
                         return (
                             <li key={i} onClick={onHashtagClick}>{v}</li>
                         )

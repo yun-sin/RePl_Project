@@ -438,25 +438,15 @@
       "bgColor": "#c50d0d",
       "postTitle": "5555",
       "postDate": "2022-12-21",
-      "postUser": "test",
-      "content": "<p>여기에 내용을 입력하세요555.</p>\n",
-      "id": 5
+      "postUser": "test"
     },
     {
-      "bgColor": "#c50d0d",
-      "postTitle": "5666",
-      "postDate": "2022-12-21",
+      "bgColor": "#483737",
+      "postTitle": "ㄱㄷㅎㅇㄹ",
+      "postDate": "2022-12-22",
       "postUser": "test",
-      "content": "<p>여기에 내용을 입력하세요555.</p>\n",
-      "id": 6
-    },
-    {
-      "bgColor": "#1e1010",
-      "postTitle": "ㅅㄷㄴㅅ",
-      "postDate": "2022-12-21",
-      "postUser": "test",
-      "content": "<p>여기에 내용을 입력하세요.13254</p>\n",
-      "id": 7
+      "content": "<p>ㄷㄴㅁㅎㄹㄶㅇㄴㅁ</p>\n",
+      "id": 8
     }
   ],
   "emoji": [
@@ -721,8 +711,9 @@
       ]
     }
   ],
-  "categoryAll": {
-    "whereArr": {
+  "categoryAll": [
+    {
+      "fieldName": "whereArr",
       "subject": "어디로 가고싶나요?",
       "values": [
         "을지로/충무로",
@@ -752,8 +743,8 @@
         "여의도"
       ]
     },
-    
-    "whoArr": {
+    {
+      "fieldName": "whoArr",
       "subject": "누구와 함께 하나요?",
       "values": [
         "🧍 혼자서",
@@ -767,8 +758,8 @@
         "👨‍👩‍👧 부모님이랑"
       ]
     },
-  
-    "whatArr": {
+    {
+      "fieldName": "whatArr",
       "subject": "무엇을 하나요?",
       "values": [
         "🌞 점심식사",
@@ -792,8 +783,8 @@
         "🙇‍♂️ 대접하기"
       ]
     },
-  
-    "featureArr": {
+    {
+      "fieldName": "featureArr",
       "subject": "분위기와 특징",
       "values": [
         "💰 가성비",
@@ -825,8 +816,8 @@
         "🚘 주차편한"
       ]
     },
-  
-    "foodArr": {
+    {
+      "fieldName": "foodArr",
       "subject": "어떤 음식",
       "values": [
         "🌏 세계음식",
@@ -842,8 +833,8 @@
         "🌶 매운음식"
       ]
     },
-  
-    "drinkArr": {
+    {
+      "fieldName": "drinkArr",
       "subject": "어떤 술/음료",
       "values": [
         "☕️ 커피",
@@ -858,8 +849,8 @@
         "🍶 사케"
       ]
     },
-  
-    "categoryArr": {
+    {
+      "fieldName": "categoryArr",
       "subject": "카테고리",
       "values": [
         "식당",
@@ -873,5 +864,5 @@
         "호텔"
       ]
     }
-  }
+  ]
 }
