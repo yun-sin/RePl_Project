@@ -2,6 +2,7 @@ import React, { memo, useEffect, useCallback, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getThemeData } from "../../slices/ThemeSlice";
+import Spinner from '../Spinner';
 
 /** glider
  * https://www.npmjs.com/package/react-glider
@@ -12,7 +13,7 @@ import "../../assets/css/styles.scss";
 
 const Slider = memo(() => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.ThemeSlice);
+  const { data, loading } = useSelector((state) => state.ThemeSlice);
   const gliderRef1 = useRef(null);
   const preventInterval = useRef(null);
   const dataLengthRef = useRef(0);
@@ -34,7 +35,7 @@ const Slider = memo(() => {
       }
 
       gliderRef1.current?.scrollItem(index++ % dataLengthRef.current?.length, false);
-    }, 2500);
+    }, 3000);
     return () => {
       clearInterval(interval);
     };
@@ -56,11 +57,13 @@ const Slider = memo(() => {
 
 
   return (
+    
     <div
       className="container"
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
+      <Spinner loading={loading}/>
        
       <Glider
         className="glider-container"
