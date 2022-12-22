@@ -11,7 +11,6 @@ const SubjectBox = styled.div`
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: bottom;
-        margin-bottom: 5px;
     }
 
     h4 {
@@ -37,6 +36,7 @@ const SubjectBox = styled.div`
         font-size: 12px;
         border-radius: 5px;
         padding: 3px 5px;
+        margin-right: 15px;
 
         &:hover {
             cursor: pointer;
@@ -44,15 +44,13 @@ const SubjectBox = styled.div`
     }
 
     ul {
-        padding: 10px 5px;
+        padding: -13px 5px 10px;
         width: 100%;
-        max-height: 100px;
+        max-height: 130px;
         overflow: hidden;
-
-        &.active {
-            overflow: visible;
-            max-height: none;
-        }
+        box-sizing: border-box;
+        transition: max-height 0.2s ease-out;
+        margin-bottom: 30px;
 
         li {
             display: inline-block;
@@ -64,7 +62,7 @@ const SubjectBox = styled.div`
             padding: 8px 10px;
             border-radius: 5px;
             font-size: 13px;
-            margin: 0 10px 10px 0;
+            margin: 13px 15px 0 0;
 
             transition: all 0.2s;
 
@@ -82,15 +80,11 @@ const TagBox = memo(props => {
     const moreTags = useRef();
 
     useEffect(() => {
-        console.log(props.subject);
-    }, []);
-
-    useEffect(() => {
         const target = tagbox.current;
-        if (target.scrollHeight >= 130) {
+        if (target.scrollHeight >= 150) {
             setIsOver(true);
         }
-    }, [tagbox]);
+    }, []);
 
     const onMoreTagsClick = useCallback(e => {
         e.preventDefault();
@@ -99,7 +93,12 @@ const TagBox = memo(props => {
         const target = current.closest('.tagbox').childNodes[1];
 
         current.classList.toggle('active');
-        target.classList.toggle('active');
+
+        if (target.style.maxHeight !== '130px' && target.style.maxHeight !== '') {
+            target.style.maxHeight = '130px';
+        } else {
+            target.style.maxHeight = `${target.scrollHeight}px`;
+        }
     }, []);
 
     const onHashtagClick = useCallback(e => {

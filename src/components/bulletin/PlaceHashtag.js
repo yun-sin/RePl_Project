@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import styled from 'styled-components';
 
@@ -84,6 +84,14 @@ const PlaceHashtag = memo(props => {
         dispatch(getTags());
     }, []);
 
+    /** 태그 선택하기 */
+    // 선택 태그 정보 저장
+    const [selectedIndex, setSelectedIndex] = useState([]);
+    const [selectedItem, setSelectedItem] = useState([]);
+    useEffect(() => {
+        /** To Do: 여기도 선택한거 유치하려면 state로 바꿔야함 */
+    }, [selectedIndex]);
+
     const onClosePopUpClick = useCallback(e => {
         const targets = document.querySelectorAll('li');
         let values = [];
@@ -93,9 +101,10 @@ const PlaceHashtag = memo(props => {
         });
 
         console.log(values);
+        props.setSelectedTags(state => values);
 
         props.closeModal();
-    }, []);
+    }, [props]);
 
     return (
         <Modal

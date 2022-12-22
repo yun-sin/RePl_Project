@@ -266,6 +266,9 @@ const NewPost = memo(() => {
     /** 추천 장소 선택하기 */
     // 선택한 장소 목록
     const [selectedPlaces, setSelectedPlaces] = useState([]);
+
+    /** 관련 태그 설정하기 */
+    const [selectedTags, setSelectedTags] = useState([]);
     
     /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
@@ -357,15 +360,14 @@ const NewPost = memo(() => {
                     <PlaceHashtag
                         isOpen={isHashtagModalOpen}
                         closeModal={closeHashtagModal}
+                        setSelectedTags={setSelectedTags}
                     />
                     <div className='category-tags'>
-                        <span>O 세글자</span>
-                        <span>O 네글자네</span>
-                        <span>O 다섯글자다</span>
-                        <span>O 네글자네</span>
-                        <span>O 여섯글자여섯</span>
-                        <span>O 세글자</span>
-                        <span>O 여섯글자여섯</span>
+                        {
+                            selectedTags.map((v, i) => {
+                                return <span key={i}>{v}</span>
+                            })
+                        }
                     </div>
                     <button type='button' className='category-addButton' onClick={openHashtagModal}>
                         + 더 보기
