@@ -253,22 +253,6 @@ const RecommendPlace = memo(props => {
             temp[idx] = !temp[idx];
             return temp;
         });
-
-        // 선택된 장소명과 같은게 이미 선택되었는지(state에 존재) 검사 및 추가
-        const title = e.currentTarget.children[1].children[0].innerHTML;
-        setSelectedItem(state => {
-            let temp = [], isContained = false;
-            for (const k of state) {
-                if (k.title === title) {
-                    isContained = true;
-                    continue;
-                }
-                temp.push(k);
-            }
-            const value = { title: title, idx: idx }
-            if (!isContained) temp.push(value);
-            return temp;
-        });
     }, []);
 
     // 선택된 장소에서 x 버튼 눌러서 없애기 했을 때
@@ -282,15 +266,6 @@ const RecommendPlace = memo(props => {
                 temp.push(k);
             }
             temp[idx] = !temp[idx];
-            return temp;
-        });
-
-        setSelectedItem(state => {
-            let temp = [];
-            for (const k of state) {
-                if (k.idx === idx) continue;
-                temp.push(k);
-            }
             return temp;
         });
     }, []);
@@ -308,7 +283,8 @@ const RecommendPlace = memo(props => {
         setKeyword(state => value);
     }, []);
 
-    const onClosePopup = useCallback(e => {
+    useEffect(() => {
+        // 갱신된 선택 목록 state에 set
         const items = [];
         for (let i = 0; i < selectedIndex.length; i++) {
             if (selectedIndex[i] === true) {
@@ -317,7 +293,6 @@ const RecommendPlace = memo(props => {
         }
 
         props.setSelectedPlaces(state => items);
-        props.closeModal();
     }, [selectedIndex]);
 
     return (
@@ -328,7 +303,7 @@ const RecommendPlace = memo(props => {
             ariaHideApp={false}
         >
             <PopUpBox>
-                <button className='closePopUp' onClick={onClosePopup}>X</button>
+                <button className='closePopUp' onClick={props.closeModal}>X</button>
                 <div className='top-desc'>
                     <h3>추천할 장소를 찾아보세요</h3>
                     <p>자신이 리뷰를 남긴 장소에서 선택 가능해요</p>
@@ -336,10 +311,12 @@ const RecommendPlace = memo(props => {
                 <div className='selected-place'>
                     <p>선택된 장소 목록 : </p>
                     {
-                        selectedItem.map((v, i) => {
-                            return (
-                                <span key={i} data-idx={v.idx}>{v.title} <button onClick={onDeletePlaceClick}>X</button></span>
-                            )
+                        selectedIndex.map((v, i) => {
+                            if (v === true) {
+                                return (
+                                    <span key={i} data-idx={i}>{data_place[i].place_name} <button onClick={onDeletePlaceClick}>X</button></span> 
+                                )
+                            } else return '';
                         })
                     }
                 </div>
