@@ -317,7 +317,6 @@ const RecommendPlace = memo(props => {
         e.preventDefault();
 
         const idx = e.currentTarget.closest('span').dataset.idx;
-        console.log(idx);
         setSelectedIndex(state => {
             let temp = [];
             for (const k of state) {
@@ -358,11 +357,9 @@ const RecommendPlace = memo(props => {
             }
         }
 
-        /** To Do: 뭔가 이상함... 아이템 전달이 제대로 안됨 여기 수정해야함 */
-        console.log(items);
         props.setSelectedPlaces(state => items);
         props.closeModal();
-    }, []);
+    }, [selectedIndex]);
 
     return (
         <Modal

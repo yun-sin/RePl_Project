@@ -338,22 +338,21 @@ const NewPost = memo(() => {
                     </div>
                     <div className='recommend-place-body'>
                         <ul>
-                            <RecommendListItem
-                                img={breadSample}
-                                alt='빵'
-                                title='선플라워 베이크샵'
-                                address='서울시 어디어디'
-                                commend='3'
-                                reaction='완벽해요!'
-                            />
-                            <RecommendListItem
-                                img={breadSample}
-                                alt='빵'
-                                title='선플라워 베이크샵'
-                                address='서울시 어디어디'
-                                commend='3'
-                                reaction='완벽해요!'
-                            />
+                            {
+                                selectedPlaces.map((v, i) => {
+                                    return (
+                                        <RecommendListItem
+                                            key={i}
+                                            img={v?.place_img[0] ? v.place_img[0] : breadSample}
+                                            alt='플레이스 이미지'
+                                            title={v.place_name}
+                                            address={v.address_name}
+                                            commend={v.like}
+                                            reaction={v.rating}
+                                        />
+                                    );
+                                })
+                            }
                         </ul>
                     </div>
                 </RecommendPlaceArea>
