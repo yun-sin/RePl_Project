@@ -1,14 +1,14 @@
-import React, { memo, useEffect, useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { useSelector, useDispatch } from "react-redux";
-import { setActive } from "../../slices/SidebarSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../../slices/MainSlice";
 import { setKeyword } from "../../slices/MapFinderSlice";
+import { setActive } from "../../slices/SidebarSlice";
 
 
 const SidebarContainer = styled.div`
-  width: 30%;
+  width: 33%;
   /* min-width: 400px; */
   max-width: 520px;
   height: 100vw;
@@ -100,166 +100,145 @@ const SidebarContainer = styled.div`
 `;
 
 // 필터 생성을 위한 배열
-const whereArr = [
-  "을지로/충무로",
-  "광화문/시청",
-  "삼성/역삼/선릉",
-  "성수",
-  "종로/중구",
-  "송파/강동",
-  "홍대/합정",
-];
 
-const whereMoreArr = [
-  "을지로/충무로",
-  "광화문/시청",
-  "삼성/역삼/선릉",
-  "성수",
-  "종로/중구",
-  "송파/강동",
-  "홍대/합정",
-  "성북",
-  "영등포/금천",
-  "이태원/경리단",
-  "강남/서초/방배",
-  "은평",
-  "망원",
-  "동대문/성동",
-  "압구정/신사",
-  "신촌",
-  "관악/동작",
-  "용산/마포",
-  "대학로/혜화",
-  "강서",
-  "노원/도봉/강북",
-  "서촌/북촌",
-  "연남/연희",
-  "구로",
-  "여의도",
-];
+const categoryAll = {
+  
+  whereArr : [
+    "을지로/충무로",
+    "광화문/시청",
+    "삼성/역삼/선릉",
+    "성수",
+    "종로/중구",
+    "송파/강동",
+    "홍대/합정",
+    "성북",
+    "영등포/금천",
+    "이태원/경리단",
+    "강남/서초/방배",
+    "은평",
+    "망원",
+    "동대문/성동",
+    "압구정/신사",
+    "신촌",
+    "관악/동작",
+    "용산/마포",
+    "대학로/혜화",
+    "강서",
+    "노원/도봉/강북",
+    "서촌/북촌",
+    "연남/연희",
+    "구로",
+    "여의도",
+  ],
+  
+  whoArr : [
+    "🧍 혼자서",
+    "👯‍♀️ 동료랑",
+    "👩‍❤️‍👨연인이랑",
+    "🐶 반려동물과",
+    "🙌🏻 친구랑",
+    "🔢 소규모로",
+    "❤️ 소개팅",
+    "👶 아이랑",
+    "👨‍👩‍👧 부모님이랑",
+  ],
 
-const whoArr = [
-  "🧍 혼자서",
-  "👯‍♀️ 동료랑",
-  "👩‍❤️‍👨연인이랑",
-  "🐶 반려동물과",
-  "🙌🏻 친구랑",
-  "🔢 소규모로",
-  "❤️ 소개팅",
-  "👶 아이랑",
-  "👨‍👩‍👧 부모님이랑",
-];
+  
+  whatArr : [
+    "🌞 점심식사",
+    "🧑‍💻 일하기",
+    "🎧 음악듣기",
+    "📖 책읽기",
+    "🚶 산책하기",
+    "☀️ 한여름에",
+    "✏️ 공부하기",
+    "🏃‍♀️ 운동하기",
+    "🎉 특별한날",
+    "💫 영감얻기",
+    "🎞 영화보기",
+    "😃 대화하기",
+    "🌃 늦게까지",
+    "😶 멍때리기",
+    "📸 사진찍기",
+    "🚙 차끌고",
+    "☔️ 비오는날",
+    "🌛 저녁식사",
+    "🙇‍♂️ 대접하기",
+  ],
 
-const whatArr = [
-  "🌞 점심식사",
-  "🧑‍💻 일하기",
-  "🎧 음악듣기",
-  "📖 책읽기",
-  "🚶 산책하기",
-  "☀️ 한여름에",
-  "✏️ 공부하기",
-];
+ 
+ 
+  featureArr : [
+    "💰 가성비",
+    "✈️ 현지같은",
+    "🌿 그린에코",
+    "🥗 건강한",
+    "🏞 경치좋은",
+    "🕵️‍♀️ 숨겨진",
+    "🧙‍♀️ 실력있는",
+    "😌 편안한",
+    "🍱 푸짐한",
+    "📠 빈티지",
+    "😎 힙한",
+    "✨ 깔끔한",
+    "💸 비싼",
+    "🌠 루프탑/테라스",
+    "👩‍🎤 개성있는",
+    "😇 친절한",
+    "🤩 인스타감성",
+    "👮 정직한",
+    "🙊 조용한",
+    "🏝 붐비지않는",
+    "🚬 흡연가능",
+    "🎈 캐주얼한",
+    "🌈 성평등한",
+    "☀️ 햇빛좋은",
+    "🏚 오래된",
+    "🎢 높은층고",
+    "🚘 주차편한",
+  ],
 
-const whatMoreArr = [
-  "🌞 점심식사",
-  "🧑‍💻 일하기",
-  "🎧 음악듣기",
-  "📖 책읽기",
-  "🚶 산책하기",
-  "☀️ 한여름에",
-  "✏️ 공부하기",
-  "🏃‍♀️ 운동하기",
-  "🎉 특별한날",
-  "💫 영감얻기",
-  "🎞 영화보기",
-  "😃 대화하기",
-  "🌃 늦게까지",
-  "😶 멍때리기",
-  "📸 사진찍기",
-  "🚙 차끌고",
-  "☔️ 비오는날",
-  "🌛 저녁식사",
-  "🙇‍♂️ 대접하기",
-];
 
-const featureArr = [
-  "💰 가성비",
-  "✈️ 현지같은",
-  "🌿 그린에코",
-  "🥗 건강한",
-  "🏞 경치좋은",
-  "🕵️‍♀️ 숨겨진",
-  "🧙‍♀️ 실력있는",
-];
+  foodArr : [
+    "🌏 세계음식",
+    "🍜 면요리",
+    "🍖 고기",
+    "🍰 디저트",
+    "🥘 한국음식",
+    "🥗 채식/비건",
+    "🥪 간단한음식",
+    "🍣 생선",
+    "🥟 분식",
+    "👐 수제",
+    "🌶 매운음식",
+  ],
 
-const featureMoreArr = [
-  "💰 가성비",
-  "✈️ 현지같은",
-  "🌿 그린에코",
-  "🥗 건강한",
-  "🏞 경치좋은",
-  "🕵️‍♀️ 숨겨진",
-  "🧙‍♀️ 실력있는",
-  "😌 편안한",
-  "🍱 푸짐한",
-  "📠 빈티지",
-  "😎 힙한",
-  "✨ 깔끔한",
-  "💸 비싼",
-  "🌠 루프탑/테라스",
-  "👩‍🎤 개성있는",
-  "😇 친절한",
-  "🤩 인스타감성",
-  "👮 정직한",
-  "🙊 조용한",
-  "🏝 붐비지않는",
-  "🚬 흡연가능",
-  "🎈 캐주얼한",
-  "🌈 성평등한",
-  "☀️ 햇빛좋은",
-  "🏚 오래된",
-  "🎢 높은층고",
-  "🚘 주차편한",
-];
 
-const foodArr = [
-  "🌏 세계음식",
-  "🍜 면요리",
-  "🍖 고기",
-  "🍰 디저트",
-  "🥘 한국음식",
-  "🥗 채식/비건",
-  "🥪 간단한음식",
-  "🍣 생선",
-  "🥟 분식",
-  "👐 수제",
-  "🌶 매운음식",
-];
+  drinkArr : [
+    "☕️ 커피",
+    "🍷 와인",
+    "🍺 맥주",
+    "🍵 차",
+    "🍶 전통주",
+    "🍹 칵테일",
+    "🧊 하이볼",
+    "🥛 소주",
+    "🥃 위스키",
+    "🍶 사케",
+  ],
 
-const drinkArr = [
-  "☕️ 커피",
-  "🍷 와인",
-  "🍺 맥주",
-  "🍵 차",
-  "🍶 전통주",
-  "🍹 칵테일",
-  "🧊 하이볼",
-  "🥛 소주",
-  "🥃 위스키",
-  "🍶 사케",
-];
-
-const categoryArr = [
-  "식당",
-  "카페",
-  "주점",
-  "상점",
-  "기타",
-  "베이커리",
-  "문화공간",
-  "공원",
-  "호텔",
-];
+  categoryArr : [
+    "식당",
+    "카페",
+    "주점",
+    "상점",
+    "기타",
+    "베이커리",
+    "문화공간",
+    "공원",
+    "호텔",
+  ],
+}
 
 const Sidebar = memo(() => {
   const { isActive } = useSelector((state) => state.SidebarSlice);
@@ -306,11 +285,10 @@ const Sidebar = memo(() => {
       return;
     }
     if (Object.values(selectedItems)?.filter((v) => v)?.length >= 3) {
-      alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
+      window.alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
       return;
     }
     if (selectedItems[type]) {
-      
       selectedItems[type].classList.remove("active");
       selectedItems[type] = e.currentTarget;
       selectedItems[type].classList.add("active");
@@ -362,17 +340,22 @@ const Sidebar = memo(() => {
     theme.current.classList.remove("active");
   });
 
-  const more = useCallback((whereArr, where) => {
-    const convertName = Object.keys( {where})[0];
-    
-    return whereArr.map((v, i) => {
+  const more = useCallback((whereArr,length) => {
+    if ( !length)
+    {
+     
+      length = categoryAll[whereArr].length || 0
+    }
+    console.log(length)
+    return categoryAll[whereArr].map((v, i) => {
       return (
-        <li key={i} onClick={(e) => onFilterClick(e, convertName)}>
+        <li key={i} onClick={(e) => onFilterClick(e, whereArr)}>
           <span>{v}</span>
         </li>
       );
-    });
+    }).slice(0,length);
   }, []);
+  
 
   return (
     <SidebarContainer className={`${isActive ? "active" : ""}`}>
@@ -406,7 +389,7 @@ const Sidebar = memo(() => {
       <div className="filter where">
         <h3>어디로 가고싶나요?</h3>
         <ul>
-          {whereMoreView === false ? more(whereArr) : more(whereMoreArr)}
+          {whereMoreView === false ? more("whereArr" ,6) : more("whereArr")}
           {whereMoreView === false ? (
             <li onClick={onWhereMoreView} className="more">
               + 더 보기
@@ -419,7 +402,7 @@ const Sidebar = memo(() => {
       <div className="filter who">
         <h3>누구와 함께 하나요?</h3>
         <ul>
-          {whoArr.map((v, i) => {
+          {categoryAll.whoArr.map((v, i) => {
             return (
               <li key={i} onClick={(e) => onFilterClick(e, "whoArr")}>
                 <span>{v}</span>
@@ -431,7 +414,7 @@ const Sidebar = memo(() => {
       <div className="filter what">
         <h3>무엇을 하나요?</h3>
         <ul>
-          {whatMoreView === false ? more(whatArr) : more(whatMoreArr)}
+          {whatMoreView === false ? more("whatArr",6) : more("whatArr")}
           {whatMoreView === false ? (
             <li onClick={onWhatMoreView} className="more">
               + 더 보기
@@ -444,7 +427,7 @@ const Sidebar = memo(() => {
       <div className="filter feature">
         <h3>분위기와 특징</h3>
         <ul>
-          {featureMoreView === false ? more(featureArr) : more(featureMoreArr)}
+          {featureMoreView === false ? more("featureArr",6) : more("featureArr")}
           {featureMoreView === false ? (
             <li onClick={onFeatureMoreView} className="more">
               + 더 보기
@@ -457,7 +440,7 @@ const Sidebar = memo(() => {
       <div className="filter food">
         <h3>어떤 음식</h3>
         <ul>
-          {foodArr.map((v, i) => {
+          {categoryAll.foodArr.map((v, i) => {
             return (
               <li key={i} onClick={(e) => onFilterClick(e, "foodArr")}>
                 <span>{v}</span>
@@ -469,7 +452,7 @@ const Sidebar = memo(() => {
       <div className="filter drink">
         <h3>어떤 술/음료</h3>
         <ul>
-          {drinkArr.map((v, i) => {
+          {categoryAll.drinkArr.map((v, i) => {
             return (
               <li key={i} onClick={(e) => onFilterClick(e, "drinkArr")}>
                 <span>{v}</span>
@@ -481,7 +464,7 @@ const Sidebar = memo(() => {
       <div className="filter category">
         <h3>카테고리</h3>
         <ul>
-          {categoryArr.map((v, i) => {
+          {categoryAll.categoryArr.map((v, i) => {
             return (
               <li key={i} onClick={(e) => onFilterClick(e, "categoryArr")}>
                 <span>{v}</span>
