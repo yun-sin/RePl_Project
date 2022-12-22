@@ -287,9 +287,7 @@ const RecommendPlace = memo(props => {
         // 갱신된 선택 목록 state에 set
         const items = [];
         for (let i = 0; i < selectedIndex.length; i++) {
-            if (selectedIndex[i] === true) {
-                items.push(data_place[i]);
-            }
+            if (selectedIndex[i] === true) items.push(data_place[i]);
         }
 
         props.setSelectedPlaces(state => items);
