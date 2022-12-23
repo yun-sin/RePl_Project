@@ -286,6 +286,7 @@ const NewPost = memo(() => {
             return;
         }
 
+        const backgroundImage = e.currentTarget.backgroundImageInput.value;
         const postDate = dayjs().format('YYYY-MM-DD');
         const postUser = 'test'; // <TO DO> 로그인 정보 불러오기
 
@@ -303,10 +304,11 @@ const NewPost = memo(() => {
         }
 
         const data = {
-            bgColor: backgroundColor,
             postTitle: postTitle,
             postDate: postDate,
             postUser: postUser,
+            bgColor: backgroundColor,
+            backgroundImage: backgroundImage,
             content: content,
             selectedPlaces: selectedPlace_light,
             selectedTags: selectedTags,

@@ -526,6 +526,28 @@
         "을지로/충무로"
       ],
       "id": 14
+    },
+    {
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "bgColor": "#fff",
+      "backgroundImage": "",
+      "content": "<p>여기에 내용을 입력하세요123.</p>\n",
+      "selectedPlaces": [
+        {
+          "id": 9,
+          "place_name": "로우앤슬로우",
+          "address_name": "서울 용산구 이태원동 127-28",
+          "place_img": [],
+          "like": 0,
+          "rating": 5
+        }
+      ],
+      "selectedTags": [
+        "을지로/충무로"
+      ],
+      "id": 15
     }
   ],
   "emoji": [
