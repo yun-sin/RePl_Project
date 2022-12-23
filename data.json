@@ -403,60 +403,6 @@
   ],
   "editorTest": [
     {
-      "bgColor": "#fff",
-      "postTitle": "123",
-      "postDate": "2022-12-12",
-      "postUser": "test",
-      "content": "<p>여기에 내용을 입력하세요.</p>",
-      "id": 1
-    },
-    {
-      "bgColor": "#fff",
-      "postTitle": "643",
-      "postDate": "2022-12-12",
-      "postUser": "test",
-      "content": "<ul>\n\t<li>여기에 내용을 입력하세요.</li>\n</ul>\n",
-      "id": 2
-    },
-    {
-      "bgColor": "#fff",
-      "postTitle": "6434367",
-      "postDate": "2022-12-12",
-      "postUser": "test",
-      "content": "<p><em>dsgdgsfg<strong>sfdgsfgsfg</strong></em></p>\n",
-      "id": 3
-    },
-    {
-      "bgColor": "#fff",
-      "postTitle": "643",
-      "postDate": "2022-12-20",
-      "postUser": "test",
-      "content": "<p>123213321123123</p>\n",
-      "id": 4
-    },
-    {
-      "bgColor": "#c50d0d",
-      "postTitle": "5555",
-      "postDate": "2022-12-21",
-      "postUser": "test"
-    },
-    {
-      "bgColor": "#483737",
-      "postTitle": "ㄱㄷㅎㅇㄹ",
-      "postDate": "2022-12-22",
-      "postUser": "test",
-      "content": "<p>ㄷㄴㅁㅎㄹㄶㅇㄴㅁ</p>\n",
-      "id": 8
-    },
-    {
-      "bgColor": "#25316a",
-      "postTitle": "123",
-      "postDate": "2022-12-23",
-      "postUser": "test",
-      "content": "<p>test 제발!!</p>\n",
-      "id": 9
-    },
-    {
       "bgColor": "#c5a0f3",
       "postTitle": "123",
       "postDate": "2022-12-23",
@@ -464,6 +410,7 @@
       "content": "<p>제발용..</p>\n",
       "selectedPlaces": [],
       "selectedTags": [],
+      "like": 0,
       "id": 10
     },
     {
@@ -478,6 +425,7 @@
         "송파/강동",
         "🧙‍♀️ 실력있는"
       ],
+      "like": 0,
       "id": 11
     },
     {
@@ -492,6 +440,7 @@
         "송파/강동",
         "🧙‍♀️ 실력있는"
       ],
+      "like": 0,
       "id": 12
     },
     {
@@ -504,6 +453,7 @@
       "selectedTags": [
         "을지로/충무로"
       ],
+      "like": 0,
       "id": 13
     },
     {
@@ -525,6 +475,7 @@
       "selectedTags": [
         "을지로/충무로"
       ],
+      "like": 0,
       "id": 14
     },
     {
@@ -547,7 +498,20 @@
       "selectedTags": [
         "을지로/충무로"
       ],
+      "like": 0,
       "id": 15
+    },
+    {
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "bgColor": "#fff",
+      "backgroundImage": "",
+      "content": "<p>여기에 내용을 입력하세요.</p>",
+      "selectedPlaces": [],
+      "selectedTags": [],
+      "like": 0,
+      "id": 16
     }
   ],
   "emoji": [

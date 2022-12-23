@@ -1,6 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { pending, fulfilled, rejected } from '../../helper/ReduxHelper';
-import axios from 'axios';
+import axios from 'axios'
+
+export const getList = createAsyncThunk('BulletinSlice/getList', async (payload, { rejectWithValue }) => {
+    let result = null;
+
+    try {
+        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST);
+        result = response.data;
+    } catch (err) {
+        result = rejectWithValue(err.response);
+    }
+
+    return result;
+});
 
 export const getPost = createAsyncThunk('BulletinSlice/getPost', async (payload, { rejectWithValue }) => {
     let result = null;
@@ -42,7 +55,12 @@ const BulletinSlice = createSlice({
         }
     },
     extraReducers: {
-        /** 게시물 데이터 가져오기 */
+        /** 전체 게시물 데이터 가져오기 */
+        [getList.pending]: pending,
+        [getList.fulfilled]: fulfilled,
+        [getList.rejected]: rejected,
+
+        /** 단일 게시물 데이터 가져오기 */
         [getPost.pending]: pending,
         [getPost.fulfilled]: fulfilled,
         [getPost.rejected]: rejected,

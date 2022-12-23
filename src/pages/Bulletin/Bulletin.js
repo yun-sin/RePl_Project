@@ -1,6 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getList } from '../../slices/bulletin/BulletinSlice';
 
 import Post from '../../components/bulletin/Post';
 
@@ -131,64 +134,16 @@ const PageControl = styled.div`
   }
 `;
 
-const testData = [
-  {
-    targetId: 1,
-    title: '게시물 1',
-    img: postImg1,
-    publisher: '게시자 1',
-    like: 1,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-  {
-    targetId: 2,
-    title: '게시물 2',
-    img: postImg2,
-    publisher: '게시자 3',
-    like: 2,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-  {
-    targetId: 3,
-    title: '게시물 3',
-    img: postImg3,
-    publisher: '게시자 3',
-    like: 3,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-  {
-    targetId: 4,
-    title: '게시물 4',
-    img: postImg4,
-    publisher: '게시자 4',
-    like: 4,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-  {
-    targetId: 5,
-    title: '게시물 5',
-    img: postImg5,
-    publisher: '게시자 5',
-    like: 5,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-  {
-    targetId: 6,
-    title: '게시물 6',
-    img: postImg6,
-    publisher: '게시자 6',
-    like: 6,
-    postDate: '2022-11-30',
-    hashtag: ['해시태그 1', '태그 2', '3']
-  },
-];
-
 const Bulletin = memo(() => {
+    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(getList());
+    }, []);
+
+    console.log(data);
+
     return (
         <>
             <BannerArea>
@@ -221,17 +176,17 @@ const Bulletin = memo(() => {
               <PostList>
                 <div className='list-box'>
                   {
-                    testData.map((v, i) => {
+                    data && data.map((v, i) => {
                       return (
                         <Post
                           key={i}
-                          targetId={v.targetId}
-                          title={v.title}
-                          img={v.img}
-                          publisher={v.publisher}
+                          targetId={v.id}
+                          postTitle={v.postTitle}
+                          backgroundImage={postImg1}
+                          postUser={v.postUser}
                           like={v.like}
                           postDate={v.postDate}
-                          hashtag={v.hashtag}
+                          selectedTags={v.selectedTags}
                         />
                       );
                     })

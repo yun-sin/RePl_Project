@@ -312,6 +312,7 @@ const NewPost = memo(() => {
             content: content,
             selectedPlaces: selectedPlace_light,
             selectedTags: selectedTags,
+            like: 0,
         }
 
         dispatch(newPost(data));
