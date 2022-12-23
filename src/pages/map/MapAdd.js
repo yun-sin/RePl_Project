@@ -59,13 +59,12 @@ const MapAdd = memo(({ zoomLevel }) => {
     dispatch(getMapData()).then((e) => {
       // console.log(e.payload);
 
+      // 장소의 카카오맵id가 리플의 데이터에서 어떤 id인지 확인하기 위한 object
       let obj = {};
-
       e.payload.forEach((v, i) => {
-        obj[v.place_id] = v.id;
+        obj[v.place_id] = { key: v.id, theme: v.theme };
       });
 
-      // console.log(obj);
       setIdList(obj);
     });
 
@@ -83,33 +82,17 @@ const MapAdd = memo(({ zoomLevel }) => {
 
   useEffect(() => {
     if (data) {
-      console.log("데이터 변경" + data);
-      console.log(data);
+      // console.log("데이터 변경" + data);
+      // console.log(data);
       let obj = {};
 
       data.forEach((v, i) => {
-        obj[v.place_id] = v.id;
+        obj[v.place_id] = { key: v.id, theme: v.theme };
       });
 
       setIdList(obj);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   // 리플에 등록된 장소데이터를 가져옵니다 (중복인지 확인 위함)
-  //   dispatch(getMapData()).then((e) => {
-  //     // console.log(e.payload);
-
-  //     let obj = {};
-
-  //     e.payload.forEach((v, i) => {
-  //       obj[v.place_id] = i;
-  //     });
-
-  //     // console.log(obj);
-  //     setIdList(obj);
-  //   });
-  // },[data])
 
   // 키워드로 장소를 검색합니다
   const onSearchSubmit = useCallback((e) => {
@@ -283,7 +266,8 @@ const MapAdd = memo(({ zoomLevel }) => {
 
   /** 이미 있는 장소일 경우 리플 리뷰창 오픈 */
   const onAlreadyClick = useCallback((e) => {
-    const index = idList[searchData[e.currentTarget.dataset.index].id];
+    const index = idList[searchData[e.currentTarget.dataset.index].id].key;
+    console.log(index);
     setModalContent(index);
     setModalIsOpen(true);
   });
@@ -318,6 +302,10 @@ const MapAdd = memo(({ zoomLevel }) => {
           <ul id="placesList">
             {searchData?.map((v, i) => {
               const category = v.category_name.split(">").reverse()[0].trim();
+              // let themeList = [];
+              // if (Object.keys(idList)?.includes(v.id)) {
+              //   idList[v.id].theme
+              // }
 
               return (
                 <li key={i} className={`${"item"} ${"loc" + i}`} onClick={onItemClick}>
@@ -331,10 +319,21 @@ const MapAdd = memo(({ zoomLevel }) => {
                   </div>
                   <div>
                     {Object.keys(idList)?.includes(v.id) ? (
-                      <div className="btn" data-index={i} onClick={onAlreadyClick}>
-                        🗺️
-                      </div>
+                      idList[v.id].theme?.includes(+theme) ? (
+                        // 현재 테마에 이미 해당 장소가 있음
+                        <div className="btn" data-index={i} onClick={onAlreadyClick}>
+                          🗺️
+                          {idList[v.id].theme}
+                        </div>
+                      ) : (
+                        // 장소가 저장되어있지만 현재 테마는 아님
+                        <div className="btn" data-index={i} onClick={onAlreadyClick}>
+                          😥
+                          {idList[v.id].theme}
+                        </div>
+                      )
                     ) : (
+                      // 데이터에 없는 장소
                       <div className={`${"btn"} ${"choice"}`} data-index={i} onClick={onBtnClick}>
                         +
                       </div>
