@@ -8,7 +8,7 @@ import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { newPost } from '../../slices/BulletinSlice';
+import { newPost } from '../../slices/bulletin/BulletinSlice';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 import { useEffect } from 'react';
@@ -266,6 +266,9 @@ const NewPost = memo(() => {
     /** 추천 장소 선택하기 */
     // 선택한 장소 목록
     const [selectedPlaces, setSelectedPlaces] = useState([]);
+
+    /** 관련 태그 설정하기 */
+    const [selectedTags, setSelectedTags] = useState([]);
     
     /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
@@ -283,23 +286,37 @@ const NewPost = memo(() => {
             return;
         }
 
+        const backgroundImage = e.currentTarget.backgroundImageInput.value;
         const postDate = dayjs().format('YYYY-MM-DD');
         const postUser = 'test'; // <TO DO> 로그인 정보 불러오기
 
+        const selectedPlace_light = [];
+        for (const k of selectedPlaces) {
+            const temp = {};
+            temp.id = k.id;
+            temp.place_name = k.place_name;
+            temp.address_name = k.address_name;
+            temp.place_img = k.place_img;
+            temp.like = k.like;
+            temp.rating = k.rating;
+
+            selectedPlace_light.push(temp);
+        }
+
         const data = {
-            bgColor: backgroundColor,
             postTitle: postTitle,
             postDate: postDate,
             postUser: postUser,
+            bgColor: backgroundColor,
+            backgroundImage: backgroundImage,
             content: content,
+            selectedPlaces: selectedPlace_light,
+            selectedTags: selectedTags,
+            like: 0,
         }
 
         dispatch(newPost(data));
-    }, [backgroundColor, content]);
-
-    const test = useEffect(() => {
-        console.log(selectedPlaces);
-    }, [selectedPlaces]);
+    }, [backgroundColor, content, selectedPlaces, selectedTags]);
 
     return (
         <MainForm onSubmit={onPosting}>
@@ -338,22 +355,21 @@ const NewPost = memo(() => {
                     </div>
                     <div className='recommend-place-body'>
                         <ul>
-                            <RecommendListItem
-                                img={breadSample}
-                                alt='빵'
-                                title='선플라워 베이크샵'
-                                address='서울시 어디어디'
-                                commend='3'
-                                reaction='완벽해요!'
-                            />
-                            <RecommendListItem
-                                img={breadSample}
-                                alt='빵'
-                                title='선플라워 베이크샵'
-                                address='서울시 어디어디'
-                                commend='3'
-                                reaction='완벽해요!'
-                            />
+                            {
+                                selectedPlaces.map((v, i) => {
+                                    return (
+                                        <RecommendListItem
+                                            key={i}
+                                            img={v?.place_img[0] ? v.place_img[0] : breadSample}
+                                            alt='플레이스 이미지'
+                                            title={v.place_name}
+                                            address={v.address_name}
+                                            commend={v.like}
+                                            reaction={v.rating}
+                                        />
+                                    );
+                                })
+                            }
                         </ul>
                     </div>
                 </RecommendPlaceArea>
@@ -362,15 +378,15 @@ const NewPost = memo(() => {
                     <PlaceHashtag
                         isOpen={isHashtagModalOpen}
                         closeModal={closeHashtagModal}
+                        selectedTags={selectedTags}
+                        setSelectedTags={setSelectedTags}
                     />
                     <div className='category-tags'>
-                        <span>O 세글자</span>
-                        <span>O 네글자네</span>
-                        <span>O 다섯글자다</span>
-                        <span>O 네글자네</span>
-                        <span>O 여섯글자여섯</span>
-                        <span>O 세글자</span>
-                        <span>O 여섯글자여섯</span>
+                        {
+                            selectedTags.map((v, i) => {
+                                return <span key={i}>{v}</span>
+                            })
+                        }
                     </div>
                     <button type='button' className='category-addButton' onClick={openHashtagModal}>
                         + 더 보기

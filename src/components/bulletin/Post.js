@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import { useEffect } from 'react';
 
 const PostCard = styled.div`
     width: 260px;
@@ -60,9 +61,18 @@ const PostCard = styled.div`
     .post__hashtags {
         text-align: right;
         padding: 10px;
+        height: 36px;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         background-color: lightgray;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+
+        &:hover {
+            background-color: #aaa;
+        }
 
         span {
             margin-left: 5px;
@@ -125,25 +135,37 @@ const Post = memo(props => {
         navigate(`/bulletin/postview/${props.targetId}`);
     }, []);
 
+    useEffect(() => {
+        const targets = document.querySelectorAll('.post__hashtags');
+        targets.forEach(v1 => {
+            const values = v1.childNodes;
+            let str = '';
+            values.forEach(v2 => {
+                str += ` ${v2.innerHTML}`;
+            });
+            v1.setAttribute('title', str);
+        })
+    }, [props]);
+
     return (
         <PostCard onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} onClick={onLinkClick}>
             <div className={classNames('hover__preview', {active: isHover})}>
-                <h3>{props.title}</h3>
+                <h3>{props.postTitle}</h3>
                 <p>게시물 바로가기</p>
             </div>
 
-            <img src={props.img} alt="게시물 이미지" />
-            <h3 className='post__title' onClick={onLinkClick}>{props.title}</h3>
+            <img src={props.backgroundImage} alt="게시물 이미지" />
+            <h3 className='post__title' onClick={onLinkClick}>{props.postTitle}</h3>
             <div className='post__desc'>
-                <h4>{props.publisher}</h4>
+                <h4>{props.postUser}</h4>
                 <div className='post__desc__other'>
                     <p><span>좋아요</span> {props.like}</p>
                     <p>{props.postDate}</p>
                 </div>
             </div>
-            <div className='post__hashtags'>
+            <div className='post__hashtags' title=''>
                 {
-                    props.hashtag.map((v, i) => {
+                    props.selectedTags && props.selectedTags.map((v, i) => {
                         return (
                             <span key={i}>#{v}</span>
                         )

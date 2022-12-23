@@ -11,7 +11,6 @@ const SubjectBox = styled.div`
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: bottom;
-        margin-bottom: 5px;
     }
 
     h4 {
@@ -37,6 +36,7 @@ const SubjectBox = styled.div`
         font-size: 12px;
         border-radius: 5px;
         padding: 3px 5px;
+        margin-right: 15px;
 
         &:hover {
             cursor: pointer;
@@ -44,15 +44,13 @@ const SubjectBox = styled.div`
     }
 
     ul {
-        padding: 10px 5px;
+        padding: -13px 5px 10px;
         width: 100%;
-        max-height: 100px;
+        max-height: 130px;
         overflow: hidden;
-
-        &.active {
-            overflow: visible;
-            max-height: none;
-        }
+        box-sizing: border-box;
+        transition: max-height 0.2s ease-out;
+        margin-bottom: 30px;
 
         li {
             display: inline-block;
@@ -64,7 +62,7 @@ const SubjectBox = styled.div`
             padding: 8px 10px;
             border-radius: 5px;
             font-size: 13px;
-            margin: 0 10px 10px 0;
+            margin: 13px 15px 0 0;
 
             transition: all 0.2s;
 
@@ -76,48 +74,22 @@ const SubjectBox = styled.div`
     }
 `;
 
-const testData = [
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-    'O 태그명',
-]
-
 const TagBox = memo(props => {
+    /** 각 주제별 하위 태그들의 영역의 넘치지 않는지(더보기 필요한지) */
     const [isOver, setIsOver] = useState(false);
+    /** 더보기 처리 위한 엘리먼트들 */
     const tagbox = useRef();
     const moreTags = useRef();
 
+    // 렌더링 시 각 태그 영역이 더보기 해야할정도로 높은지 판별
     useEffect(() => {
         const target = tagbox.current;
-        if (target.scrollHeight >= 130) {
+        if (target.scrollHeight >= 150) {
             setIsOver(true);
         }
-    }, [tagbox]);
+    }, []);
 
+    // 더보기 클릭시 처리
     const onMoreTagsClick = useCallback(e => {
         e.preventDefault();
 
@@ -125,27 +97,58 @@ const TagBox = memo(props => {
         const target = current.closest('.tagbox').childNodes[1];
 
         current.classList.toggle('active');
-        target.classList.toggle('active');
+
+        if (target.style.maxHeight !== '130px' && target.style.maxHeight !== '') {
+            target.style.maxHeight = '130px';
+        } else {
+            target.style.maxHeight = `${target.scrollHeight}px`;
+        }
     }, []);
 
+    /** 해시태그 선택 처리 */
     const onHashtagClick = useCallback(e => {
         e.preventDefault();
 
         const current = e.currentTarget;
         current.classList.toggle('active');
-    }, []);
+
+        const value = current.innerHTML;
+
+        props.setSelectedTags(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            const idx = temp.indexOf(value);
+            if (idx !== -1) {
+                temp = temp.splice(idx, 1);
+            } else {
+                temp.push(value);
+            }
+
+            return temp;
+        });
+    }, [props]);
 
     return (
         <SubjectBox className='tagbox'>
             <div>
-                <h4>{props.title}</h4>
+                <h4>{props.subject}</h4>
                 <button className={classNames('moreTags', {show: isOver})} onClick={onMoreTagsClick} ref={moreTags}>더보기</button>
             </div>
             <ul ref={tagbox}>
                 {
-                    testData.map((v, i) => {
+                    props.values.map((v, i) => {
                         return (
-                            <li key={i} onClick={onHashtagClick}>{v}</li>
+                            <li
+                                key={i}
+                                onClick={onHashtagClick}
+                                className={classNames({
+                                    active: props.selectedTags.indexOf(v) !== -1
+                                })}
+                            >
+                                {v}
+                            </li>
                         )
                     })
                 }

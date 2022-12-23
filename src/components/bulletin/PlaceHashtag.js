@@ -1,6 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import styled from 'styled-components';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getTags } from '../../slices/bulletin/HashtagSlice';
 
 import Modal from 'react-modal';
 
@@ -74,6 +77,13 @@ const SelectHashtagBox = styled.div`
 `
 
 const PlaceHashtag = memo(props => {
+    const { data: data_hashtag, loading: loading_hashtag, error: error_hashtag } = useSelector(state => state.HashtagSlice);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getTags());
+    }, []);
+
     const onClosePopUpClick = useCallback(e => {
         const targets = document.querySelectorAll('li');
         let values = [];
@@ -83,9 +93,10 @@ const PlaceHashtag = memo(props => {
         });
 
         console.log(values);
+        props.setSelectedTags(state => values);
 
         props.closeModal();
-    }, []);
+    }, [props]);
 
     return (
         <Modal
@@ -95,14 +106,24 @@ const PlaceHashtag = memo(props => {
             ariaHideApp={false}
         >
             <SelectHashtagBox>
-                <button className='closePopUp' onClick={onClosePopUpClick}>X</button>
+                <button className='closePopUp' onClick={props.closeModal}>X</button>
                 <div className='top-desc'>
                     <h3>이 장소는 어떤 곳인가요?</h3>
                     <p>어울리는 태그를 선택해주세요</p>
                 </div>
-                <TagBox title='누구와 함께하나요?' />
-                <TagBox title='무엇을 하나요?' />
-                <TagBox title='분위기는 어떤가요?' />
+                {
+                    data_hashtag && data_hashtag.map((v, i) => {
+                        return (
+                            <TagBox
+                                key={i}
+                                subject={v.subject}
+                                values={v.values}
+                                selectedTags={props.selectedTags}
+                                setSelectedTags={props.setSelectedTags}
+                            />
+                        );
+                    })
+                }
             </SelectHashtagBox>
         </Modal>
     );

@@ -151,7 +151,7 @@ const Comments = memo(props => {
 
     const onCommentsShowClick = useCallback(e => {
         const target = document.querySelector('.comments__wrap');
-        if (target.style.maxHeight !== '0px') {
+        if (target.style.maxHeight !== '0px' && target.style.maxHeight !== '') {
             target.style.maxHeight = '0px';
         } else {
             target.style.maxHeight = `${target.scrollHeight}px`;

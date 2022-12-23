@@ -7,7 +7,7 @@ import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 
-import { getPost } from '../../slices/BulletinSlice';
+import { getPost } from '../../slices/bulletin/BulletinSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
@@ -338,27 +338,33 @@ const testData3 = [
 ]
 
 const NewPost = memo(props => {
+    /** 게시글 데이터 불러오기 */
     const { data, loading, error } = useSelector(state => state.BulletinSlice);
     const dispatch = useDispatch();
 
+    // 패스파라미터 변수
     const postId = useParams().id;
-
+    // 해당 패스 게시글 불러오기
     useEffect(() => {
         dispatch(getPost({ id: postId }));
     }, []);
 
+    /** 작성자의 다른 게시글 영역 */
+    // 현재 스크롤 위치 저장
     const [scrollPosition, setScrollPosition] = useState(0);
     const [maxScroll, setMaxScroll] = useState(0);
-
+    // 왼쪽 오른쪽 버튼
     const toLeft = useRef();
     const toRight = useRef();
 
+    // 최대 길이 적재
     useEffect(() => {
         if (!data) return;
         const target = document.querySelector('.other_posts__wrap');
         setMaxScroll(target.scrollWidth);
-    }, [loading]);
+    }, [data]);
 
+    // 좌 우 클릭
     const onToRightClick = useCallback(e => {
         e.preventDefault();
         e.currentTarget.setAttribute('disabled', 'disabled');
@@ -370,7 +376,6 @@ const NewPost = memo(props => {
             current.removeAttribute('disabled');
         }, 500);
     }, []);
-
     const onToLeftClick = useCallback(e => {
         e.preventDefault();
         e.currentTarget.setAttribute('disabled', 'disabled');
