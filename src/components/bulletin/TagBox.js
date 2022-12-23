@@ -75,10 +75,13 @@ const SubjectBox = styled.div`
 `;
 
 const TagBox = memo(props => {
+    /** 각 주제별 하위 태그들의 영역의 넘치지 않는지(더보기 필요한지) */
     const [isOver, setIsOver] = useState(false);
+    /** 더보기 처리 위한 엘리먼트들 */
     const tagbox = useRef();
     const moreTags = useRef();
 
+    // 렌더링 시 각 태그 영역이 더보기 해야할정도로 높은지 판별
     useEffect(() => {
         const target = tagbox.current;
         if (target.scrollHeight >= 150) {
@@ -86,6 +89,7 @@ const TagBox = memo(props => {
         }
     }, []);
 
+    // 더보기 클릭시 처리
     const onMoreTagsClick = useCallback(e => {
         e.preventDefault();
 
@@ -101,12 +105,30 @@ const TagBox = memo(props => {
         }
     }, []);
 
+    /** 해시태그 선택 처리 */
     const onHashtagClick = useCallback(e => {
         e.preventDefault();
 
         const current = e.currentTarget;
         current.classList.toggle('active');
-    }, []);
+
+        const value = current.innerHTML;
+
+        props.setSelectedTags(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            const idx = temp.indexOf(value);
+            if (idx !== -1) {
+                temp = temp.splice(idx, 1);
+            } else {
+                temp.push(value);
+            }
+
+            return temp;
+        });
+    }, [props]);
 
     return (
         <SubjectBox className='tagbox'>
@@ -118,7 +140,15 @@ const TagBox = memo(props => {
                 {
                     props.values.map((v, i) => {
                         return (
-                            <li key={i} onClick={onHashtagClick}>{v}</li>
+                            <li
+                                key={i}
+                                onClick={onHashtagClick}
+                                className={classNames({
+                                    active: props.selectedTags.indexOf(v) !== -1
+                                })}
+                            >
+                                {v}
+                            </li>
                         )
                     })
                 }

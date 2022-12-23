@@ -360,6 +360,7 @@ const NewPost = memo(() => {
                     <PlaceHashtag
                         isOpen={isHashtagModalOpen}
                         closeModal={closeHashtagModal}
+                        selectedTags={selectedTags}
                         setSelectedTags={setSelectedTags}
                     />
                     <div className='category-tags'>

@@ -221,7 +221,6 @@ const RecommendPlace = memo(props => {
     /** 장소 선택하기 */
     // 선택 장소 정보 저장
     const [selectedIndex, setSelectedIndex] = useState([]);
-    const [selectedItem, setSelectedItem] = useState([]);
     // 장소 검색 input data 저장
     const [keyword, setKeyword] = useState('');
 
@@ -287,7 +286,9 @@ const RecommendPlace = memo(props => {
         // 갱신된 선택 목록 state에 set
         const items = [];
         for (let i = 0; i < selectedIndex.length; i++) {
-            if (selectedIndex[i] === true) items.push(data_place[i]);
+            if (selectedIndex[i] === true) {
+                items.push(data_place[i]);
+            }
         }
 
         props.setSelectedPlaces(state => items);
