@@ -447,6 +447,85 @@
       "postUser": "test",
       "content": "<p>ㄷㄴㅁㅎㄹㄶㅇㄴㅁ</p>\n",
       "id": 8
+    },
+    {
+      "bgColor": "#25316a",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>test 제발!!</p>\n",
+      "id": 9
+    },
+    {
+      "bgColor": "#c5a0f3",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>제발용..</p>\n",
+      "selectedPlaces": [],
+      "selectedTags": [],
+      "id": 10
+    },
+    {
+      "bgColor": "#c5a0f3",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>제발용..</p>\n",
+      "selectedPlaces": [],
+      "selectedTags": [
+        "👩‍❤️‍👨연인이랑",
+        "송파/강동",
+        "🧙‍♀️ 실력있는"
+      ],
+      "id": 11
+    },
+    {
+      "bgColor": "#c5a0f3",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>제발용..</p>\n",
+      "selectedPlaces": [],
+      "selectedTags": [
+        "👩‍❤️‍👨연인이랑",
+        "송파/강동",
+        "🧙‍♀️ 실력있는"
+      ],
+      "id": 12
+    },
+    {
+      "bgColor": "#fff",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>여기에 내용을 입력하세요123.</p>\n",
+      "selectedPlaces": [],
+      "selectedTags": [
+        "을지로/충무로"
+      ],
+      "id": 13
+    },
+    {
+      "bgColor": "#fff",
+      "postTitle": "123",
+      "postDate": "2022-12-23",
+      "postUser": "test",
+      "content": "<p>여기에 내용을 입력하세요123.</p>\n",
+      "selectedPlaces": [
+        {
+          "id": 9,
+          "place_name": "로우앤슬로우",
+          "address_name": "서울 용산구 이태원동 127-28",
+          "place_img": [],
+          "like": 0,
+          "rating": 5
+        }
+      ],
+      "selectedTags": [
+        "을지로/충무로"
+      ],
+      "id": 14
     }
   ],
   "emoji": [

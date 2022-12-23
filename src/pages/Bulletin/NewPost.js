@@ -289,16 +289,31 @@ const NewPost = memo(() => {
         const postDate = dayjs().format('YYYY-MM-DD');
         const postUser = 'test'; // <TO DO> 로그인 정보 불러오기
 
+        const selectedPlace_light = [];
+        for (const k of selectedPlaces) {
+            const temp = {};
+            temp.id = k.id;
+            temp.place_name = k.place_name;
+            temp.address_name = k.address_name;
+            temp.place_img = k.place_img;
+            temp.like = k.like;
+            temp.rating = k.rating;
+
+            selectedPlace_light.push(temp);
+        }
+
         const data = {
             bgColor: backgroundColor,
             postTitle: postTitle,
             postDate: postDate,
             postUser: postUser,
             content: content,
+            selectedPlaces: selectedPlace_light,
+            selectedTags: selectedTags,
         }
 
         dispatch(newPost(data));
-    }, [backgroundColor, content]);
+    }, [backgroundColor, content, selectedPlaces, selectedTags]);
 
     return (
         <MainForm onSubmit={onPosting}>

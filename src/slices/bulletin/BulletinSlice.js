@@ -19,13 +19,7 @@ export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload,
     let result = null;
 
     try {
-        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST, {
-            bgColor: payload.bgColor,
-            postTitle: payload.postTitle,
-            postDate: payload.postDate,
-            postUser: payload.postUser,
-            content: payload.content,
-        });
+        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST, payload);
 
         result = response.data;
     } catch (err) {
