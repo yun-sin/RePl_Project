@@ -142,72 +142,70 @@ const Bulletin = memo(() => {
       dispatch(getList());
     }, []);
 
-    console.log(data);
-
     return (
         <>
             <BannerArea>
               <div className="banner__title">
-                <h1>사람들의 서울 이야기</h1>
-                <p>게시글은 직접 리뷰를 남긴 장소를 대상으로 작성 가능해요.<br/>아래의 썸네일을 클릭해서 사람들의 취향과 개성이 담긴 이야기를 직접 읽어보세요.</p>
+                    <h1>사람들의 서울 이야기</h1>
+                    <p>게시글은 직접 리뷰를 남긴 장소를 대상으로 작성 가능해요.<br/>아래의 썸네일을 클릭해서 사람들의 취향과 개성이 담긴 이야기를 직접 읽어보세요.</p>
               </div>
               <div className="linksWrap">
-                <div className='links'>
-                  <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
-                  <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
-                </div>
+                    <div className='links'>
+                        <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
+                        <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
+                    </div>
               </div>
             </BannerArea>
 
             <MainArea>
-              <div className='main__option-bar'>
-                <select name="align" id="align">
-                  <option value="">인기순</option>
-                  <option value="">최신순</option>
-                </select>
-                <select name="category" id="category">
-                  <option value="">-- 카테고리를 선택하세요 --</option>
-                </select>
-                <select name="area" id="area">
-                  <option value="">-- 지역을 선택하세요 --</option>
-                </select>
-              </div>
-
-              <PostList>
-                <div className='list-box'>
-                  {
-                    data && data.map((v, i) => {
-                      return (
-                        <Post
-                          key={i}
-                          targetId={v.id}
-                          postTitle={v.postTitle}
-                          backgroundImage={postImg1}
-                          postUser={v.postUser}
-                          like={v.like}
-                          postDate={v.postDate}
-                          selectedTags={v.selectedTags}
-                        />
-                      );
-                    })
-                  }
+                <div className='main__option-bar'>
+                    <select name="align" id="align">
+                        <option value="">인기순</option>
+                        <option value="">최신순</option>
+                    </select>
+                    <select name="category" id="category">
+                        <option value="">-- 카테고리를 선택하세요 --</option>
+                    </select>
+                    <select name="area" id="area">
+                        <option value="">-- 지역을 선택하세요 --</option>
+                    </select>
                 </div>
 
-                <PageControl>
-                  <NavLink>&lt;</NavLink>
-                  <NavLink to='/bulletin?page=1'>1</NavLink>
-                  <NavLink to='/bulletin?page=2'>2</NavLink>
-                  <NavLink to='/bulletin?page=3'>3</NavLink>
-                  <NavLink to='/bulletin?page=4'>4</NavLink>
-                  <NavLink to='/bulletin?page=5'>5</NavLink>
-                  <NavLink to='/bulletin?page=6'>6</NavLink>
-                  <NavLink to='/bulletin?page=7'>7</NavLink>
-                  <NavLink to='/bulletin?page=8'>8</NavLink>
-                  <NavLink to='/bulletin?page=9'>9</NavLink>
-                  <NavLink to='/bulletin?page=10'>10</NavLink>
-                  <NavLink>&gt;</NavLink>
-                </PageControl>
-              </PostList>
+                <PostList>
+                    <div className='list-box'>
+                        {
+                            data && data.map((v, i) => {
+                                    return (
+                                        <Post
+                                            key={i}
+                                            targetId={v.id}
+                                            postTitle={v.postTitle}
+                                            backgroundImage={postImg1}
+                                            postUser={v.postUser}
+                                            like={v.like}
+                                            postDate={v.postDate}
+                                            selectedTags={v.selectedTags}
+                                        />
+                                    );
+                            })
+                        }
+                    </div>
+
+                    <PageControl>
+                        <NavLink>&lt;</NavLink>
+                        <NavLink to='/bulletin?page=1'>1</NavLink>
+                        <NavLink to='/bulletin?page=2'>2</NavLink>
+                        <NavLink to='/bulletin?page=3'>3</NavLink>
+                        <NavLink to='/bulletin?page=4'>4</NavLink>
+                        <NavLink to='/bulletin?page=5'>5</NavLink>
+                        <NavLink to='/bulletin?page=6'>6</NavLink>
+                        <NavLink to='/bulletin?page=7'>7</NavLink>
+                        <NavLink to='/bulletin?page=8'>8</NavLink>
+                        <NavLink to='/bulletin?page=9'>9</NavLink>
+                        <NavLink to='/bulletin?page=10'>10</NavLink>
+                        <NavLink>&gt;</NavLink>
+                    </PageControl>
+                </PostList>
             </MainArea>
         </>
     );

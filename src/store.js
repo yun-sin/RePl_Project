@@ -9,6 +9,7 @@ import SidebarSlice from "./slices/SidebarSlice";
 import BulletinSlice from "./slices/bulletin/BulletinSlice";
 import RecommendPlaceSlice from "./slices/bulletin/RecommendPlaceSlice";
 import HashtagSlice from "./slices/bulletin/HashtagSlice";
+import PostViewSlice from './slices/bulletin/PostViewSlice';
 
 import MapFinderSlice from "./slices/MapFinderSlice";
 
@@ -24,6 +25,7 @@ const store = configureStore({
     BulletinSlice: BulletinSlice,
     RecommendPlaceSlice: RecommendPlaceSlice,
     HashtagSlice: HashtagSlice,
+    PostViewSlice: PostViewSlice,
 
     MapFinderSlice: MapFinderSlice,
   },

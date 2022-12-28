@@ -6,11 +6,13 @@ import { useParams } from 'react-router-dom';
 import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
+import Spinner from '../../common/Spinner';
 
-import { getPost } from '../../slices/bulletin/BulletinSlice';
+import { getPost } from '../../slices/bulletin/PostViewSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import { getCurrentData } from '../../slices/bulletin/BulletinSlice';
 
 const TitleArea = styled.div`
     width: 100%;
@@ -69,6 +71,8 @@ const PostingArea = styled.section`
         margin: auto;
         padding: 50px 10px 100px;
         box-sizing: border-box;
+        border-bottom: 1px solid #aaa;
+        margin-bottom: 40px;
     }
 `;
 
@@ -339,7 +343,7 @@ const testData3 = [
 
 const NewPost = memo(props => {
     /** 게시글 데이터 불러오기 */
-    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+    const { data, loading, error } = useSelector(state => state.PostViewSlice);
     const dispatch = useDispatch();
 
     // 패스파라미터 변수
@@ -347,7 +351,7 @@ const NewPost = memo(props => {
     // 해당 패스 게시글 불러오기
     useEffect(() => {
         dispatch(getPost({ id: postId }));
-    }, []);
+    }, [postId]);
 
     /** 작성자의 다른 게시글 영역 */
     // 현재 스크롤 위치 저장
@@ -389,95 +393,100 @@ const NewPost = memo(props => {
     }, []);
 
     return (
-        <>
+        <>  
             {
-                error ? (
-                    <div>에러</div>
+                loading ? (
+                    <Spinner loading={loading} />
                 ) : (
-                    data && <>
-                        <TitleArea bgColor={data.bgColor}>
-                            <div className='title'>
-                                <h2 className='title__main-title'>{data.postTitle}</h2>
-                                <div className='title__desc'>
-                                    <h3>{data.postUser}</h3>
-                                    <h3>{data.postDate}</h3>
+                    error ? (
+                        <div>에러</div>
+                    ) : (
+                        data && <>
+                            <TitleArea bgColor={data.bgColor}>
+                                <div className='title'>
+                                    <h2 className='title__main-title'>{data.postTitle}</h2>
+                                    <div className='title__desc'>
+                                        <h3>{data.postUser}</h3>
+                                        <h3>{data.postDate}</h3>
+                                    </div>
                                 </div>
-                            </div>
-                        </TitleArea>
+                            </TitleArea>
 
-                        <hr />
+                            <hr />
 
-                        <PostingArea>
-                            <div className="postContent" dangerouslySetInnerHTML={{ __html: data.content}} />
-                            <RecommendPlaceArea>
-                                <div className='recommend-place-top'>
-                                    <h3>이 글에서 추천한 장소들</h3>
+                            <PostingArea>
+                                <div className="postContent" dangerouslySetInnerHTML={{ __html: data.content}} />
+                                <RecommendPlaceArea>
+                                    <div className='recommend-place-top'>
+                                        <h3>이 글에서 추천한 장소들</h3>
+                                    </div>
+                                    <div className='recommend-place-body'>
+                                        <ul>
+                                            {
+                                                data.selectedPlaces && data.selectedPlaces.map((v, i) => {
+                                                    return (
+                                                        <RecommendListItem
+                                                            key={i}
+                                                            img={breadSample}
+                                                            title={v.place_name}
+                                                            address={v.address_name}
+                                                            commend='3'
+                                                            reaction={v.rating}
+                                                            /** To Do: 댓글 개수(commend)랑 평점(v.rating) 둘 다 후기 릴레이션에서 가져와야 함 */
+                                                        />
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                </RecommendPlaceArea>
+
+                                <CategoryArea>
+                                    <div className='category-tags'>
+                                        {
+                                            data.selectedTags && data.selectedTags.map((v, i) => {
+                                                return (
+                                                    <span key={i}>{v}</span>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                </CategoryArea>
+
+                                {/** To Do: 댓글 데이터 또한 각 게시글마다... 릴레이션 빼야한다는.. 하아 걍 게시글 데이터에 합쳐야하나? */}
+                                <Comments data={testData2} />
+                            </PostingArea>
+
+                            <PublisherDiv>
+                                <div>
+                                    <img src={breadSample} alt="작성자 프로필" />
+                                    <h2>작성자명</h2>
                                 </div>
-                                <div className='recommend-place-body'>
-                                    <ul>
-                                        <RecommendListItem
-                                            img={breadSample}
-                                            alt='빵'
-                                            title='선플라워 베이크샵'
-                                            address='서울시 어디어디'
-                                            commend='3'
-                                            reaction='완벽해요!'
-                                        />
-                                        <RecommendListItem
-                                            img={breadSample}
-                                            alt='빵'
-                                            title='선플라워 베이크샵'
-                                            address='서울시 어디어디'
-                                            commend='3'
-                                            reaction='완벽해요!'
-                                        />
-                                    </ul>
+                                <div>
+                                    <p>구독자<span>23</span></p>
+                                    <button>구독하기</button>
                                 </div>
-                            </RecommendPlaceArea>
+                            </PublisherDiv>
 
-                            <CategoryArea>
-                                <div className='category-tags'>
-                                    <span>O 세글자</span>
-                                    <span>O 네글자네</span>
-                                    <span>O 다섯글자다</span>
-                                    <span>O 네글자네</span>
-                                    <span>O 여섯글자여섯</span>
-                                    <span>O 세글자</span>
-                                    <span>O 여섯글자여섯</span>
+                            <OtherPostsArea>
+                                <h3>작성자의 다른 게시글</h3>
+                                <div className="other-posts">
+                                    <button className={classNames({active: scrollPosition > 0})} ref={toLeft} onClick={onToLeftClick}>&lt;</button>
+                                    <div className='other_posts__wrap'>
+                                        {
+                                            /** To Do: 여기 또한 작성자 아이디 -> 게시글 테이블에서 해당 아이디 게시물들 얻어와서 뿌려야 함 */
+                                            testData3.map((v, i) => {
+                                                return (
+                                                    <OtherPost key={i} imgSrc={v.imgSrc} title={v.title} preview={v.preview} />
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    <button className={classNames({active: scrollPosition < maxScroll - 900})} ref={toRight} onClick={onToRightClick}>&gt;</button>
                                 </div>
-                            </CategoryArea>
-
-                            <Comments data={testData2} />
-                        </PostingArea>
-
-                        <PublisherDiv>
-                            <div>
-                                <img src={breadSample} alt="작성자 프로필" />
-                                <h2>작성자명</h2>
-                            </div>
-                            <div>
-                                <p>구독자<span>23</span></p>
-                                <button>구독하기</button>
-                            </div>
-                        </PublisherDiv>
-
-                        <OtherPostsArea>
-                            <h3>작성자의 다른 게시글</h3>
-                            <div className="other-posts">
-                                <button className={classNames({active: scrollPosition > 0})} ref={toLeft} onClick={onToLeftClick}>&lt;</button>
-                                <div className='other_posts__wrap'>
-                                    {
-                                        testData3.map((v, i) => {
-                                            return (
-                                                <OtherPost key={i} imgSrc={v.imgSrc} title={v.title} preview={v.preview} />
-                                            )
-                                        })
-                                    }
-                                </div>
-                                <button className={classNames({active: scrollPosition < maxScroll - 900})} ref={toRight} onClick={onToRightClick}>&gt;</button>
-                            </div>
-                        </OtherPostsArea>
-                    </>
+                            </OtherPostsArea>
+                        </>
+                    )
                 )
             }
         </>

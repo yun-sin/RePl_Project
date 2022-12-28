@@ -70,7 +70,7 @@ const RecommendListItem = memo(props => {
     return (
         <Item>
             <div className='recommend-Item__1'>
-                <img src={props.img} alt={props.alt} />
+                <img src={props.img} alt={`${props.title} 후기 이미지`} />
             </div>
             <div className='recommend-Item__2'>
                 <h4>{props.title}</h4>

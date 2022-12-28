@@ -155,7 +155,7 @@ const Post = memo(props => {
             </div>
 
             <img src={props.backgroundImage} alt="게시물 이미지" />
-            <h3 className='post__title' onClick={onLinkClick}>{props.postTitle}</h3>
+            <h3 className='post__title'>{props.postTitle}</h3>
             <div className='post__desc'>
                 <h4>{props.postUser}</h4>
                 <div className='post__desc__other'>
