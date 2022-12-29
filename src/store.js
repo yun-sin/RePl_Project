@@ -13,6 +13,8 @@ import PostViewSlice from './slices/bulletin/PostViewSlice';
 
 import MapFinderSlice from "./slices/MapFinderSlice";
 
+import InfoSlice from "./slices/InfoSlice";
+
 const store = configureStore({
   reducer: {
     MainSlice: MainSlice,
@@ -28,6 +30,8 @@ const store = configureStore({
     PostViewSlice: PostViewSlice,
 
     MapFinderSlice: MapFinderSlice,
+
+    InfoSlice: InfoSlice,
   },
 });
 

@@ -46,7 +46,10 @@ const Info = memo(() => {
         dispatch(getInfo());
     }, [dispatch])
     
-    console.log("data", data);
+
+    const idData = data?.find((v, i) => v.id === 2)
+
+    console.log("idData", idData);
 
     return (
         
@@ -55,11 +58,11 @@ const Info = memo(() => {
             <div className='content'>
                 <div className='name'>
                     <p>닉네임</p>
-                    <PageInputBox>닉네임</PageInputBox>
+                    <PageInputBox>{idData?.eName}</PageInputBox>
                 </div>
                 <div className='name'>
                     <p>한 줄 소개</p>
-                    <PageInputBox>힘을내요 슈퍼파워</PageInputBox>
+                    <PageInputBox>{idData?.introduction}</PageInputBox>
                 </div>
                 <div className='name'>
                     <p>아이콘</p>
@@ -67,11 +70,11 @@ const Info = memo(() => {
                 </div>
                 <div className='name'>
                     <p>이메일</p>
-                    <PageInputBox>email@naver.com</PageInputBox>
+                    <PageInputBox>{idData?.email}</PageInputBox>
                 </div>
                 <div className='name'>
                     <p>포인트</p>
-                    <PageInputBox>30</PageInputBox>
+                    <PageInputBox>{idData?.point}</PageInputBox>
                 </div>
 
                 <PageButton className='changeButton'>내 정보 변경하기</PageButton>
