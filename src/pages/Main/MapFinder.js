@@ -13,13 +13,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setActive } from "../../slices/SidebarSlice";
 
 const MapFinderContaier = styled.div`
-  /* padding: 0 80px; */
-  /* width: 60%;
-    margin: auto; */
   background: linear-gradient(180deg, #0584bb 35%, #046795 100%);
   height: 100vw;
 
-  .shadow {
+  /* .shadow {
     &.active {
       position: fixed;
       z-index: 990;
@@ -27,7 +24,7 @@ const MapFinderContaier = styled.div`
       height: 100%;
       background-color: rgba(0, 0, 0, 0.4);
     }
-  }
+  } */
 `;
 
 const MapFinder = memo(() => {
@@ -51,7 +48,7 @@ const MapFinder = memo(() => {
   return (
     <MapFinderContaier>
       <div
-        className={`shadow ${isActive ? "active" : ""}`}
+        // className={`shadow ${isActive ? "active" : ""}`}
         onClick={handleClose}
       ></div>
 
