@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import LoginModal from "../components/login/LoginModal";
 
 const HeaderContainer = styled.div`
   height: 50px;
@@ -158,6 +159,9 @@ const Header = memo(() => {
   const SidebarCon = useRef();
   const [sideActive, SetSideActive] = useState(false);
 
+  //로그인 모달 상태관리
+  const [LMDIsOpen, setLMDIsOpen] = useState(false);
+
   const dispatch = useDispatch();
 
   const { navActive } = useSelector((state) => state.SidebarSlice);
@@ -175,6 +179,12 @@ const Header = memo(() => {
       SetSideActive(false);
     }
   });
+
+  // 로그인 누르면 모달창 변수 변경
+  const handleLoginModal = useCallback((e) => {
+    e.preventDefault();
+    setLMDIsOpen(true);
+  });
   return (
     <HeaderContainer>
       <div
@@ -186,7 +196,7 @@ const Header = memo(() => {
         <NavLink to="/">RePl</NavLink>
       </div>
       <div className="navbarMenu">
-        <NavLink to="/login">로그인</NavLink>
+        <a onClick={handleLoginModal}>로그인</a>
         <a
           onClick={onSidebarClick}
           className={`Sidebar ${sideActive ? "active" : ""}`}
@@ -212,6 +222,10 @@ const Header = memo(() => {
         <NavLink to="!#">💬 의견 및 오류제보</NavLink>
         <NavLink to="!#">📝 사용 설명서</NavLink>
       </SidebarContainer>
+
+      {/* 로그인 모달창 */}
+      {LMDIsOpen && <LoginModal LMDIsOpen={LMDIsOpen} onRequestClose={() => setLMDIsOpen(false)}/>}
+    
     </HeaderContainer>
   );
 });
