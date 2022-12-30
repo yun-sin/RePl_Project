@@ -94,7 +94,7 @@ const PlaceList = memo(() => {
                     {theme.map((v, i) => {
                       return (
                         <div className="theme" key={i}>
-                          {data2?.find((item) => item.id === v)?.icon} {data2.find((item) => item.id === v)?.text} 
+                          {data2?.find((item) => item.id === v)?.icon} {data2?.find((item) => item.id === v)?.text} 
                         </div>
                       );
                     })}

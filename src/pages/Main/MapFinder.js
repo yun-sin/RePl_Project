@@ -16,15 +16,15 @@ const MapFinderContaier = styled.div`
   background: linear-gradient(180deg, #0584bb 35%, #046795 100%);
   height: 100vw;
 
-  /* .shadow {
+  .shadow {
     &.active {
       position: fixed;
       z-index: 990;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      /* background-color: rgba(0, 0, 0, 0.4); */
     }
-  } */
+  }
 `;
 
 const MapFinder = memo(() => {
@@ -48,7 +48,7 @@ const MapFinder = memo(() => {
   return (
     <MapFinderContaier>
       <div
-        // className={`shadow ${isActive ? "active" : ""}`}
+        className={`shadow ${isActive ? "active" : ""}`}
         onClick={handleClose}
       ></div>
 

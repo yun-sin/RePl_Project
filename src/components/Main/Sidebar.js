@@ -10,9 +10,8 @@ import _ from  "lodash";
 
 const SidebarContainer = styled.div`
   width: 33%;
-  /* min-width: 400px; */
   max-width: 520px;
-  height: 100vw;
+  height: 100vh;
   background-color: #fefefe;
   padding: 40px 20px;
   box-sizing: border-box;

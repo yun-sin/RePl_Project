@@ -1,33 +1,30 @@
 import React, { memo, useCallback, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setActive } from "../slices/SidebarSlice";
+import { setNavActive } from "../slices/NavbarSlice";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const HeaderContainer = styled.div`
   height: 50px;
   width: 100%;
-  /* padding: 10px 0; */
   box-sizing: border-box;
-  /* background-color: #f8f8f8; */
-  /* background-color: #fff; */
   background-color: #0584bb;
 
   z-index: 999;
-  /* box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2); */
 
   .shadow {
-      &.active {
-        position: fixed;
-        z-index: 990;
-        width: 100%;
-        /* height: 50px; */
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
+    &.active {
+      position: fixed;
+      z-index: 990;
+      width: 100%;
+      /* height: 50px; */
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
     }
+  }
 
   .navbarLogo {
     background-color: #0584bb;
@@ -79,14 +76,14 @@ const HeaderContainer = styled.div`
       }
     }
   }
-
-  
 `;
 
 const SidebarContainer = styled.div`
+  padding: 20px;
+  box-sizing: border-box;
   z-index: 9999;
   width: 300px;
-  background-color: #f8f8f8;
+  background-color: rgb(248, 248, 248);
   height: 100%;
   position: fixed;
   /* top: 50px; */
@@ -99,65 +96,89 @@ const SidebarContainer = styled.div`
     right: 0;
   }
 
+  .closeContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    padding: 0 15px;
+    box-sizing: border-box;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .exit {
+      /* width: 20px;
+      height: 20px; */
+      color: #666;
+
+    }
+  }
+
   a {
     width: 80%;
     height: 50px;
+    padding: 5px 0;
+    box-sizing: border-box;
     display: block;
     text-align: left;
     font-size: 30px;
+    font-weight: 500;
     line-height: 50px;
-    margin: 30px auto;
     color: #666;
     font-size: 15px;
+    margin-bottom: 10px;
 
-    &:first-of-type {
-      margin-top: 70px;
+    &:nth-of-type(1) {
+      margin-top : 60px;
     }
 
-    &:nth-of-type(2n) {
-      margin-bottom: 100px;
+    &:nth-of-type(4) {
+      margin-bottom: 160px;
     }
 
     &:hover {
-      background-color: #eee;
+      color: #000;
       font-weight: bolder;
     }
 
-    &.active {
+    /* &.active {
       background-color: rgba(20, 150, 150, 0.5);
-    }
+    } */
+  }
+  
+  hr {
+    color: #ccc;
+    border-width: 0.3px 0 0 0;
 
-    
   }
 `;
 
 const Header = memo(() => {
   const SidebarCon = useRef();
-  const [sideActive, setSideActive] = useState(false);
-
+  const [sideActive, SetSideActive] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { isActive } = useSelector((state) => state.SidebarSlice);
-  
-  console.log(isActive);
+  const { navActive } = useSelector((state) => state.SidebarSlice);
 
+  const { isActive } = useSelector((state) => state.SidebarSlice);
 
   const onSidebarClick = useCallback((e) => {
     e.preventDefault();
-    setSideActive(!sideActive);
-    dispatch(setActive(true));
+    SetSideActive(!sideActive);
+    dispatch(setNavActive(true));
   });
 
   const handleClose = useCallback((e) => {
-    if (isActive) {
-      dispatch(setActive(false));
+    if (sideActive) {
+      SetSideActive(false);
     }
   });
   return (
     <HeaderContainer>
       <div
-        className={`shadow ${isActive ? "active" : ""}`}
+        className={`shadow ${isActive || sideActive ? "active" : ""}`}
         onClick={handleClose}
       ></div>
 
@@ -178,8 +199,12 @@ const Header = memo(() => {
         ref={SidebarCon}
         className={`${sideActive ? "active" : ""}`}
       >
+        <div className="closeContainer" onClick={handleClose}>
+          <FontAwesomeIcon icon={faXmark} className="exit" size="1x"/>
+        </div>
         <NavLink to="/">🏠 홈으로</NavLink>
         <NavLink to="/map_finder">🗺 지도찾기</NavLink>
+        <hr />
         <NavLink to="/mypage">🧒 마이페이지</NavLink>
         <NavLink to="!#">👋 로그아웃</NavLink>
         <NavLink to="/bulletin">📌 게시판</NavLink>

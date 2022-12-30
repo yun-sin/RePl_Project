@@ -4,6 +4,7 @@ import MapSlice from "./slices/MapSlice";
 import ThemeSlice from "./slices/ThemeSlice";
 import MapAddSlice from "./slices/MapAddSlice";
 import SidebarSlice from "./slices/SidebarSlice";
+import NavbarSlice from "./slices/NavbarSlice";
 
 /** 게시판 */
 import BulletinSlice from "./slices/bulletin/BulletinSlice";
@@ -22,6 +23,7 @@ const store = configureStore({
     ThemeSlice: ThemeSlice,
     MapAddSlice: MapAddSlice,
     SidebarSlice: SidebarSlice,
+    NavbarSlice: NavbarSlice,
 
     /** 게시판 */
     BulletinSlice: BulletinSlice,
