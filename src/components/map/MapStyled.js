@@ -87,6 +87,24 @@ export const ListContainer = styled.div`
     letter-spacing: -0.5px;
     position: relative;
 
+    .trash_btn {
+      position: absolute;
+      top: 9px;
+      right: 40px;
+      padding: 7px 11px 4px;
+      box-sizing: border-box;
+      line-height: 32.3px;
+
+      &:hover {
+        border-radius: 5px;
+        background-color: #80b3e6;
+      }
+
+      img {
+        height: 20px;
+      }
+    }
+
     .more_btn {
       position: absolute;
       top: 8px;
@@ -110,6 +128,10 @@ export const ListContainer = styled.div`
       color: #0581bb;
       font-size: 16px;
       line-height: 30.4px;
+      width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     span {

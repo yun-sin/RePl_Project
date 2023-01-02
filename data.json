@@ -13,32 +13,19 @@
       "road_address_name": "서울 용산구 보광로 126",
       "lat": 37.53401162895581,
       "lng": 126.99421849699539,
-      "theme": [1, 3],
-      "review": ["🙂 편안한 의자가 있어요", "🤩 조용해서 책 읽기 좋아요,", "😋 빵이 맛있어요"],
+      "theme": [
+        1,
+        3
+      ],
+      "review": [
+        "🙂 편안한 의자가 있어요",
+        "🤩 조용해서 책 읽기 좋아요,",
+        "😋 빵이 맛있어요"
+      ],
       "place_img": [],
       "like": 0,
       "rating": 5,
       "id": 9
-    },
-    {
-      "address_name": "서울 용산구 이태원동 258-7",
-      "category_group_code": "FD6",
-      "category_name": "음식점 > 양식 > 이탈리안",
-      "category_group_name": "음식점",
-      "category_item_name": "이탈리안",
-      "phone": "02-794-6006",
-      "place_name": "라쿠치나",
-      "place_url": "http://place.map.kakao.com/7849814",
-      "place_id": "7849814",
-      "road_address_name": "서울 용산구 회나무로44길 10",
-      "lat": 37.54052955478657,
-      "lng": 126.99646969481634,
-      "theme": [2],
-      "review": ["🙂 편안한 의자가 있어요", "🤩 조용해서 책 읽기 좋아요,", "😋 빵이 맛있어요"],
-      "place_img": [],
-      "like": 0,
-      "rating": 5,
-      "id": 10
     },
     {
       "address_name": "서울 용산구 이태원동 119-17",
@@ -53,92 +40,14 @@
       "road_address_name": "서울 용산구 이태원로27가길 45",
       "lat": 37.53488552069478,
       "lng": 126.99278152258876,
-      "theme": [2],
+      "theme": [
+        2
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
       "rating": 5,
       "id": 11
-    },
-    {
-      "address_name": "서울 용산구 이태원동 172-2",
-      "category_group_code": "FD6",
-      "category_name": "음식점 > 양식",
-      "category_group_name": "음식점",
-      "category_item_name": "양식",
-      "phone": "02-795-7481",
-      "place_name": "오리지널팬케이크하우스 이태원점",
-      "place_url": "http://place.map.kakao.com/27462552",
-      "place_id": "27462552",
-      "road_address_name": "서울 용산구 이태원로 153",
-      "lat": 37.53452500101547,
-      "lng": 126.99103917462925,
-      "theme": [1],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": 5,
-      "id": 12
-    },
-    {
-      "address_name": "서울 강남구 역삼동 616-18",
-      "category_group_code": "FD6",
-      "category_name": "음식점 > 양식 > 이탈리안",
-      "category_group_name": "음식점",
-      "category_item_name": "이탈리안",
-      "phone": "02-568-8003",
-      "place_name": "어거스트힐 강남점",
-      "place_url": "http://place.map.kakao.com/1124684582",
-      "place_id": "1124684582",
-      "road_address_name": "서울 강남구 강남대로106길 25",
-      "lat": 37.5033762340549,
-      "lng": 127.027613205009,
-      "theme": [1],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": [],
-      "id": 14
-    },
-    {
-      "address_name": "서울 강남구 역삼동 617-6",
-      "category_group_code": "FD6",
-      "category_name": "음식점 > 퓨전요리",
-      "category_group_name": "음식점",
-      "category_item_name": "퓨전요리",
-      "phone": "02-539-1979",
-      "place_name": "구구당",
-      "place_url": "http://place.map.kakao.com/260283466",
-      "place_id": "260283466",
-      "road_address_name": "서울 강남구 강남대로102길 35",
-      "lat": 37.5032428278838,
-      "lng": 127.027857440016,
-      "theme": [1],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": [],
-      "id": 15
-    },
-    {
-      "address_name": "서울 강남구 역삼동 618-11",
-      "category_group_code": "CE7",
-      "category_name": "음식점 > 카페",
-      "category_group_name": "카페",
-      "category_item_name": "카페",
-      "phone": "02-566-6181",
-      "place_name": "알베르",
-      "place_url": "http://place.map.kakao.com/22837049",
-      "place_id": "22837049",
-      "road_address_name": "서울 강남구 강남대로102길 34",
-      "lat": 37.5029796720996,
-      "lng": 127.028119720582,
-      "theme": [1],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": [],
-      "id": 16
     },
     {
       "address_name": "서울 강남구 역삼동 618-18",
@@ -153,7 +62,9 @@
       "road_address_name": "서울 강남구 봉은사로6길 39",
       "lat": 37.502644547372164,
       "lng": 127.02791150266208,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -173,7 +84,9 @@
       "road_address_name": "충남 부여군 석성면 왕릉로 422",
       "lat": 36.2683449330765,
       "lng": 126.979496365514,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -193,7 +106,9 @@
       "road_address_name": "서울 동작구 동작대로19길 36",
       "lat": 37.4835807917715,
       "lng": 126.979716162617,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -213,7 +128,9 @@
       "road_address_name": "서울 광진구 용마산로8길 21",
       "lat": 37.5597099780928,
       "lng": 127.088837084073,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -233,7 +150,11 @@
       "road_address_name": "경기 고양시 덕양구 통일로 43-168",
       "lat": 37.641468460269,
       "lng": 126.906379407867,
-      "theme": [1, 2, 3],
+      "theme": [
+        1,
+        2,
+        3
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -253,7 +174,9 @@
       "road_address_name": "서울 송파구 오금로11길 11-8",
       "lat": 37.514995606728,
       "lng": 127.108750620091,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -273,7 +196,9 @@
       "road_address_name": "인천 부평구 백범로 573",
       "lat": 37.47433437368076,
       "lng": 126.68969365966095,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -293,7 +218,9 @@
       "road_address_name": "경기 광주시 곤지암읍 곤지암로 44",
       "lat": 37.3499932468792,
       "lng": 127.342009674747,
-      "theme": [1],
+      "theme": [
+        1
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
@@ -301,84 +228,50 @@
       "id": 24
     },
     {
-      "address_name": "경기 안산시 상록구 본오동 873-3",
+      "address_name": "인천 남동구 고잔동 629",
       "category_group_code": "",
-      "category_name": "가정,생활 > 패션 > 의류판매",
+      "category_name": "교통,수송 > 자동차 > 자동차검사소",
       "category_group_name": "",
-      "category_item_name": "의류판매",
-      "phone": "",
-      "place_name": "A",
-      "place_url": "http://place.map.kakao.com/1924882039",
-      "place_id": "1924882039",
-      "road_address_name": "경기 안산시 상록구 용신로 388",
-      "lat": 37.3014152708358,
-      "lng": 126.865071957748,
-      "theme": [1, 2],
+      "category_item_name": "자동차검사소",
+      "phone": "032-822-2002",
+      "place_name": "카123텍",
+      "place_url": "http://place.map.kakao.com/1344772608",
+      "place_id": "1344772608",
+      "road_address_name": "인천 남동구 남동서로 202",
+      "lat": 37.4077134806326,
+      "lng": 126.69241740433,
+      "theme": [
+        1,
+        2,
+        3
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
       "rating": [],
-      "id": 25
+      "id": 29
     },
     {
-      "address_name": "제주특별자치도 제주시 이도이동 1766-1",
+      "address_name": "서울 송파구 방이동 34-2",
       "category_group_code": "",
-      "category_name": "가정,생활 > 패션 > 의류판매",
+      "category_name": "가정,생활 > 목욕탕,사우나",
       "category_group_name": "",
-      "category_item_name": "의류판매",
+      "category_item_name": "목욕탕,사우나",
       "phone": "",
-      "place_name": "A",
-      "place_url": "http://place.map.kakao.com/19156633",
-      "place_id": "19156633",
-      "road_address_name": "제주특별자치도 제주시 광양10길 13",
-      "lat": 33.49875680863356,
-      "lng": 126.52872599364939,
-      "theme": [2],
+      "place_name": "사우나123",
+      "place_url": "http://place.map.kakao.com/1149707328",
+      "place_id": "1149707328",
+      "road_address_name": "서울 송파구 오금로11길 11-8",
+      "lat": 37.514995606728,
+      "lng": 127.108750620091,
+      "theme": [
+        3
+      ],
       "review": [],
       "place_img": [],
       "like": 0,
       "rating": [],
-      "id": 26
-    },
-    {
-      "address_name": "경남 창원시 성산구 반지동 78",
-      "category_group_code": "CE7",
-      "category_name": "음식점 > 카페 > 커피전문점",
-      "category_group_name": "카페",
-      "category_item_name": "커피전문점",
-      "phone": "",
-      "place_name": "A",
-      "place_url": "http://place.map.kakao.com/13305704",
-      "place_id": "13305704",
-      "road_address_name": "경남 창원시 성산구 원이대로393번길 25",
-      "lat": 35.239940219296,
-      "lng": 128.662546285261,
-      "theme": [2],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": [],
-      "id": 27
-    },
-    {
-      "address_name": "대구 중구 공평동 53-1",
-      "category_group_code": "",
-      "category_name": "가정,생활 > 패션 > 의류판매",
-      "category_group_name": "",
-      "category_item_name": "의류판매",
-      "phone": "",
-      "place_name": "A",
-      "place_url": "http://place.map.kakao.com/15708854",
-      "place_id": "15708854",
-      "road_address_name": "대구 중구 동성로2길 58",
-      "lat": 35.8685181060876,
-      "lng": 128.596942961686,
-      "theme": [2, 1],
-      "review": [],
-      "place_img": [],
-      "like": 0,
-      "rating": [],
-      "id": 28
+      "id": 31
     }
   ],
   "theme": [
@@ -605,16 +498,50 @@
       "icon": "👯‍♀️",
       "email": "email@naver.com",
       "point": 10,
-      "interests": ["🧍 혼자서", "☕️ 커피", "🍷 와인", "🍺 맥주", "🥗 채식/비건", "🍰 디저트", "🌞 점심식사", "🎧 음악듣기", "📖 책읽기", "🐶 반려동물과", "👐 수제", "🥪 간단한음식", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인"],
+      "interests": [
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🍺 맥주",
+        "🥗 채식/비건",
+        "🍰 디저트",
+        "🌞 점심식사",
+        "🎧 음악듣기",
+        "📖 책읽기",
+        "🐶 반려동물과",
+        "👐 수제",
+        "🥪 간단한음식",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인"
+      ],
       "map": [],
       "follow": [
         {
           "name": "팔로워",
-          "list": ["a", "b", "c", "d", "e"]
+          "list": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
         },
         {
           "name": "팔로잉",
-          "list": ["A", "B", "C"]
+          "list": [
+            "A",
+            "B",
+            "C"
+          ]
         }
       ],
       "noti": [
@@ -642,16 +569,50 @@
       "icon": "🐶",
       "email": "email2@naver.com",
       "point": 20,
-      "interests": ["🧍 혼자서", "☕️ 커피", "🍷 와인", "🍺 맥주", "🥗 채식/비건", "🍰 디저트", "🌞 점심식사", "🎧 음악듣기", "📖 책읽기", "🐶 반려동물과", "👐 수제", "🥪 간단한음식", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인"],
+      "interests": [
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🍺 맥주",
+        "🥗 채식/비건",
+        "🍰 디저트",
+        "🌞 점심식사",
+        "🎧 음악듣기",
+        "📖 책읽기",
+        "🐶 반려동물과",
+        "👐 수제",
+        "🥪 간단한음식",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인"
+      ],
       "map": [],
       "follow": [
         {
           "name": "팔로워",
-          "list": ["a", "b", "c", "d", "e"]
+          "list": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
         },
         {
           "name": "팔로잉",
-          "list": ["A", "B", "C"]
+          "list": [
+            "A",
+            "B",
+            "C"
+          ]
         }
       ],
       "noti": [
@@ -679,16 +640,50 @@
       "icon": "❤️",
       "email": "email3@naver.com",
       "point": 30,
-      "interests": ["🧍 혼자서", "☕️ 커피", "🍷 와인", "🍺 맥주", "🥗 채식/비건", "🍰 디저트", "🌞 점심식사", "🎧 음악듣기", "📖 책읽기", "🐶 반려동물과", "👐 수제", "🥪 간단한음식", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인", "🧍 혼자서", "☕️ 커피", "🍷 와인"],
+      "interests": [
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🍺 맥주",
+        "🥗 채식/비건",
+        "🍰 디저트",
+        "🌞 점심식사",
+        "🎧 음악듣기",
+        "📖 책읽기",
+        "🐶 반려동물과",
+        "👐 수제",
+        "🥪 간단한음식",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인",
+        "🧍 혼자서",
+        "☕️ 커피",
+        "🍷 와인"
+      ],
       "map": [],
       "follow": [
         {
           "name": "팔로워",
-          "list": ["a", "b", "c", "d", "e"]
+          "list": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+          ]
         },
         {
           "name": "팔로잉",
-          "list": ["A", "B", "C"]
+          "list": [
+            "A",
+            "B",
+            "C"
+          ]
         }
       ],
       "noti": [

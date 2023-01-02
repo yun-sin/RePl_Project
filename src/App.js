@@ -4,8 +4,10 @@ import Header from "./common/Header";
 import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
+/* 지도 */
 import Map from "./pages/map/Map";
 import MapAdd from "./pages/map/MapAdd";
+import MapCurator from "./pages/map/MapCurator";
 
 import Raffle from "./pages/raffle/Raffle";
 
@@ -32,6 +34,7 @@ const App = memo(() => {
         {/* 지도 Routes */}
         <Route path="/map" element={<Map />} />
         <Route path="/map/add" element={<MapAdd />} />
+        <Route path="/map/curator/:id" element={<MapCurator />} />
 
         {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />

@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useQueryString } from "../../hooks/useQueryString";
 // 슬라이스
-import { getMapData } from "../../slices/MapSlice";
+import { getMapData, putLoc } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
 import { modalOpen1 } from "../../slices/MapAddSlice";
 // 컴포넌트
@@ -38,6 +38,7 @@ const MapAdd = memo(({ zoomLevel }) => {
   const [searchData, setSearchData] = useState();
   // 장소 등록 모달
   const { modalIsOpen1, modalIsOpen2, modalIsOpen3 } = useSelector((state) => state.MapAddSlice);
+  const { locIndex, secLocIndex } = useState();
   // 장소 리뷰 모달
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -264,6 +265,14 @@ const MapAdd = memo(({ zoomLevel }) => {
     dispatch(modalOpen1());
   });
 
+  const onBtnClick2 = useCallback((e) => {
+    // const index = idList[searchData[e.currentTarget.dataset.index].id].key;
+    // console.log("데이터의 id: " + index);
+    // dispatch(putLoc({ index: index, theme: theme }));
+    setLocation(searchData[e.currentTarget.dataset.index]);
+    dispatch(modalOpen1(searchData[e.currentTarget.dataset.index]));
+  });
+
   /** 이미 있는 장소일 경우 리플 리뷰창 오픈 */
   const onAlreadyClick = useCallback((e) => {
     const index = idList[searchData[e.currentTarget.dataset.index].id].key;
@@ -323,13 +332,11 @@ const MapAdd = memo(({ zoomLevel }) => {
                         // 현재 테마에 이미 해당 장소가 있음
                         <div className="btn" data-index={i} onClick={onAlreadyClick}>
                           🗺️
-                          {idList[v.id].theme}
                         </div>
                       ) : (
                         // 장소가 저장되어있지만 현재 테마는 아님
-                        <div className="btn" data-index={i} onClick={onAlreadyClick}>
+                        <div className="btn" data-index={i} onClick={onBtnClick2}>
                           😥
-                          {idList[v.id].theme}
                         </div>
                       )
                     ) : (
@@ -349,7 +356,7 @@ const MapAdd = memo(({ zoomLevel }) => {
 
       {/* 모달창1*/}
       {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
-      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={data2 && data2[theme]} />
+      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={data2 && data2[theme]} locIndex={locIndex} />
       {/* 모달창2 */}
       <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />
       {/* 모달창2 */}
