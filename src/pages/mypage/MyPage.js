@@ -1,13 +1,15 @@
+import '../../assets/css/fonts.css';
 import React, { memo } from 'react';
-import {Routes, Route} from "react-router-dom";
-import MenuLink from '../../components/mypage/MenuLink';
+import styled from 'styled-components';
+
 import Info from './Info';
 import Interests from './Interests';
 import Map from './Map';
 import Follow from './Follow';
 import Noti from './Noti';
-import styled from 'styled-components';
-import '../../assets/css/fonts.css';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { setTab } from '../../slices/MyPageSlice';
 
 const MenuTab = styled.nav`
     position: fixed;
@@ -49,7 +51,10 @@ const TabMenu = styled.ul`
 
 const MyPage = memo(() => {
 
-    const [currentTab, setCurrentTab] = React.useState(0);
+    const { currentTab } = useSelector((state) => state.MyPageSlice)
+    const dispatch = useDispatch();
+
+    // const [currentTab, setCurrentTab] = React.useState(0);
 
     const menuArr = [
         '내 정보관리',
@@ -60,8 +65,9 @@ const MyPage = memo(() => {
       ];
     
       const selectMenuHandler = (index) => {
-        setCurrentTab(index);
+        dispatch(setTab(index));
       };
+
     return (
         <div>
             <MenuTab>

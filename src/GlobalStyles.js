@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
         padding: 0;
     }
     
-    div,nav,h2,p{
+    div,nav,h2,p,input{
         font-family: 'S-CoreDream-3Light', 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';  
     }
 

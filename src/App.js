@@ -23,6 +23,7 @@ import Bulletin from "./pages/bulletin/Bulletin";
 import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
 import PostView from "./pages/bulletin/PostView";
+import MakeCuration from "./components/mypage/MakeCuration";
 
 const App = memo(() => {
   return (
@@ -39,6 +40,7 @@ const App = memo(() => {
         {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />
 
+        <Route path="/makeCu" element={<MakeCuration />} />
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
 
