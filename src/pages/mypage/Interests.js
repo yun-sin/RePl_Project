@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import PageContainer from '../../components/mypage/PageContainer';
 import PageButton from '../../components/mypage/PageButton';
+import InterestModal from '../../components/mypage/InterestModal';
 
 const infoData = {
 
@@ -43,6 +44,14 @@ const InterestBox = styled(PageContainer)`
 `
 
 const Interests = memo(() => {
+
+    const [IMDIsOpen, setIMDIsOpen] = useState(false);
+
+    const handleInterestModal = useCallback((e) => {
+        e.preventDefault();
+        setIMDIsOpen(true);
+      });
+
     return (
         <InterestBox>
             <h2>마이페이지 &gt; 내 관심사</h2>
@@ -52,8 +61,10 @@ const Interests = memo(() => {
                         <div key={i} className="tag" >{v}</div>
                     )
                 })}
-            <PageButton className='addButton'>관심사 추가하기</PageButton>
+            <PageButton className='addButton' onClick={handleInterestModal}>관심사 추가하기</PageButton>
             </div>
+
+            {IMDIsOpen && <InterestModal IMDIsOpen={IMDIsOpen} onRequestClose={() => setIMDIsOpen(false)}/>}
         </InterestBox>
     );
 });

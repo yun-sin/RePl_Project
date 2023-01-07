@@ -1,5 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import styled from 'styled-components';
+import Spinner from '../../common/Spinner';
+
 import PageContainer from '../../components/mypage/PageContainer';
 import PageInputBox from '../../components/mypage/PageInputBox';
 import PageButton from '../../components/mypage/PageButton';
@@ -54,6 +56,8 @@ const Info = memo(() => {
     return (
         
         <InfoBox>
+            {/* <Spinner loading={loading} /> */}
+
             <h2>마이페이지 &gt; 내 정보 관리</h2>
             <div className='content'>
                 <div className='name'>
