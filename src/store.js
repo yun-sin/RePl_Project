@@ -16,6 +16,7 @@ import MapFinderSlice from "./slices/MapFinderSlice";
 
 import InfoSlice from "./slices/InfoSlice";
 import MyPageSlice from "./slices/MyPageSlice";
+import InterestSlice from "./slices/InterestSlice";
 
 const store = configureStore({
   reducer: {
@@ -37,6 +38,7 @@ const store = configureStore({
     /** 마이페이지 */
     InfoSlice: InfoSlice,
     MyPageSlice: MyPageSlice,
+    InterestSlice: InterestSlice,
   },
 });
 

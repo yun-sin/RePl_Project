@@ -1,6 +1,10 @@
-import React, { memo , useEffect} from 'react';
+import React, { memo , useCallback, useEffect} from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { getInfo } from '../../slices/InfoSlice';
+import { getInterest } from '../../slices/InterestSlice';
+import PageButton from '../../components/mypage/PageButton';
 
 const ModalInside = styled.div`
     /* background-color: pink; */
@@ -10,10 +14,57 @@ const ModalInside = styled.div`
     flex-direction: column;
     align-items: center;
 
-
 `
 
-const InterestModal = memo(({IMDIsOpen, onRequestClose}) => {
+const InterestBox = styled.div`
+    .tagCon {   
+        width: 90%;
+        margin: 100px auto;
+        position: relative;
+
+        .tag {
+            
+            background-color: #f3f5f7;
+            padding: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            margin-right: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+
+            .imgIcon {
+                padding-right: 5px;
+            }
+
+            &:hover {
+                scale: 1.05;
+                transition: 0.1s;
+                background-color: #0584BB;
+                color: white;
+            }
+
+            &.active {
+              background-color: #0584BB;
+              color: white;
+            } 
+            
+        }
+
+        
+        
+        .addButton {
+            position: absolute;
+            right: 0;
+            bottom: -70px;
+        }
+    }
+`
+
+const InterestModal = memo(({IMDIsOpen, onRequestClose, idInterestData}) => {
+
+    const dispatch = useDispatch();
+    const { data:data2, loading:loading2, error:error2} = useSelector((state) => state.InterestSlice);
 
     useEffect(() => {
         document.body.style.cssText = `
@@ -28,11 +79,22 @@ const InterestModal = memo(({IMDIsOpen, onRequestClose}) => {
         };
       }, []);
 
+      useEffect(()=> {
+          dispatch(getInterest());
+      }, [dispatch])
+     
+      console.log("data2", data2);
+      console.log("idInterestData",idInterestData);
+      
+      const onClickInterBtn = useCallback((e)=> {
+        console.log("Click");
+      });
 
     return (
         <Modal
             isOpen={IMDIsOpen}
             onRequestClose={onRequestClose}
+            ariaHideApp={false}
             style={{
                 overlay: {
                   backgroundColor: "rgba(50, 50, 50, 0.75)",
@@ -51,7 +113,19 @@ const InterestModal = memo(({IMDIsOpen, onRequestClose}) => {
             }}
         >
             <ModalInside>
-                
+                <InterestBox>
+                    <div className='tagCon'>
+                      {data2?.map((v, i) => {
+                          return (
+                              <button key={v.id} className="tag" onClick={onClickInterBtn} >
+                                  <span className='imgIcon'>{v.icon}</span>
+                                  <span>{v.dsec}</span>
+                              </button>
+                          )
+                      })}
+                      <PageButton className='addButton'>관심사 수정하기</PageButton>
+                    </div>
+                </InterestBox>
             </ModalInside>
 
         </Modal>

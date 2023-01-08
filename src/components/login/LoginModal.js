@@ -80,6 +80,7 @@ const LoginModal = memo(({LMDIsOpen, onRequestClose}) => {
         <Modal
             isOpen={LMDIsOpen}
             onRequestClose={onRequestClose}
+            ariaHideApp={false}
             style={{
                 overlay: {
                   backgroundColor: "rgba(50, 50, 50, 0.75)",

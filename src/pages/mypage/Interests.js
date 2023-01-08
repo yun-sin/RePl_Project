@@ -1,7 +1,13 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
+
 import PageContainer from '../../components/mypage/PageContainer';
 import PageButton from '../../components/mypage/PageButton';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getInfo } from '../../slices/InfoSlice';
+import { getInterest } from '../../slices/InterestSlice';
+
 import InterestModal from '../../components/mypage/InterestModal';
 
 const infoData = {
@@ -32,6 +38,10 @@ const InterestBox = styled(PageContainer)`
             margin-top: 20px;
             margin-right: 10px;
             border-radius: 10px;
+
+            .imgIcon {
+                padding-right: 5px;
+            }
             
         }
         
@@ -45,26 +55,43 @@ const InterestBox = styled(PageContainer)`
 
 const Interests = memo(() => {
 
-    const [IMDIsOpen, setIMDIsOpen] = useState(false);
+    const dispatch = useDispatch();
+    const { data, loading, error} = useSelector((state) => state.InfoSlice);
 
+    // const { data:data2, loading:loading2, error:error2} = useSelector((state) => state.InterestSlice);
+    
+    //관심사 추가 상태관리
+    const [IMDIsOpen, setIMDIsOpen] = useState(false);
     const handleInterestModal = useCallback((e) => {
         e.preventDefault();
         setIMDIsOpen(true);
       });
 
+    
+    useEffect(()=> {
+        dispatch(getInfo());
+        // dispatch(getInterest());
+    }, [dispatch])
+
+    const idData = data?.find((v, i) => v.id === 2)
+    
     return (
         <InterestBox>
             <h2>마이페이지 &gt; 내 관심사</h2>
             <div className='tagCon'>
-                {infoData.interests.map((v, i) => {
+                {idData?.interests.map((v, i) => {
+                    
                     return (
-                        <div key={i} className="tag" >{v}</div>
+                        <div key={v.id} className="tag" >
+                            <span className='imgIcon'>{v.icon}</span>
+                            <span>{v.dsec}</span>
+                        </div>
                     )
                 })}
             <PageButton className='addButton' onClick={handleInterestModal}>관심사 추가하기</PageButton>
             </div>
 
-            {IMDIsOpen && <InterestModal IMDIsOpen={IMDIsOpen} onRequestClose={() => setIMDIsOpen(false)}/>}
+            {IMDIsOpen && <InterestModal IMDIsOpen={IMDIsOpen} onRequestClose={() => setIMDIsOpen(false)} idInterestData={idData?.interests}/>}
         </InterestBox>
     );
 });
