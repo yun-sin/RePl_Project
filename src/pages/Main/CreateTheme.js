@@ -184,9 +184,11 @@ const CreateTheme = memo(() => {
         mySentence.current.innerHTML = e.target.value;
         console.log(e.target.value);
     },[]);
+
+    const onSubmit = useCallback((e) => {
+      e.preventDefault();
+    },[]);
     
-
-
 
     // const onKeyPress = useCallback((e, ref) => {
     //     console.log(ref.current);
@@ -213,7 +215,7 @@ const CreateTheme = memo(() => {
         <form action="">
           <div className="margin">
             <h2>테마명</h2>
-            <input onKeyPress={onSentencePress}
+            <input onChange={onSentencePress}
               type="text"
               placeholder="ex) 간단하게 혼밥하기 좋은 곳"
               maxLength={15}
@@ -251,7 +253,7 @@ const CreateTheme = memo(() => {
 
           <div className="margin">
             <h2>아이콘</h2>
-            <input type="text" placeholder="ex) 🍛" maxLength={15} onKeyPress={onIconPress}></input>
+            <input type="text" placeholder="ex) 🍛" maxLength={15} onChange={onIconPress}></input>
           </div>
           <div className="text-align-right">
             <a href="https://www.emojiengine.com/ko/" rel="noreferrer" target="_blank">
@@ -331,7 +333,7 @@ const CreateTheme = memo(() => {
           </div>
 
           <div className="form-submit">
-            <button type="submit">생성하기</button>
+            <button type="submit" onClick={onSubmit}>생성하기</button>
           </div>
         </form>
       </div>
