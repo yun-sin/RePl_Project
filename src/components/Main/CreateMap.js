@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
+import { NavLink } from "react-router-dom";
+
 
 const CreateMapContainer = styled.div`
     position: fixed;
@@ -35,10 +37,10 @@ const CreateMapContainer = styled.div`
 const CreateMap = memo(() => {
   return (
     <CreateMapContainer>
-        <a href="">
+        <NavLink to='/theme/create'>
             <span className='text'>테마지도 만들기</span>
             <span className='plus'>+</span>
-        </a>
+        </NavLink>
     </CreateMapContainer>
   )
 })

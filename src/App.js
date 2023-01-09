@@ -17,6 +17,7 @@ import MyPage from "./pages/mypage/MyPage";
 import MapFinder from "./pages/Main/MapFinder";
 import Theme from "./pages/Main/Theme";
 import ThemeList from "./components/Main/ThemeList";
+import CreateTheme from "./pages/Main/CreateTheme";
 
 /* 게시판 컴포넌트 모듈 */
 import Bulletin from "./pages/bulletin/Bulletin";
@@ -48,6 +49,8 @@ const App = memo(() => {
         <Route path="/map_finder" element={<MapFinder />} />
         <Route path="/theme/:id" element={<Theme />} />
         <Route path="/themelist" element={<ThemeList />} />
+        <Route path="/theme/create" element={<CreateTheme />} />
+
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />
