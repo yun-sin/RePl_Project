@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useEffect, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -75,11 +75,17 @@ const ThemeContainer = styled.div`
 const AllList = memo(() => {
   const { data: data } = useSelector((state) => state.ThemeSlice);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getThemeData());
+  },[]);
+
   return (
     <ThemeContainer>
       <ul>
         {/* 추후에 인피니티 스크롤 적용해야함 */}
-        {data.map(({ id, icon, text, user_number }, i) => {
+        {data?.map(({ id, icon, text, user_number }, i) => {
           return (
             <NavLink to={`map?theme=${id}`} className="link" key={i}>
               <li>
