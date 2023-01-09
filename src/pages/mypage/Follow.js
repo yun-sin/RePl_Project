@@ -1,7 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import PageContainer from '../../components/mypage/PageContainer';
 import PageInputBox from '../../components/mypage/PageInputBox';
 import styled from 'styled-components';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getInfo } from '../../slices/InfoSlice';
 
 const TabMenu = styled.ul`
     /* background-color: #dcdcdc; */
@@ -36,29 +39,72 @@ const FollowCon = styled(PageContainer)`
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding-bottom: 50px;
         
+        span {
+            margin-right: 30px;
+            font-size: 20px;
+            /* background-color: pink; */
+            line-height: 50px;
+            color: #424242;
+        }
+
+        .mapCnt {
+            font-size: 14px;
+        }
+
+        .followEmj {
+            margin-left: 20px;
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+
+        .closePopUp {
+            color: #424242;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            font-size: 18px;
+        
+            &:hover {
+                cursor: pointer;
+                background-color: #ccc;
+            }
+        }
     }
 
 `
 
 const Follow = memo(() => {
+
+    const dispatch = useDispatch();
+    const { data, loading, error} = useSelector((state) => state.InfoSlice);
+
+    //팔로우/팔로워 탭 상태관리
     const [currentTab, setCurrentTab] = React.useState(0);
 
-    const menuArr = [
-        { name: '팔로워', follow: ['a', 'b', 'c', 'd', 'e', 'f'] },
-        { name: '팔로잉', follow: ['A', 'B', 'C'] },
-      ];
+    useEffect(()=> {
+        dispatch(getInfo());
+    }, [dispatch])
     
-      const selectMenuHandler = (index) => {
-        setCurrentTab(index);
-      };
+    const selectMenuHandler = (index) => {
+    setCurrentTab(index);
+    };
+
+    const idData = data?.find((v, i) => v.id === 2)
 
     return (
        <FollowCon>
             <h2>마이페이지 &gt; 팔로우/팔로잉</h2>
 
             <TabMenu>
-                {menuArr.map((v, index)=>{
+                {idData?.follow.map((v, index)=>{
                     return (
                     <li
                         key={index}
@@ -70,10 +116,16 @@ const Follow = memo(() => {
                     )
                 })}
             </TabMenu>
+
             <div className='contents'>
-                {menuArr[currentTab].follow.map((v, i) => {
+                {idData?.follow[currentTab].list.map((v, i) => {
                     return (
-                        <PageInputBox key={i} className='inputBox' height={'50px'}>{v}</PageInputBox>
+                        <PageInputBox key={i} className='inputBox' height={'50px'}>
+                            <span className='followEmj'>{v.emoji}</span>
+                            <span>{v.name}</span>
+                            <span className='mapCnt'>{v.mapCnt}개의 테마</span>
+                            <button className='closePopUp'>X</button>
+                        </PageInputBox>
                     )
                 })}
             </div>

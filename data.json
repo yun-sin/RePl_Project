@@ -548,19 +548,46 @@
         {
           "name": "팔로워",
           "list": [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            }
           ]
         },
         {
           "name": "팔로잉",
           "list": [
-            "A",
-            "B",
-            "C"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            },
+            {
+              "emoji": "☕️",
+              "name": "test4",
+              "mapCnt": 6
+            }
           ]
         }
       ],
@@ -639,19 +666,46 @@
         {
           "name": "팔로워",
           "list": [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            }
           ]
         },
         {
           "name": "팔로잉",
           "list": [
-            "A",
-            "B",
-            "C"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            },
+            {
+              "emoji": "☕️",
+              "name": "test4",
+              "mapCnt": 6
+            }
           ]
         }
       ],
@@ -730,19 +784,46 @@
         {
           "name": "팔로워",
           "list": [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            }
           ]
         },
         {
           "name": "팔로잉",
           "list": [
-            "A",
-            "B",
-            "C"
+            {
+              "emoji": "👶",
+              "name": "test1",
+              "mapCnt": 4
+            },
+            {
+              "emoji": "❤️",
+              "name": "test2",
+              "mapCnt": 5
+            },
+            {
+              "emoji": "🍷",
+              "name": "test3",
+              "mapCnt": 6
+            },
+            {
+              "emoji": "☕️",
+              "name": "test4",
+              "mapCnt": 6
+            }
           ]
         }
       ],

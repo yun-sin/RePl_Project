@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
-    margin: 120px auto 0 200px;
+    margin: 90px auto 0 200px;
     /* background-color: #eee; */
     
     h2 {
