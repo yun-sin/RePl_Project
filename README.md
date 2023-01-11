@@ -5,12 +5,12 @@
   2022.10.31 ~ 2023.01.~~
   
 
+## About
+ - 진짜서울(https://jinjja-seoul.com) 클론코딩
+ - 유저들이 장소에 대한 후기를 남기고 이를 테마별로 지정하여 검색할 수 있는 사이트
+ 
 ## Team
  - [서보선](https://github.com/sqhtjs0104), [권채림](https://github.com/zzemoo), [유지인](https://github.com/xoxoinny0) , [장윤신](https://github.com/yun-sin)
-
-
-## About
- - 유저들이 장소에 대한 후기를 남기고 이를 테마별로 지정하여 검색할 수 있는 사이트
 
 ## Skill
 
