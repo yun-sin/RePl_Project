@@ -107,8 +107,8 @@ const MapFinderTitle = memo(() => {
   const onAllClick = useCallback((e) => {
     dispatch(setFilter(0));
     all.current.classList.add("active");
-    theme.current.classList.remove("active");
-    following.current.classList.remove("active");
+    // theme.current.classList.remove("active");
+    // following.current.classList.remove("active");
   });
 
   const onThemeClick = useCallback((e) => {
@@ -154,10 +154,10 @@ const MapFinderTitle = memo(() => {
         <ul>
           <li>
             <button type="button" onClick={onAllClick} ref={all}>
-              모든지도
+              테마지도
             </button>
           </li>
-          <li>
+          {/* <li>
             <button type="button" onClick={onThemeClick} ref={theme}>
               🗺테마지도
             </button>
@@ -166,7 +166,7 @@ const MapFinderTitle = memo(() => {
             <button type="button" onClick={onFollowingClick} ref={following}>
               👫팔로잉지도
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
     </TitleContainer>

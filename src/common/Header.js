@@ -193,7 +193,7 @@ const Header = memo(() => {
       ></div>
 
       <div className="navbarLogo">
-        <NavLink to="/">RePl</NavLink>
+        <NavLink to="/">리플</NavLink>
       </div>
       <div className="navbarMenu">
         <a onClick={handleLoginModal}>로그인</a>

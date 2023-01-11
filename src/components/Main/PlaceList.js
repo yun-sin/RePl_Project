@@ -68,6 +68,10 @@ const PlaceList = memo(() => {
   const { data: data } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
 
+   // 모달 오픈여부
+   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+   const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
+
   const dispatch = useDispatch();
 
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
@@ -83,6 +87,11 @@ const PlaceList = memo(() => {
     setModalContent(e.currentTarget.dataset.id);
     setModalIsOpen(true);
     console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
+
+    setIsPlaceModalOpen(state => true);
+    setIsHasgtagModalOpen(state => true);
+
+
   });
 
   useEffect(() => {
@@ -90,6 +99,39 @@ const PlaceList = memo(() => {
     dispatch(getThemeData());
   }, []);
 
+
+ 
+  // 모달창 열기 함수
+  const openPlaceModal = useCallback(e => {
+      e.preventDefault();
+      setIsPlaceModalOpen(state => true);
+  }, []);
+  const openHashtagModal = useCallback(e => {
+      e.preventDefault();
+      setIsHasgtagModalOpen(state => true);
+  }, []);
+  // 모달창 닫기 함수
+  const closePlaceModal = useCallback(e => {
+      setIsPlaceModalOpen(state => false);
+  }, []);
+  const closeHashtagModal = useCallback(e => {
+      setIsHasgtagModalOpen(state => false);
+  }, []);
+  
+  useEffect(() => {
+    if (isPlaceModalOpen || isHashtagModalOpen) {
+        document.body.style.cssText = `
+            position: fixed; 
+            top: -${window.scrollY}px;
+            overflow-y: scroll;
+            width: 100%;
+        `;
+    } else {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    }
+}, [isPlaceModalOpen, isHashtagModalOpen]);
   
   return (
     <ListContainer>

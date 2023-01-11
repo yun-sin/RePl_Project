@@ -54,11 +54,11 @@ const MapFinder = memo(() => {
 
       <MapFinderTitle />
       {filter == 0 && <AllList />}
-      {filter == 1 && <ThemeList />}
-      {filter == 2 && <FollowingList />}
+      {/* {filter == 1 && <ThemeList />} */}
+      {/* {filter == 2 && <FollowingList />} */}
       {filter == 0 && <CreateMap />}
-      {filter == 1 && <ViewMap />}
-      {filter == 2 && <ViewMap />}
+      {/* {filter == 1 && <ViewMap />} */}
+      {/* {filter == 2 && <ViewMap />} */}
     </MapFinderContaier>
   );
 });

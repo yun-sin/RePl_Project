@@ -13,7 +13,7 @@ const SidebarContainer = styled.div`
   max-width: 520px;
   height: 100vh;
   background-color: #fefefe;
-  padding: 40px 20px;
+  padding: 40px 10px;
   box-sizing: border-box;
   font-size: 14px;
   color: #666666;
@@ -205,6 +205,9 @@ const Sidebar = memo(() => {
     all.current.classList.remove("active");
     theme.current.classList.remove("active");
   });
+
+  console.log(selectedItems);
+
 
   const more = useCallback((whereArr,length) => {
     if ( !length)
