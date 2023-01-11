@@ -6,23 +6,9 @@ import PageButton from '../../components/mypage/PageButton';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getInfo } from '../../slices/InfoSlice';
-import { getInterest } from '../../slices/InterestSlice';
 
 import InterestModal from '../../components/mypage/InterestModal';
 
-const infoData = {
-
-    "eName": "닉네임",
-    "introduction": "힘을내요 슈퍼파워",
-    "icon": "icon",
-    "email": "email@naver.com",
-    "point": 10,
-    "interests": ["🧍 혼자서", "☕️ 커피", "🍷 와인","🍺 맥주", "🥗 채식/비건", "🍰 디저트","🌞 점심식사","🎧 음악듣기", "📖 책읽기", "🐶 반려동물과","👐 수제","🥪 간단한음식", "☕️ 커피", "🍷 와인","🧍 혼자서", "☕️ 커피","🍷 와인","🧍 혼자서", "☕️ 커피", "🍷 와인","🧍 혼자서", "☕️ 커피", "🍷 와인",],
-    "map": [],
-    "follower": [],
-    "following": [],
-    "noti": [], 
-}
 
 const InterestBox = styled(PageContainer)`
     
@@ -57,8 +43,6 @@ const Interests = memo(() => {
 
     const dispatch = useDispatch();
     const { data, loading, error} = useSelector((state) => state.InfoSlice);
-
-    // const { data:data2, loading:loading2, error:error2} = useSelector((state) => state.InterestSlice);
     
     //관심사 추가 상태관리
     const [IMDIsOpen, setIMDIsOpen] = useState(false);
@@ -70,7 +54,6 @@ const Interests = memo(() => {
     
     useEffect(()=> {
         dispatch(getInfo());
-        // dispatch(getInterest());
     }, [dispatch])
 
     const idData = data?.find((v, i) => v.id === 2)

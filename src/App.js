@@ -41,9 +41,9 @@ const App = memo(() => {
         {/* 경품 Routes */}
         <Route path="/raffle" element={<Raffle />} />
 
-        <Route path="/makeCu" element={<MakeCuration />} />
+        {/* 마이페이지, 로그인 Routes */}
         <Route path="/mypage/*" element={<MyPage />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login/repl" element={<Login />} />
 
         {/* 메인 Routes */}
         <Route path="/map_finder" element={<MapFinder />} />

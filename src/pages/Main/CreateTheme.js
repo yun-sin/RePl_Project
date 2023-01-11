@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import RegexHelper from "../../helper/RegexHelper";
 
 const CreateThemeContainer = styled.div`
   /* height: 100vw; */
@@ -90,7 +91,7 @@ const CreateThemeContainer = styled.div`
           border-radius: 12px;
           padding-left: 20px;
           box-sizing: border-box;
-          color: #0581BB;
+          color: #0581bb;
         }
         .help {
           margin: 14px 0 50px;
@@ -171,31 +172,39 @@ const CreateThemeContainer = styled.div`
 `;
 
 const CreateTheme = memo(() => {
-    const myIcon = useRef();
-    const mySentence = useRef();
+  const myIcon = useRef();
+  const mySentence = useRef();
 
-    
-    const onIconPress = useCallback((e) => {
-        myIcon.current.innerHTML = e.target.value;
-        console.log(e.target.value);
-    },[]);
+  const onIconPress = useCallback((e) => {
+    myIcon.current.innerHTML = e.target.value;
+    console.log(e.target.value);
+  }, []);
 
-    const onSentencePress = useCallback((e) => {
-        mySentence.current.innerHTML = e.target.value;
-        console.log(e.target.value);
-    },[]);
-    
+  const onSentencePress = useCallback((e) => {
+    mySentence.current.innerHTML = e.target.value;
+    console.log(e.target.value);
+  }, []);
 
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
 
+    // 유효성검사 
+    const regexHelper = RegexHelper.getInstance();
 
-    // const onKeyPress = useCallback((e, ref) => {
-    //     console.log(ref.current);
-
-    //     ref.current.innerHTML = e.target.value;
-    //     console.log(e.target.value);
-    // },[]);
-    
-
+    try {
+      regexHelper.value(
+        document.querySelector(".icon"),
+        "아이콘을 입력하세요."
+      );
+      regexHelper.value(
+        document.querySelector(".theme"),
+        "테마명을 입력하세요."
+      );
+    } catch (e) {
+      alert(e.message);
+      return;
+    }
+  }, []);
 
   return (
     <CreateThemeContainer>
@@ -213,10 +222,12 @@ const CreateTheme = memo(() => {
         <form action="">
           <div className="margin">
             <h2>테마명</h2>
-            <input onKeyPress={onSentencePress}
+            <input
+              onChange={onSentencePress}
               type="text"
               placeholder="ex) 간단하게 혼밥하기 좋은 곳"
               maxLength={15}
+              className="theme"
             ></input>
             <div className="help">
               <dl>
@@ -251,10 +262,20 @@ const CreateTheme = memo(() => {
 
           <div className="margin">
             <h2>아이콘</h2>
-            <input type="text" placeholder="ex) 🍛" maxLength={15} onKeyPress={onIconPress}></input>
+            <input
+              type="text"
+              placeholder="ex) 🍛"
+              maxLength={15}
+              onChange={onIconPress}
+              className="icon"
+            ></input>
           </div>
           <div className="text-align-right">
-            <a href="https://www.emojiengine.com/ko/" rel="noreferrer" target="_blank">
+            <a
+              href="https://www.emojiengine.com/ko/"
+              rel="noreferrer"
+              target="_blank"
+            >
               [ 이모지 키보드바로가기 ]
             </a>
           </div>
@@ -322,7 +343,9 @@ const CreateTheme = memo(() => {
           <div className="margin">
             <span className="label">미리보기</span>
             <div className="card">
-              <div className="icon" ref={myIcon}>💑</div>
+              <div className="icon" ref={myIcon}>
+                💑
+              </div>
               <div className="sentence" ref={mySentence}>
                 소개팅 하는 날, 점심식사 하기 좋은 음식점
               </div>
@@ -331,7 +354,9 @@ const CreateTheme = memo(() => {
           </div>
 
           <div className="form-submit">
-            <button type="submit">생성하기</button>
+            <button type="submit" onClick={onSubmit}>
+              생성하기
+            </button>
           </div>
         </form>
       </div>

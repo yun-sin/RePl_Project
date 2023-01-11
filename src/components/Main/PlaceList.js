@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
+
 
 import LocModal from "../../common/LocModal";
 
@@ -55,30 +56,83 @@ const ListContainer = styled.div`
   }
 `;
 
+
+
 const PlaceList = memo(() => {
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // 후기 팝업창 클릭이벤트 정의
-  const onPopUpClick = useCallback((e) => {
-    // setModalContent(e.currentTarget.dataset.id);
-    setModalIsOpen(true);
-    console.log("popup");
-    /* 팝업창 추가하기 */
-  });
+  const [LocData, setLocData] = useState();
+  const [ThemeData, setThemeData] = useState();
 
   const { data: data } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
 
-  const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
+   // 모달 오픈여부
+   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+   const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
 
   const dispatch = useDispatch();
+
+  // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
+
+  const randomData  = useMemo(() => {
+    return data && [...data]?.sort(() => Math.random() - 0.5);
+  },[data])
+
+
+  // 모달창 이벤트
+  const onModalIsOpen = useCallback((e) => {
+    e.preventDefault();
+    setModalContent(e.currentTarget.dataset.id);
+    setModalIsOpen(true);
+    console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
+
+    setIsPlaceModalOpen(state => true);
+    setIsHasgtagModalOpen(state => true);
+
+
+  });
 
   useEffect(() => {
     dispatch(getMapData());
     dispatch(getThemeData());
   }, []);
 
+
+ 
+  // 모달창 열기 함수
+  const openPlaceModal = useCallback(e => {
+      e.preventDefault();
+      setIsPlaceModalOpen(state => true);
+  }, []);
+  const openHashtagModal = useCallback(e => {
+      e.preventDefault();
+      setIsHasgtagModalOpen(state => true);
+  }, []);
+  // 모달창 닫기 함수
+  const closePlaceModal = useCallback(e => {
+      setIsPlaceModalOpen(state => false);
+  }, []);
+  const closeHashtagModal = useCallback(e => {
+      setIsHasgtagModalOpen(state => false);
+  }, []);
+  
+  useEffect(() => {
+    if (isPlaceModalOpen || isHashtagModalOpen) {
+        document.body.style.cssText = `
+            position: fixed; 
+            top: -${window.scrollY}px;
+            overflow-y: scroll;
+            width: 100%;
+        `;
+    } else {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    }
+}, [isPlaceModalOpen, isHashtagModalOpen]);
+  
   return (
     <ListContainer>
       <ul>
@@ -86,7 +140,7 @@ const PlaceList = memo(() => {
           randomData
             .map(({ id, place_name, address_name, theme }, i) => {
               return (
-                <li key={i} onClick={onPopUpClick} data-id={id}>
+                <li key={i} onClick={onModalIsOpen} data-id={id}>
                   <div>
                     <div className="place_name">{place_name}</div>
                     <div className="address">{address_name}</div>
@@ -104,7 +158,19 @@ const PlaceList = memo(() => {
             })
             ?.slice(0, 4)}
       </ul>
-      {/* {modalIsOpen === true? <LocModal /> : ''}; */}
+      
+      {data?.map((v, i) => {
+        let themeList = [];
+        if (ThemeData) {
+          v.theme.forEach((v2, i2) => {
+            themeList.push(ThemeData[v2]);
+          });
+        }
+
+        if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClick={() => setModalIsOpen(false)} data={v} theme={themeList} style={{
+          content: { width: "300px"}
+        }} />;
+      })}
     </ListContainer>
   );
 });

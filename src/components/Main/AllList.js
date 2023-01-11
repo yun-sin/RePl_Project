@@ -1,29 +1,12 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useEffect, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { getThemeData } from "../../slices/ThemeSlice";
+import { useNavigate } from "react-router-dom";
+import { current } from "@reduxjs/toolkit";
 
-// 임시데이터
-let data = [
-  {
-    id: 1,
-    emoji: "💻",
-    title: "혼자 노트북들고 작업하러 가기 좋은 곳",
-    desc: "10명의 사용자",
-  },
-  {
-    id: 2,
-    emoji: "👯‍♀️",
-    title: "우리 동네에 친구가 놀러오면 데려가는 곳",
-    desc: "20명의 사용자",
-  },
-  { id: 3, emoji: "🍞", title: "빵지순례 필수코스", desc: "30명의 사용자" },
-  { id: 4, emoji: "🍔", title: "햄버거가 맛있는 곳", desc: "40명의 사용자" },
-  { id: 5, emoji: "🍥", title: "라면이 맛있는 곳", desc: "50명의 사용자" },
-  { id: 6, emoji: "🍮", title: "푸딩이 맛있는 곳", desc: "40명의 사용자" },
-  { id: 7, emoji: "🍷", title: "와인이 맛있는 곳", desc: "30명의 사용자" },
-  { id: 8, emoji: "☕️", title: "커피가 맛있는 곳", desc: "20명의 사용자" },
-  { id: 9, emoji: "🍛", title: "혼밥하기 좋은 곳", desc: "20명의 사용자" },
-];
+
 
 const ThemeContainer = styled.div`
   margin-bottom: 30px;
@@ -41,6 +24,7 @@ const ThemeContainer = styled.div`
       width: 32%;
       /* flex: none; */
       margin-bottom: 30px;
+      cursor: pointer;
     }
     li {
       background-color: #f8f8f8;
@@ -70,19 +54,38 @@ const ThemeContainer = styled.div`
 `;
 
 const AllList = memo(() => {
+  const { data: data } = useSelector((state) => state.ThemeSlice);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getThemeData());
+  },[]);
+
+  const navigate = useNavigate();
+
+  const onPageMove = useCallback((e) => {
+    e.preventDefault();
+
+    const {id} = e.currentTarget.dataset;
+    
+    navigate(`/map?theme=${id}`);
+
+  },[]);
+
   return (
     <ThemeContainer>
       <ul>
         {/* 추후에 인피니티 스크롤 적용해야함 */}
-        {data.map(({ id, emoji, title, desc }, i) => {
+        {data?.map(({ id, icon, text, user_number }, i) => {
           return (
-            <NavLink to={`map?theme=${id}`} className="link" key={i}>
+            <div className="link" key={i} onClick={onPageMove} data-id={id} >
               <li>
-                <div className="emoji">{emoji}</div>
-                <div className="title">{title}</div>
-                <div className="desc">{desc}</div>
+                <div className="emoji">{icon}</div>
+                <div className="title">{text}</div>
+                <div className="desc">{user_number}명의 큐레이터</div>
               </li>
-            </NavLink>
+            </div>
           );
         })}
       </ul>
