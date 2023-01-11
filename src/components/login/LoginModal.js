@@ -1,6 +1,7 @@
-import React, { memo , useEffect} from 'react';
+import React, { memo , useCallback, useEffect} from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const ModalInside = styled.div`
     /* background-color: pink; */
@@ -62,6 +63,8 @@ const ModalInside = styled.div`
 
 const LoginModal = memo(({LMDIsOpen, onRequestClose}) => {
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         document.body.style.cssText = `
           position: fixed; 
@@ -74,6 +77,12 @@ const LoginModal = memo(({LMDIsOpen, onRequestClose}) => {
           window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
         };
       }, []);
+
+      const onClickEmail = useCallback((e) => {
+        let redirectUrl = '/login/repl';
+        navigate(redirectUrl);
+        onRequestClose();
+      }, [navigate, onRequestClose]);
 
 
     return (
@@ -107,7 +116,7 @@ const LoginModal = memo(({LMDIsOpen, onRequestClose}) => {
                 <div className='buttonBox'>
                     <button className='kakao'>카카오로 계속하기</button>
                     <button className='naver'>네이버로 계속하기</button>
-                    <button className='email'>이메일로 계속하기</button>
+                    <button className='email' onClick={onClickEmail}>이메일로 계속하기</button>
                 </div>
             </ModalInside>
 

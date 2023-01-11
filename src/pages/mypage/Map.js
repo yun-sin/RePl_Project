@@ -31,6 +31,20 @@ const MyMapInputBox = styled.button`
         box-shadow: 1px 2px 5px #a4a4a4;
         transition: all 0.2s;
     }
+
+    .bookmarkBtn {
+        text-align: left;
+
+        .imj {
+            margin: 0 10px;
+        }
+
+        .placeCnt {
+            margin-left: 10px;
+            font-size: 11px;
+            color: grey;
+        }
+    }
 `
 
 const MapBox = styled(PageContainer)`
@@ -61,6 +75,7 @@ const MapBox = styled(PageContainer)`
 
             .b {
                 font-weight: bold;
+                line-height: 23px;
             }
             span {
                 font-size: 13px;
@@ -86,10 +101,6 @@ const MapBox = styled(PageContainer)`
         .curation {
             /* background-color: beige; */
             width: 330px;
-
-            .curBox {
-                margin-bottom: 30px;
-            }
         }
     }
 
@@ -126,9 +137,10 @@ const Map = memo(() => {
         navigate(redirectUrl);
     },[navigate])
 
-    //큐레이션만들기 페이지로 이동
-    const onCurationBtn = useCallback((e)=> {
-        let redirectUrl = '/makeCu';
+    //찜한 지도로 이동하는 함수 (경로 필요)
+    const onClickLike = useCallback((e)=> {
+        let id = 2;
+        let redirectUrl = `/map/curator/${id}`;
         navigate(redirectUrl);
     }, [navigate]);
 
@@ -149,23 +161,28 @@ const Map = memo(() => {
                         <span>- 테마지도에 등록한 내 장소를 모아서 볼 수 있습니다.</span><br/>
                         <span>- 아래의 버튼을 클릭해서 테마를 둘러보고 큐레이션을 시작해보세요.</span><br/>                   
                         <span>- 원하는 테마를 직접 만들 수도 있습니다.</span><br/>
-                        <span className='b'>🙋 ‘테마지도’와 ‘큐레이션 지도’는 어떻게 다른가요?<br/>
-                        - 사용 설명서(링크)에서 쉽게 설명드릴게요.</span><br/>
+                        
                     </p>
                     <PageButton className='mapButton' width={'300px'} height={'44px'} onClick={onClickFindMap}>테마지도 보러가기</PageButton>
                 </div>
                 <div className='curation'>
-                    <h3>🏕 나의 큐레이션 지도</h3>
-                    <PageInputBox className='curBox' width={'300px'} height={'50px'}>
-                    </PageInputBox>
-                    <PageInputBox className='curBox' width={'300px'} height={'50px'}></PageInputBox>
-                    <PageInputBox className='curBox' width={'300px'} height={'50px'}></PageInputBox>
+                    <h3>🏕 내가 찜한 지도</h3>
+                    <MyMapInputBox width={'300px'} height={'50px'} onClick={onClickLike}>
+                        <div className='bookmarkBtn'>
+                            <span className='imj'>❤️</span>
+                            <span>
+                                내가 좋아하는 장소들
+                            </span>
+                            <span className='placeCnt'>1개의 장소</span>
+                        </div>
+                    </MyMapInputBox>
+                    
                     <p>
-                        <span className='b'>🕵️‍♂️ 나만의 지도를 만들어 장소를 마음껏 등록하고, 공유해보세요.</span><br/>
-                        <span>- 하나의 지도에 장소를 마음껏 등록할 수 있습니다.</span><br/>
-                        <span>- 등록된 장소들은 지도 설정값에 따라 진짜서울 웹사이트에 공유될 수 있습니다.</span><br/>
+                        <span className='b'>🕵️‍♂️ 내가 북마크한 장소를 확인할 수 있어요.</span><br/>
+                        <span>- 마음에 드는 장소를 북마크 할 수 있습니다.</span><br/>
+                        <br/>
                     </p>
-                    <PageButton className='mapButton' width={'300px'} height={'44px'} onClick={onCurationBtn}>큐레이션 지도 만들기</PageButton>
+                    
                 </div>
             </div>
         </MapBox>
