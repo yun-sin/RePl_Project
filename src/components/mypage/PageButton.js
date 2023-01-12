@@ -13,8 +13,9 @@ const PageButton = styled.button`
     cursor: pointer;
 
     &:hover {
-        scale: 1.05;
+        /* scale: 1.05; */
         transition: 0.1s;
+        opacity: 0.8;
     }
 `
 
