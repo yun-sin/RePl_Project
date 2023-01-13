@@ -11,6 +11,8 @@ import MapThemeBar from "../../components/map/MapThemeBar";
 import LocModal from "../../common/LocModal";
 import SearchLoc from "../../components/map/SearchLoc";
 import MapAddLink from "../../components/map/MapAddLink";
+import MapAddLink2 from "../../components/map/MapAddLink2";
+import ThemeModal from "../../components/map/ThemeModal";
 import Spinner from "../../common/Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,6 +34,7 @@ const Map = memo(() => {
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
 
   const { theme } = useQueryString();
+  const [TModal, setTModal] = useState(false);
 
   const yourLoc = useRef();
   const [yourCoord, setYourCoord] = useState();
@@ -73,7 +76,6 @@ const Map = memo(() => {
     });
     // theme_place 데이터
     dispatch(getTP()).then((e) => {
-      console.log(123);
       let obj = {};
       Array.from(e.payload)?.forEach((v, i) => {
         obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
@@ -304,10 +306,23 @@ const Map = memo(() => {
     setModalContent(e.currentTarget.dataset.id);
     setModalIsOpen(true);
     console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
-    console.log(ThemeData);
-    console.log(TPList);
-    console.log(ThemeData[TPList[7918217][0]]);
   });
+
+  const onThemeModalOpen = useCallback((e) => {
+    setTModal(true);
+  });
+
+  useEffect(() => {
+    if (data3) {
+      let obj = {};
+      Array.from(data3)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
+      });
+      console.log(obj);
+
+      setTPList(obj);
+    }
+  }, [data3]);
 
   return (
     <MapContainer>
@@ -317,7 +332,7 @@ const Map = memo(() => {
       <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
 
       {/* 보고있는 테마 */}
-      <MapThemeBar theme={theme} ThemeData={ThemeData} />
+      <MapThemeBar theme={theme} ThemeData={ThemeData} Add={false} />
 
       {/* 내 위치 찾기 버튼 */}
       <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} onClick={onYourLoc} />
@@ -326,7 +341,10 @@ const Map = memo(() => {
       <SearchLoc onClick={onSearchLoc} />
 
       {/* 장소 추가하기 링크 */}
-      {theme && <MapAddLink theme={theme} />}
+      {theme ? <MapAddLink theme={theme && theme} /> : <MapAddLink2 onClick={onThemeModalOpen} />}
+
+      {/* 테마 선택 모달창 */}
+      <ThemeModal modalIsOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} />
 
       {/* 장소 목록 */}
       <ListContainer id="container">
@@ -337,13 +355,15 @@ const Map = memo(() => {
               <span className="category">{v.category_item_name}</span>
               <br />
               <span className="address">{v.road_address_name ? v.road_address_name : v.address_name}</span>
-              {TPList[v.id]?.map((v2, i2) => {
-                return (
-                  <a key={i2} className="theme">
-                    {ThemeData[v2]?.icon + " " + ThemeData[v2]?.text}
-                  </a>
-                );
-              })}
+              {TPList &&
+                ThemeData &&
+                TPList[v.id]?.map((v2, i2) => {
+                  return (
+                    <a key={i2} className="theme">
+                      {ThemeData[v2]?.icon + " " + ThemeData[v2]?.text}
+                    </a>
+                  );
+                })}
               <div className="more_btn" onClick={onModalIsOpen} data-id={v.id}>
                 <img src={iconMore} />
               </div>

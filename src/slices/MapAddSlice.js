@@ -16,9 +16,12 @@ const MapAddSlice = createSlice({
     modalOpen2: (state, action) => {
       return { modalIsOpen1: false, modalIsOpen2: true, modalIsOpen3: false };
     },
-
     modalOpen3: (state, action) => {
       return { modalIsOpen1: false, modalIsOpen2: false, modalIsOpen3: true };
+    },
+
+    themeOpen: (state, action) => {
+      return { modalIsOpen1: false, modalIsOpen2: false, modalIsOpen3: false };
     },
 
     modalClose: (state, action) => {

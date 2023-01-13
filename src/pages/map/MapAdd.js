@@ -12,6 +12,7 @@ import MapThemeBar from "../../components/map/MapThemeBar";
 import MapAddModal1 from "../../components/map/MapAddModal1";
 import MapAddModal2 from "../../components/map/MapAddModal2";
 import MapAddModal3 from "../../components/map/MapAddModal3";
+
 import LocModal from "../../common/LocModal";
 import { MapAddListContainer } from "../../components/map/MapAddList";
 // css
@@ -36,7 +37,12 @@ const MapAdd = memo(({ zoomLevel }) => {
   const [infowindow, setInfowindow] = useState();
   const [ps, setPs] = useState();
   const [location, setLocation] = useState();
+
+  const [selectTheme, setSelectTheme] = useState();
+
+  const [PList, setPList] = useState([]);
   const [TPList, setTPList] = useState({});
+
   // 키워드 검색한 결과 데이터
   const [searchData, setSearchData] = useState();
 
@@ -78,22 +84,32 @@ const MapAdd = memo(({ zoomLevel }) => {
   }, []);
 
   useEffect(() => {
+    let arr = [];
+    if (data) {
+      Array.from(data)?.forEach((v, i) => {
+        arr.push(v.id);
+      });
+
+      // console.log(arr);
+      setPList(arr);
+    }
+
     if (data3) {
       let obj = {};
       Array.from(data3)?.forEach((v, i) => {
         obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
       });
-      console.log(obj);
-
+      // console.log(obj);
       setTPList(obj);
     }
   }, [data, data3]);
 
+  /** 모달창에 테마 데이터를 전달하기 위한 코드 */
   useEffect(() => {
-    if (data) {
-      console.log("데이터가 변경되었습니다.");
+    if (theme && data2) {
+      setSelectTheme(data2[theme]);
     }
-  }, [data]);
+  }, [theme, data2]);
 
   // 키워드로 장소를 검색합니다
   const onSearchSubmit = useCallback((e) => {
@@ -285,7 +301,7 @@ const MapAdd = memo(({ zoomLevel }) => {
       <div id="map" style={{ width: "100%", height: "95vh", position: "relative" }}></div>
 
       {/* 보고있는 테마 */}
-      <MapThemeBar theme={theme} ThemeData={data2} />
+      <MapThemeBar theme={theme} ThemeData={data2} Add={true} />
 
       <MapAddListContainer>
         <div className="title">장소 추천하기</div>
@@ -322,7 +338,7 @@ const MapAdd = memo(({ zoomLevel }) => {
                     <a>{v.road_address_name ? v.road_address_name : v.address_name}</a>
                   </div>
                   <div>
-                    {Object.keys(TPList)?.includes(v.id) ? (
+                    {PList?.includes(+v.id) && Object.keys(TPList)?.includes(v.id) ? (
                       TPList[v.id]?.includes(+theme) ? (
                         // 현재 테마에 이미 해당 장소가 있음
                         <div className="btn" data-index={i} onClick={onAlreadyClick}>
@@ -351,7 +367,7 @@ const MapAdd = memo(({ zoomLevel }) => {
 
       {/* 모달창1*/}
       {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
-      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={data2 && data2[theme]} AAT={AAT} />
+      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={selectTheme} AAT={AAT} />
       {/* 모달창2 */}
       <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />
       {/* 모달창2 */}

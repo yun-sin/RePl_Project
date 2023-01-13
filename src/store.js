@@ -22,10 +22,13 @@ import InterestSlice from "./slices/InterestSlice";
 const store = configureStore({
   reducer: {
     MainSlice: MainSlice,
+
+    /** 지도 */
     MapSlice: MapSlice,
     MapThemeSlice: MapThemeSlice,
     ThemeSlice: ThemeSlice,
     MapAddSlice: MapAddSlice,
+
     SidebarSlice: SidebarSlice,
     NavbarSlice: NavbarSlice,
 

@@ -1,6 +1,10 @@
 import React, { memo } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import "animate.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const MapThemeBarContainer = styled.div`
   position: fixed;
@@ -18,7 +22,20 @@ const MapThemeBarContainer = styled.div`
   font-weight: 600;
   transition: 2s;
 
+  .arrow {
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 3px solid #ccc;
+    font-size: 22px;
+  }
+
   span {
+    padding-right: 8px;
+    margin-right: 8px;
+    border-right: 3px solid #ccc;
+  }
+
+  .link {
     padding-right: 8px;
     margin-right: 8px;
     border-right: 3px solid #ccc;
@@ -29,11 +46,21 @@ const MapThemeBarContainer = styled.div`
   }
 `;
 
-const MapThemeBar = memo(({ theme, ThemeData }) => {
+const MapThemeBar = memo(({ theme, ThemeData, Add }) => {
+  const back = "/map?theme=" + theme;
+
   return (
     <MapThemeBarContainer className={`${"animate__animated"} ${"animate__fadeInRight"} ${"animate__faster"}`}>
+      {Add && (
+        <Link className="arrow" to={back}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
+      )}
       {theme && ThemeData && <span>{ThemeData[theme]?.icon + " " + ThemeData[theme]?.text}</span>}
-      <a href="/map_finder">지도 찾기</a>
+      <Link className="link" to={"/map_finder"}>
+        테마
+      </Link>
+      <Link to={"/map"}>전체</Link>
     </MapThemeBarContainer>
   );
 });

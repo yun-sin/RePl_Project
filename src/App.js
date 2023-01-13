@@ -8,8 +8,6 @@ import Map from "./pages/map/Map";
 import MapAdd from "./pages/map/MapAdd";
 import MapCurator from "./pages/map/MapCurator";
 
-import Raffle from "./pages/raffle/Raffle";
-
 import MyPage from "./pages/mypage/MyPage";
 import Login from "./pages/login/Login";
 import Join from "./pages/login/Join";
@@ -39,9 +37,6 @@ const App = memo(() => {
         <Route path="/map/add" element={<MapAdd />} />
         <Route path="/map/curator/:id" element={<MapCurator />} />
 
-        {/* 경품 Routes */}
-        <Route path="/raffle" element={<Raffle />} />
-
         {/* 마이페이지, 로그인 Routes */}
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login/repl" element={<Login />} />
@@ -52,7 +47,6 @@ const App = memo(() => {
         <Route path="/theme/:id" element={<Theme />} />
         <Route path="/themelist" element={<ThemeList />} />
         <Route path="/theme/create" element={<CreateTheme />} />
-
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />

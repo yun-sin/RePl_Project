@@ -2,9 +2,9 @@ import React, { memo, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { modalOpen2, modalClose } from "../../slices/MapAddSlice";
+import { modalOpen2, themeOpen, modalClose } from "../../slices/MapAddSlice";
 import { postLoc } from "../../slices/MapSlice";
 import { postTP } from "../../slices/MapThemeSlice";
 
@@ -55,6 +55,11 @@ export const MapAddModalContainer = styled.div`
     margin-bottom: 20px;
   }
 
+  .theme_select {
+    color: red;
+    cursor: pointer;
+  }
+
   .save {
     font-size: 14px;
     width: 100%;
@@ -93,20 +98,17 @@ const MapAddModal1 = memo(({ modalIsOpen, location, theme, AAT }) => {
   const onSaveClick = useCallback(async (e) => {
     try {
       if (AAT) {
-        // console.log("😥");
         console.group("테마 추가 : " + location?.place_name);
         console.log(location);
         console.groupEnd();
       } else {
-        // console.log("🗺️");
         await dispatch(postLoc({ location: location, theme: theme.id }));
         console.group("장소 추가 : " + location?.place_name);
         console.log(location);
         console.groupEnd();
       }
-      await dispatch(postTP({ location: location, theme: theme.id }));
+      await dispatch(postTP({ place_id: location.id, theme_id: theme.id }));
     } catch (error) {}
-    // dispatch(postLoc({ location: location, theme: theme.id })).then(dispatch(postTP({ location: location, theme: theme.id })));
 
     dispatch(modalOpen2());
   });
@@ -144,7 +146,7 @@ const MapAddModal1 = memo(({ modalIsOpen, location, theme, AAT }) => {
               </div>
             ) : (
               <div>
-                <a href="/map_finder">테마를 선택해주세요.</a>
+                <div className="theme_select">테마를 선택해주세요.</div>
               </div>
             )}
           </div>

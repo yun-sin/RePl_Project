@@ -38,8 +38,8 @@ export const postTP = createAsyncThunk("MapThemeSlice/postTP", async (payload, {
 
   try {
     const response = await axios.post(URL, {
-      place_id: +payload.location.id,
-      theme_id: +payload.theme,
+      place_id: +payload.place_id,
+      theme_id: +payload.theme_id,
       user_id: user_id,
     });
     result = response.data;
