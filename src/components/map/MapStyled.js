@@ -26,7 +26,7 @@ export const MapContainer = styled.div`
 /** ListContainer */
 export const ListContainer = styled.div`
   position: fixed;
-  height: 100%;
+  height: 95%;
   top: 70px;
   left: 20px;
   z-index: 1;
@@ -77,7 +77,7 @@ export const ListContainer = styled.div`
     background-color: rgb(255, 255, 255, 0.99);
     border-radius: 10px;
     width: 290px;
-    height: 110px;
+    min-height: 110px;
     margin: 10px;
     padding: 15px 20px;
     box-sizing: border-box;
@@ -154,9 +154,10 @@ export const ListContainer = styled.div`
       line-height: 20.9px;
     }
 
-    a {
+    .theme {
       font-size: 12px;
       color: #545454;
+      margin-top: 7px;
       font-weight: 200;
       display: block;
     }

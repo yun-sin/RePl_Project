@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 
 import { modalOpen2, modalClose } from "../../slices/MapAddSlice";
 import { postLoc } from "../../slices/MapSlice";
+import { postTP } from "../../slices/MapThemeSlice";
 
 import "animate.css";
 
@@ -86,14 +87,26 @@ export const MapAddModalContainer = styled.div`
   }
 `;
 
-const MapAddModal1 = memo(({ modalIsOpen, location, theme }) => {
+const MapAddModal1 = memo(({ modalIsOpen, location, theme, AAT }) => {
   const dispatch = useDispatch();
 
-  const onSaveClick = useCallback((e) => {
-    dispatch(postLoc({ location: location, theme: theme.id }));
-    console.group("장소 추가 : " + location?.place_name);
-    console.log(location);
-    console.groupEnd();
+  const onSaveClick = useCallback(async (e) => {
+    try {
+      if (AAT) {
+        // console.log("😥");
+        console.group("테마 추가 : " + location?.place_name);
+        console.log(location);
+        console.groupEnd();
+      } else {
+        // console.log("🗺️");
+        await dispatch(postLoc({ location: location, theme: theme.id }));
+        console.group("장소 추가 : " + location?.place_name);
+        console.log(location);
+        console.groupEnd();
+      }
+      await dispatch(postTP({ location: location, theme: theme.id }));
+    } catch (error) {}
+    // dispatch(postLoc({ location: location, theme: theme.id })).then(dispatch(postTP({ location: location, theme: theme.id })));
 
     dispatch(modalOpen2());
   });

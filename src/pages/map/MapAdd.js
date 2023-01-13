@@ -3,8 +3,9 @@ import React, { memo, useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useQueryString } from "../../hooks/useQueryString";
 // 슬라이스
-import { getMapData, putLoc } from "../../slices/MapSlice";
+import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
+import { getTP } from "../../slices/MapThemeSlice";
 import { modalOpen1 } from "../../slices/MapAddSlice";
 // 컴포넌트
 import MapThemeBar from "../../components/map/MapThemeBar";
@@ -26,6 +27,8 @@ const MapAdd = memo(({ zoomLevel }) => {
   const dispatch = useDispatch();
   const { data: data, loading: loading, error: error } = useSelector((state) => state.MapSlice);
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
+  const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
+
   const { theme } = useQueryString();
   const [markers, setMarkers] = useState([]);
   const [newLoc, setNewLoc] = useState();
@@ -33,12 +36,14 @@ const MapAdd = memo(({ zoomLevel }) => {
   const [infowindow, setInfowindow] = useState();
   const [ps, setPs] = useState();
   const [location, setLocation] = useState();
-  const [idList, setIdList] = useState({});
+  const [TPList, setTPList] = useState({});
   // 키워드 검색한 결과 데이터
   const [searchData, setSearchData] = useState();
+
   // 장소 등록 모달
   const { modalIsOpen1, modalIsOpen2, modalIsOpen3 } = useSelector((state) => state.MapAddSlice);
-  const { locIndex, secLocIndex } = useState();
+  const [AAT, setAAT] = useState(false); // AlreadyAnotherTheme
+
   // 장소 리뷰 모달
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -56,21 +61,12 @@ const MapAdd = memo(({ zoomLevel }) => {
     setMap(map);
     console.log("🗺️ 지도 렌더링");
 
-    // 리플에 등록된 장소데이터를 가져옵니다 (중복인지 확인 위함)
-    dispatch(getMapData()).then((e) => {
-      // console.log(e.payload);
-
-      // 장소의 카카오맵id가 리플의 데이터에서 어떤 id인지 확인하기 위한 object
-      let obj = {};
-      e.payload.forEach((v, i) => {
-        obj[v.place_id] = { key: v.id, theme: v.theme };
-      });
-
-      setIdList(obj);
-    });
-
-    // 테마 데이터
+    // place 데이터 (중복인지 확인 위함)
+    dispatch(getMapData());
+    // theme 데이터
     dispatch(getThemeData());
+    // theme_place 데이터
+    dispatch(getTP());
 
     // 장소 검색 객체를 생성합니다
     const ps = new kakao.maps.services.Places();
@@ -82,16 +78,20 @@ const MapAdd = memo(({ zoomLevel }) => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      // console.log("데이터 변경" + data);
-      // console.log(data);
+    if (data3) {
       let obj = {};
-
-      data.forEach((v, i) => {
-        obj[v.place_id] = { key: v.id, theme: v.theme };
+      Array.from(data3)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
       });
+      console.log(obj);
 
-      setIdList(obj);
+      setTPList(obj);
+    }
+  }, [data, data3]);
+
+  useEffect(() => {
+    if (data) {
+      console.log("데이터가 변경되었습니다.");
     }
   }, [data]);
 
@@ -184,9 +184,7 @@ const MapAdd = memo(({ zoomLevel }) => {
       // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
       map.setBounds(bounds);
     }
-
-    console.log(data);
-  }, [searchData, data]);
+  }, [searchData]);
 
   // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
   function addMarker(position, idx, title) {
@@ -261,21 +259,22 @@ const MapAdd = memo(({ zoomLevel }) => {
 
   /** 새로운 장소 등록 모달창 오픈 */
   const onBtnClick = useCallback((e) => {
+    setAAT(false);
     setLocation(searchData[e.currentTarget.dataset.index]);
     dispatch(modalOpen1());
   });
 
+  /** 현재 테마엔 없지만 다른 테마엔 이미 장소가 있을 경우 */
   const onBtnClick2 = useCallback((e) => {
-    // const index = idList[searchData[e.currentTarget.dataset.index].id].key;
-    // console.log("데이터의 id: " + index);
-    // dispatch(putLoc({ index: index, theme: theme }));
+    setAAT(true);
     setLocation(searchData[e.currentTarget.dataset.index]);
     dispatch(modalOpen1(searchData[e.currentTarget.dataset.index]));
   });
 
   /** 이미 있는 장소일 경우 리플 리뷰창 오픈 */
   const onAlreadyClick = useCallback((e) => {
-    const index = idList[searchData[e.currentTarget.dataset.index].id].key;
+    const index = searchData[e.currentTarget.dataset.index].id;
+    console.log(searchData[e.currentTarget.dataset.index].id);
     console.log(index);
     setModalContent(index);
     setModalIsOpen(true);
@@ -311,10 +310,6 @@ const MapAdd = memo(({ zoomLevel }) => {
           <ul id="placesList">
             {searchData?.map((v, i) => {
               const category = v.category_name.split(">").reverse()[0].trim();
-              // let themeList = [];
-              // if (Object.keys(idList)?.includes(v.id)) {
-              //   idList[v.id].theme
-              // }
 
               return (
                 <li key={i} className={`${"item"} ${"loc" + i}`} onClick={onItemClick}>
@@ -327,8 +322,8 @@ const MapAdd = memo(({ zoomLevel }) => {
                     <a>{v.road_address_name ? v.road_address_name : v.address_name}</a>
                   </div>
                   <div>
-                    {Object.keys(idList)?.includes(v.id) ? (
-                      idList[v.id].theme?.includes(+theme) ? (
+                    {Object.keys(TPList)?.includes(v.id) ? (
+                      TPList[v.id]?.includes(+theme) ? (
                         // 현재 테마에 이미 해당 장소가 있음
                         <div className="btn" data-index={i} onClick={onAlreadyClick}>
                           🗺️
@@ -336,7 +331,7 @@ const MapAdd = memo(({ zoomLevel }) => {
                       ) : (
                         // 장소가 저장되어있지만 현재 테마는 아님
                         <div className="btn" data-index={i} onClick={onBtnClick2}>
-                          😥
+                          ➕
                         </div>
                       )
                     ) : (
@@ -356,7 +351,7 @@ const MapAdd = memo(({ zoomLevel }) => {
 
       {/* 모달창1*/}
       {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
-      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={data2 && data2[theme]} locIndex={locIndex} />
+      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={data2 && data2[theme]} AAT={AAT} />
       {/* 모달창2 */}
       <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />
       {/* 모달창2 */}
@@ -368,7 +363,7 @@ const MapAdd = memo(({ zoomLevel }) => {
         data?.map((v, i) => {
           let themeList = [];
           if (data2) {
-            v.theme.forEach((v2, i2) => {
+            TPList[v.id]?.forEach((v2, i2) => {
               themeList.push(data2[v2]);
             });
           }
