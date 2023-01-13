@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./common/Header";
-import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
 /* 지도 */
@@ -12,6 +11,8 @@ import MapCurator from "./pages/map/MapCurator";
 import Raffle from "./pages/raffle/Raffle";
 
 import MyPage from "./pages/mypage/MyPage";
+import Login from "./pages/login/Login";
+import Join from "./pages/login/Join";
 
 /* 메인 컴포넌트 모듈 */
 import MapFinder from "./pages/Main/MapFinder";
@@ -44,6 +45,7 @@ const App = memo(() => {
         {/* 마이페이지, 로그인 Routes */}
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login/repl" element={<Login />} />
+        <Route path="/join" element={<Join />} />
 
         {/* 메인 Routes */}
         <Route path="/map_finder" element={<MapFinder />} />

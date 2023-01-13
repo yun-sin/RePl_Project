@@ -330,7 +330,7 @@ const NewPost = memo(() => {
                         style={{display: 'none'}}
                     />
                     <input type="color" name="backgroundColorInput" id="backgroundColorInput" onChange={onBackgroundColorInputChange}/>
-                    <button>A</button>
+                    {/* <button>A</button> */}
                 </div>
                 <div className='title-input'>
                     <input type="text" name='postTitle' className='title-input__main-title' placeholder='제목을 입력하세요' />
