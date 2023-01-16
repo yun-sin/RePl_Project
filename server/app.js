@@ -23,6 +23,7 @@ const cookieParser = require('cookie-parser');      // Cookie 처리
 const expressSession = require('express-session');  // Session 처리
 const nodemailer = require('nodemailer');           // 메일발송 (app.use 필요없음)
 const cors = require('cors');                       // CORS 접근 허용
+const MySQLStore = require('express-mysql-session')(expressSession);
 /** 예외처리 관련 클래스 */
 const { BadRequestException, PageNotFoundException } = require('./helper/ExceptionHelper');
 
@@ -124,16 +125,6 @@ app.use(methodOverride('X-Method-Override'));       // IBM
 // 이 때 암호화에 사용하는 key 문자열을 개발자가 정해야 함
 app.use(cookieParser(process.env.COOKIE_ENCRYPT_KEY));
 
-/** 세션 설정 */
-app.use(expressSession({
-    // 암호화 키
-    secret: process.env.SESSION_ENCRYPT_KEY,
-    // 세션이 초기화 되지 않더라도 새로 저장할지 여부(통상 false)
-    resave: false,
-    // 세션이 저장되기 전 기존 세션을 초기화 상태로 만들지 여부
-    saveUninitialized: false
-}));
-
 /** HTML, CSS, JS, IMG 등 정적 파일을 URL에 노출시킬 폴더 연결 */
 // "http://아이피(혹은 도메인):포트번호" 이후 경로가 router에 등록되지 않은 경로라면
 // static 모듈에 연결된 폴더 안에서 해당 경로를 탕색
@@ -154,6 +145,32 @@ app.use(cors());
 /** WebHelper 설정 */
 app.use(WebHelper());
 
+/** 세션 설정 */
+app.use(expressSession({
+    // 암호화 키
+    secret: process.env.SESSION_ENCRYPT_KEY,
+    // 세션이 초기화 되지 않더라도 새로 저장할지 여부(통상 false)
+    resave: false,
+    // 세션이 저장되기 전 기존 세션을 초기화 상태로 만들지 여부
+    saveUninitialized: false,
+    store: new MySQLStore({
+        host: process.env.DATABASE_HOST,            // MYSQL 서버 주소 (다른 PC 경우 IP 주소)
+        port: process.env.DATABASE_PORT,            // MYSQL 포트 번호
+        user: process.env.DATABASE_USERNAME,        // MYSQL 로그인 가능한 계정 이름
+        password: process.env.DATABASE_PASSWORD,    // 비밀번호
+        database: process.env.DATABASE_SCHEMA,      // 사용하고자 하는 데이터베이스 이름
+        createDatabaseTable: process.env.MYSQL_SESSION_CREATE_TABLE,
+        schema: {
+            tableName: process.env.MYSQL_SESSION_TABLE_NAME,
+            columnNames: {
+                session_id: process.env.MYSQL_SESSION_FIELD_ID,
+                expires: process.env.MYSQL_SESSION_FIELD_EXPIRES,
+                data: process.env.MYSQL_SESSION_FIELD_DATA,
+            },
+        },
+    }),
+}));
+
 /** 라우터(URL 분배기) 객체 설정 -> 맨 마지막에 설정해야 함 */
 const router = express.Router();
 // 라우터를 express에 등록
@@ -162,14 +179,14 @@ app.use('/', router);
 /*--------------------------------------------------------
     5) 각 URL별 백엔드 기능 정의
 ---------------------------------------------------------*/
-
+app.use(require('./controller/BulletinController'));
 
 /** 에러 처리 -> 반드시 모든 route 처리의 마지막에 위치해야 함 */
 // 컨트롤러에서 에러 발생시 `next(에러객체)`를 호출, 해당 동작을 여기서 처리
-// app.use((err, req, res, next) => res.sendError(err));
+app.use((err, req, res, next) => res.sendError(err));
 
 // 앞에서 정의하지 않은 기타 URL에 대한 일괄 처리 -> 무조건 맨 마지막에 정의
-// app.use('*', (req, res, next) => res.sendError(new PageNotFoundException()));
+app.use('*', (req, res, next) => res.sendError(new PageNotFoundException()));
 
 /*--------------------------------------------------------
     6) 설정한 내용 기반으로 서버 구동 시작

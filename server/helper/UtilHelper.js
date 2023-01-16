@@ -58,7 +58,7 @@ class UtilHelper {
                 html: content
             });
         } catch (err) {
-            logger.error(e.message);
+            logger.error(err.message);
             throw new Error('메일 발송에 실패했습니다.');
         }
     }

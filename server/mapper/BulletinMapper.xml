@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BulletinMapper">
+    <!-- 단일행 조회를 위한 기능 정의 -->
+    <select id="selectItem">
+        SELECT title, postdate, bgcolor, bgimage, content FROM bulletin WHERE id=#{id};
+    </select>
+
+    <!-- 다중행 조회를 위한 기능 정의 -->
+    <select id="selectList">
+        SELECT title, postdate, bgcolor, bgimage, content FROM bulletin
+        ORDER BY id DESC
+
+        <!-- 페이지 구현을 위한 LIMIT절 추가 -->
+        <if test="liscCount > 0">
+            LIMIT ${offset}, ${listCount}
+        </if>
+    </select>
+
+    <!-- 데이터 수 조회하기 -->
+    <select id="selectAllCount">
+        SELECT COUNT(*) AS cnt FROM bulletin
+    </select>
+</mapper>
