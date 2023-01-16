@@ -12,7 +12,11 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
         result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.rtcode === 200) {
+        return result.item;
+    }
+
+    return result.rtmsg;
 });
 
 export const getPost = createAsyncThunk('BulletinSlice/getPost', async (payload, { rejectWithValue }) => {

@@ -10,8 +10,11 @@
 
     <!-- 다중행 조회를 위한 기능 정의 -->
     <select id="selectList">
-        SELECT title, postdate, bgcolor, bgimage, content FROM bulletin
-        ORDER BY id DESC
+        SELECT b.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON u.id = b.user_id
+        ORDER BY b.id DESC
 
         <!-- 페이지 구현을 위한 LIMIT절 추가 -->
         <if test="liscCount > 0">

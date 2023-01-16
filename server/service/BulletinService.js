@@ -1,6 +1,8 @@
 const mybatisMapper = require('mybatis-mapper');
+const dayjs = require('dayjs');
 const DBPool = require('../helper/DBPool');
 const { RuntimeException } = require('../helper/ExceptionHelper');
+const logger = require('../helper/LogHelper');
 
 class BulletinService {
     /** 생성자를 통해 Mapper 로드 */
@@ -27,6 +29,31 @@ class BulletinService {
             }
 
             data = result;
+
+            data.forEach(v => {
+                v.postdate = dayjs(v.postdate).format('YYYY-MM-DD');
+            });
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('BulletinMapper', 'selectList', params);
+            let [result] = await dbcon.query(sql);
+
+            if (result.length === 0) {
+                throw new RuntimeException('조회 결과 없음');
+            }
+
+            data = result;
+
+            data.forEach(v => {
+                v.postdate = dayjs(v.postdate).format('YYYY-MM-DD');
+            });
         } catch (err) {
             throw err;
         } finally {

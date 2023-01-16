@@ -39,6 +39,8 @@ module.exports = (() => {
         }
 
         res.sendResult({ meta: pageInfo, item: json });
+
+        console.log(json);
     });
 
     /** 단일 게시글 데이터 조회 */

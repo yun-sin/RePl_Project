@@ -141,6 +141,8 @@ const Bulletin = memo(() => {
     useEffect(() => {
       dispatch(getList());
     }, []);
+    
+    console.log(data);
 
     return (
         <>
@@ -179,11 +181,11 @@ const Bulletin = memo(() => {
                                         <Post
                                             key={i}
                                             targetId={v.id}
-                                            postTitle={v.postTitle}
+                                            postTitle={v.title}
                                             backgroundImage={postImg1}
-                                            postUser={v.postUser}
+                                            postUser={v.username}
                                             like={v.like}
-                                            postDate={v.postDate}
+                                            postDate={v.postdate}
                                             selectedTags={v.selectedTags}
                                         />
                                     );
