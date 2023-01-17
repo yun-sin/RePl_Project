@@ -19,10 +19,13 @@ const Item = styled.li`
     .recommend-Item__1 {
         flex: 0 0 auto;
 
-        img {
+        .img {
             width: 100px;
             height: 70px;
             object-fit: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
@@ -70,15 +73,21 @@ const RecommendListItem = memo(props => {
     return (
         <Item>
             <div className='recommend-Item__1'>
-                <img src={props.img} alt={`${props.title} 후기 이미지`} />
+                {
+                    props.img ? (
+                        <img className='img' src={props.img} alt={`${props.title} 후기 이미지`} />
+                    ) : (
+                        <div className='img'>No Photo</div>
+                    )
+                }
             </div>
             <div className='recommend-Item__2'>
                 <h4>{props.title}</h4>
                 <p>{props.address}</p>
             </div>
             <div className='recommend-Item__3'>
-                <p>후기 <span>{props.commend}</span></p>
-                <p>O <span>{props.reaction}</span></p>
+                <p>후기 <span>{props.comment}</span></p>
+                <p>O <span>{props.rating}</span></p>
             </div>
         </Item>
     );

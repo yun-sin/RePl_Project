@@ -41,6 +41,49 @@ class PostService {
         return data;
     }
 
+    /** 게시글에서 추천된 장소 목록 조회 */
+    async getPlaces(params) {
+        let dbcon = null;
+        let data = null;
+        let temp = null;
+        let result = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('PostMapper', 'selectPlaces', params);
+            [result] = await dbcon.query(sql);
+
+            if (result.length === 0) {
+                return [];
+            }
+
+            for (let i = 0; i < result.length; i++) {
+                sql = mybatisMapper.getStatement('PostMapper', 'selectPlaceInfo', {id: result[i].id});
+                [[temp]] = await dbcon.query(sql);
+
+                if (temp.rating) result[i].rating = Math.round(temp.rating);
+                else result[i].rating = '-';
+                if (temp.comment) result[i].comment = temp.comment;
+                else result[i].comment = 0;
+
+                sql = mybatisMapper.getStatement('PostMapper', 'selectPlacePhoto', {id: result[i].id});
+                [temp] = await dbcon.query(sql);
+                if (temp.length > 0) result[i].img = temp[0];
+                else result[i].img = null;
+            };
+
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    /** 게시자의 팔로워 수 조회 */
     async getFollower(params) {
         let dbcon = null;
         let data = null;

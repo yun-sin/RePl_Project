@@ -10,6 +10,7 @@ import Spinner from '../../common/Spinner';
 
 import { getPost } from '../../slices/bulletin/PostViewSlice';
 import { getOtherPosts } from '../../slices/bulletin/OtherPostSlice';
+import { getRecommendedPlaces } from '../../slices/bulletin/RecommendedPlaceSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
@@ -323,16 +324,23 @@ const testData3 = [
 const NewPost = memo(props => {
     /** 게시글 데이터 불러오기 */
     const dispatch = useDispatch();
+    // 게시글 본문 및 작성자 데이터
     const { data, loading, error } = useSelector(state => state.PostViewSlice);
-    const { data: otherPosts, loading: loading2, error: error2 } = useSelector(state => state.OtherPostSlice);
+    // 본 게시물에서 작성자가 추천한 장소들 데이터
+    const { data: places, loading: loading2, error: error2 } = useSelector(state => state.RecommendedPlaceSlice);
+    // 작성자의 다른 게시글들 데이터
+    const { data: otherPosts, loading: loading3, error: error3 } = useSelector(state => state.OtherPostSlice);
 
     // 패스파라미터 변수
     const postId = useParams().id;
 
     // 해당 패스 게시글 불러오기
     useEffect(() => {
-        dispatch(getPost({ id: postId }));
+        dispatch(getPost(postId));
+        dispatch(getRecommendedPlaces(postId));
     }, [postId]);
+
+    console.log(places);
 
     // 게시글 데이터 적재 시 게시자의 다른 게시물 정보 불러오기
     useEffect(() => {
@@ -409,23 +417,29 @@ const NewPost = memo(props => {
                                         <h3>이 글에서 추천한 장소들</h3>
                                     </div>
                                     <div className='recommend-place-body'>
-                                        <ul>
-                                            {
-                                                data.selectedPlaces && data.selectedPlaces.map((v, i) => {
-                                                    return (
-                                                        <RecommendListItem
-                                                            key={i}
-                                                            img={breadSample}
-                                                            title={v.place_name}
-                                                            address={v.address_name}
-                                                            commend='3'
-                                                            reaction={v.rating}
-                                                            /** To Do: 댓글 개수(commend)랑 평점(v.rating) 둘 다 후기 릴레이션에서 가져와야 함 */
-                                                        />
-                                                    );
-                                                })
-                                            }
-                                        </ul>
+                                        <Spinner loading={loading2} />
+                                        {
+                                            error2 ? (
+                                                <div>추천된 장소 목록을 불러오지 못했습니다.</div>
+                                            ) : (
+                                                <ul>
+                                                    {
+                                                        places && places.map((v, i) => {
+                                                            return (
+                                                                <RecommendListItem
+                                                                    key={i}
+                                                                    img={v.img}
+                                                                    title={v.place_name}
+                                                                    address={v.address_name}
+                                                                    comment={v.comment}
+                                                                    rating={v.rating}
+                                                                />
+                                                            );
+                                                        })
+                                                    }
+                                                </ul>
+                                            )
+                                        }
                                     </div>
                                 </RecommendPlaceArea>
 
@@ -456,9 +470,9 @@ const NewPost = memo(props => {
                             </PublisherDiv>
                                 
                             <OtherPostsArea>
-                                <Spinner loading={loading2} />
+                                <Spinner loading={loading3} />
                                 {
-                                    error2 ? (
+                                    error3 ? (
                                         <div>작성자의 다른 게시글을 불러오지 못했습니다.</div>
                                     ) : (
                                         <>

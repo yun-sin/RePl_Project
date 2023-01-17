@@ -12,6 +12,8 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
         result = rejectWithValue(err.response);
     }
 
+    console.log(result.meta);
+
     if (result.rtcode === 200) {
         return result.item;
     }

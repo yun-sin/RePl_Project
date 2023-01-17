@@ -19,7 +19,7 @@ const PostCard = styled.div`
         scale: 0.99;
     }
     
-    img {
+    .bg {
         width: 260px;
         height: 180px;
         margin-bottom: -2px;
@@ -154,7 +154,13 @@ const Post = memo(props => {
                 <p>게시물 바로가기</p>
             </div>
 
-            <img src={props.backgroundImage} alt="게시물 이미지" />
+            {
+                props.backgroundImage ? (
+                    <img className='bg' src={props.backgroundImage} alt="게시물 이미지" />
+                ) : (
+                    <div className='bg' style={{backgroundColor: props.backgroundColor}} />
+                )
+            }
             <h3 className='post__title'>{props.postTitle}</h3>
             <div className='post__desc'>
                 <h4>{props.postUser}</h4>

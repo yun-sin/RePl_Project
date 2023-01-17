@@ -42,6 +42,31 @@ module.exports = (() => {
         res.sendResult({ item: json });
     });
 
+    /** 게시글에서 추천된 장소 목록 */
+    router.get(`${url}/places/:id`, async (req, res, next) => {
+        // 파라미터 받기
+        const { id } = req.params;
+
+        // 파라미터 유효성 검사
+        try {
+            regexHelper.value(id, '게시글 번호가 없습니다.');
+            regexHelper.num(id, '게시글 번호가 잘못되었습니다.');
+        } catch (err) {
+            return next(err);
+        }
+
+        /** 데이터 조회 */
+        let json = null;
+
+        try {
+            json = await postService.getPlaces({ id: id });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
+    });
+
     /** 단일 게시글의 댓글 데이터 조회 */
     router.get(`${url}/comments/:id`, async (req, res, next) => {
         // 파라미터 받기
@@ -102,7 +127,7 @@ module.exports = (() => {
         res.sendResult(result);
     });
 
-    /** 단일 게시글의 댓글 데이터 조회 */
+    /** 게시자가 작성한 다른 글 목록 */
     router.get(`${url}/otherPosts/:id`, async (req, res, next) => {
         // 파라미터 받기
         const { id } = req.params;

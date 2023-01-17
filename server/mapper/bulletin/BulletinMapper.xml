@@ -39,4 +39,9 @@
     <select id="selectAllCount">
         SELECT COUNT(*) AS cnt FROM bulletin
     </select>
+
+    <!-- 내가 댓글쓴 장소 목록 조회 -->
+    <select id="selectMyPlaces">
+        SELECT place_id FROM review WHERE user_id = #{id}
+    </select>
 </mapper>

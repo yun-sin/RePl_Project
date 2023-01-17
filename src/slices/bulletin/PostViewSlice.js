@@ -6,7 +6,7 @@ export const getPost = createAsyncThunk('PostViewSlice/getPost', async (payload,
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/postview/' + payload.id);
+        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/postview/' + payload);
 
         result = response.data;
     } catch (err) {

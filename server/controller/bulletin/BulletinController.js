@@ -39,5 +39,26 @@ module.exports = (() => {
         res.sendResult({ meta: pageInfo, item: json });
     });
 
+    /** 내가 후기 남긴 장소 목록 불러오기 */
+    router.get(`${url}/myplace/:id`, async (req, res, next) => {
+        const { id } = req.params;
+
+        let json = null;
+
+        try {
+            json = await bulletinService.getMyPlaces({ id: id });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
+    });
+
+    /** 게시글 작성 처리 */
+    router.post(url, async (req, res, next) => {
+        // 파라미터 받기
+        // const { title,  }
+    });
+
     return router;
 })();

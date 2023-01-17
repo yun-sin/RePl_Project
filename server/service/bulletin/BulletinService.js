@@ -75,6 +75,33 @@ class BulletinService {
 
         return cnt;
     }
+
+    /** 내가 후기 남긴 장소 목록 조회 */
+    async getMyPlaces(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('BulletinMapper', 'selectMyPlaces', params);
+            let [result] = await dbcon.query(sql);
+
+            if (result.length === 0) {
+                return [];
+            }
+
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        console.log(data);
+
+        return data;
+    }
 }
 
 module.exports = new BulletinService();

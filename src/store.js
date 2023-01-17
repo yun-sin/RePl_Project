@@ -13,6 +13,7 @@ import HashtagSlice from "./slices/bulletin/HashtagSlice";
 import PostViewSlice from './slices/bulletin/PostViewSlice';
 import CommentsSlice from './slices/bulletin/CommentsSlice';
 import OtherPostSlice from './slices/bulletin/OtherPostSlice';
+import RecommendedPlaceSlice from './slices/bulletin/RecommendedPlaceSlice';
 
 import MapFinderSlice from "./slices/MapFinderSlice";
 
@@ -36,6 +37,7 @@ const store = configureStore({
     PostViewSlice: PostViewSlice,
     CommentsSlice: CommentsSlice,
     OtherPostSlice: OtherPostSlice,
+    RecommendedPlaceSlice: RecommendedPlaceSlice,
 
     MapFinderSlice: MapFinderSlice,
 

@@ -142,6 +142,8 @@ const Bulletin = memo(() => {
       dispatch(getList());
     }, []);
 
+    console.log(data);
+
     return (
         <>
             <BannerArea>
@@ -180,7 +182,8 @@ const Bulletin = memo(() => {
                                         key={i}
                                         targetId={v.id}
                                         postTitle={v.title}
-                                        backgroundImage={postImg1}
+                                        backgroundImage={v.bgimage}
+                                        backgroundColor={v.bgcolor}
                                         postUser={v.username}
                                         like={v.like}
                                         postDate={v.postdate}

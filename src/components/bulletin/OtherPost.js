@@ -7,6 +7,7 @@ const Post = styled.div`
     background-color: #fff;
     margin: 0 10px;
     box-sizing: border-box;
+    box-shadow: 0 0 6px rgb(0 0 0 / 20%);
 
     &:hover {
         cursor: pointer;
