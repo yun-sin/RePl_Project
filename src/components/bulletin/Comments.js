@@ -1,7 +1,13 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 
+import Spinner from '../../common/Spinner';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getComments, postComment } from '../../slices/bulletin/CommentsSlice';
+
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import { useEffect } from 'react';
 
 const CommentsArea = styled.div`
     width: 800px;
@@ -145,9 +151,41 @@ const CommentsArea = styled.div`
 `;
 
 const Comments = memo(props => {
+    /* 댓글 데이터 불러오기 */
+    const { data, loading, error } = useSelector(state => state.CommentsSlice);
+    const dispatch = useDispatch();
+
+    const commentContainerRef = useRef();
+
+    const id = props.id;
+
+    useEffect(() => {
+        dispatch(getComments(id));
+    }, [id]);
+
     const onCommentAddSubmit = useCallback(e => {
         e.preventDefault();
-    }, []);
+
+        const current = e.currentTarget;
+        const value = current.commentsInput.value;
+        current.commentsInput.value = '';
+
+        /** TO DO: 여기에 세션 데이터에서 가져온 유저 아이디 넣어야 함 */
+        const user_id = 1;
+
+        (async () => {
+            await dispatch(postComment({
+                id: id,
+                user_id: user_id,
+                content: value,
+            }));
+
+            await dispatch(getComments(id));
+
+            const c = commentContainerRef.current;
+            c.style.maxHeight = `${c.parentElement.scrollHeight + 60}px`;
+        })();
+    }, [id]);
 
     const onCommentsShowClick = useCallback(e => {
         const target = document.querySelector('.comments__wrap');
@@ -159,41 +197,52 @@ const Comments = memo(props => {
     }, []);
 
     return (
-        <CommentsArea>
-            <button className='showButton' onClick={onCommentsShowClick}><span>O</span>댓글<span>3</span></button>
-            <div className='comments__wrap'>
-                <h4 className='comments__title'>댓글 <span>3</span></h4>
-                <ul className="comments__list">
-                    {
-                        props.data.map((v, i) => {
-                            return (
-                                <li className='comments__list__item' key={i}>
-                                    <img src={v.profileImg} alt="댓글 작성자 프로필 이미지" className='comments__profileImg' />
-                                    <div className='comments__contents'>
-                                        <p className='comments__contents__top'>
-                                            <span>{v.writer}</span>
-                                            <span>{v.writeDate}</span>
-                                        </p>
-                                        <p className='comments__contents__main'>
-                                            {v.content}
-                                        </p>
+        <>
+            <Spinner loading={loading} />
+            {
+                error ? (
+                    <div>에러</div>
+                ) : (
+                    data && (
+                        <CommentsArea>
+                            <button className='showButton' onClick={onCommentsShowClick}><span>O</span>댓글<span>{data.length}</span></button>
+                            <div className='comments__wrap' ref={commentContainerRef}>
+                                <h4 className='comments__title'>댓글 <span>{data.length}</span></h4>
+                                <ul className="comments__list">
+                                    {
+                                        data.map((v, i) => {
+                                            return (
+                                                <li className='comments__list__item' key={i}>
+                                                    <img src={breadSample} alt="댓글 작성자 프로필 이모지" className='comments__profileImg' />
+                                                    <div className='comments__contents'>
+                                                        <p className='comments__contents__top'>
+                                                            <span>{v.username}</span>
+                                                            <span>{v.commentdate}</span>
+                                                        </p>
+                                                        <p className='comments__contents__main'>
+                                                            {v.content}
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            );
+                                        })
+                                    }
+                                </ul>
+
+                                <form className="comments__add" onSubmit={onCommentAddSubmit}>
+                                    <img src={breadSample} alt="댓글 작성자 프로필 이모지" className='comments__profileImg' />
+
+                                    <div className='connemts__add__inputBox'>
+                                        <textarea name='commentsInput' placeholder='작성자에게 힘이 되는 댓글을 부탁드려요!' />
+                                        <button type='submit'>확인</button>
                                     </div>
-                                </li>
-                            );
-                        })
-                    }
-                </ul>
-
-                <form className="comments__add" onSubmit={onCommentAddSubmit}>
-                    <img src={breadSample} alt="댓글 작성자 프로필 이미지" className='comments__profileImg' />
-
-                    <div className='connemts__add__inputBox'>
-                        <textarea name='commentsInput' placeholder='작성자에게 힘이 되는 댓글을 부탁드려요!' />
-                        <button type='submit'>확인</button>
-                    </div>
-                </form>
-            </div>
-        </CommentsArea>
+                                </form>
+                            </div>
+                        </CommentsArea>
+                    )
+                )
+            }
+        </>
     );
 });
 

@@ -5,7 +5,11 @@
 <mapper namespace="BulletinMapper">
     <!-- 단일행 조회를 위한 기능 정의 -->
     <select id="selectItem">
-        SELECT title, postdate, bgcolor, bgimage, content FROM bulletin WHERE id=#{id};
+        SELECT b.title, b.postdate, b.bgcolor, b.bgimage, b.content, u.username
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON b.user_id = u.id
+        WHERE id=#{id};
     </select>
 
     <!-- 다중행 조회를 위한 기능 정의 -->
@@ -20,6 +24,15 @@
         <if test="liscCount > 0">
             LIMIT ${offset}, ${listCount}
         </if>
+    </select>
+
+    <!-- 태그 조회를 위한 기능 정의 -->
+    <select id="selectTagsOfPosts">
+        SELECT bc.bulletin_id, c.name
+        FROM bulletin_category AS bc
+        LEFT JOIN category AS c
+        ON bc.category_id = c.id
+        ORDER BY bulletin_id ASC
     </select>
 
     <!-- 데이터 수 조회하기 -->

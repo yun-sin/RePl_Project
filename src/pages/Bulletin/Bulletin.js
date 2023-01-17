@@ -141,8 +141,6 @@ const Bulletin = memo(() => {
     useEffect(() => {
       dispatch(getList());
     }, []);
-    
-    console.log(data);
 
     return (
         <>
@@ -177,18 +175,18 @@ const Bulletin = memo(() => {
                     <div className='list-box'>
                         {
                             data && data.map((v, i) => {
-                                    return (
-                                        <Post
-                                            key={i}
-                                            targetId={v.id}
-                                            postTitle={v.title}
-                                            backgroundImage={postImg1}
-                                            postUser={v.username}
-                                            like={v.like}
-                                            postDate={v.postdate}
-                                            selectedTags={v.selectedTags}
-                                        />
-                                    );
+                                return (
+                                    <Post
+                                        key={i}
+                                        targetId={v.id}
+                                        postTitle={v.title}
+                                        backgroundImage={postImg1}
+                                        postUser={v.username}
+                                        like={v.like}
+                                        postDate={v.postdate}
+                                        selectedTags={v.tags}
+                                    />
+                                );
                             })
                         }
                     </div>
