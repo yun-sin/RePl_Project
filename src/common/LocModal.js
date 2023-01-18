@@ -72,7 +72,7 @@ export const LocModalContainer = styled.div`
     .title {
       font-size: 14px;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     .modal-img-container {
       width: 700px;
@@ -112,6 +112,27 @@ export const LocModalContainer = styled.div`
 
         .info-item {
           margin-bottom: 30px;
+
+          .review_item {
+            margin-bottom: 20px;
+            width: 280px;
+            border-radius: 12px;
+            padding: 17px 20px 15px;
+            background-color: #fefefe;
+            box-shadow: 1px 1px 2px rgb(0 0 0 / 10%);
+            position: relative;
+            font-size: 13px;
+
+            .review_emoji {
+              position: absolute;
+              top: -11px;
+              left: 20px;
+
+              img {
+                width: 22px;
+              }
+            }
+          }
 
           .theme-card {
             margin: 8px 0;
@@ -574,6 +595,14 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
             <div className="info">
               <div className="info-item">
                 <div className="title">이 장소에 대한 후기들!</div>
+                <div className="review_item">
+                  {/* 예시 리뷰 */}
+                  <div className="review_emoji">
+                    <img src={emoji[3]} />
+                  </div>
+                  <span className="review_text">잔치국수와 김밥의 조화. 준수함.</span>
+                </div>
+                {/* 리뷰 */}
                 {data?.review?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card">
