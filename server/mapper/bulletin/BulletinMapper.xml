@@ -27,6 +27,13 @@
             <if test="userId != null and userId != ''">
                 OR u.username LIKE concat('%', #{userId}, '%')
             </if>
+
+            <if test="tagId != null and tagId != -1">
+                b.id IN (
+                    SELECT bulletin_id FROM bulletin_category
+                    WHERE category_id = ${tagId}
+                )
+            </if>
         </where>
         
         ORDER BY b.id DESC

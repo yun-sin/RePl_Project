@@ -9,6 +9,7 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
         const response = await axios.get(process.env.REACT_APP_EDITOR_TEST, {
             params: {
                 query: payload?.query || '',
+                tag: payload?.tag || -1,
                 page: payload?.page || 1,
                 rows: payload?.rows || 8
             }
