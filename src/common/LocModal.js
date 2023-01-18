@@ -4,7 +4,8 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faX, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as faBookmark2 } from "@fortawesome/free-regular-svg-icons";
 
 import iconPlus from "../assets/img/map/icon-plus-grey-sm.svg";
 
@@ -14,6 +15,19 @@ import ThemeModal2 from "../components/map/ThemeModal2";
 
 import { getThemeData } from "../slices/ThemeSlice";
 import { getTP } from "../slices/MapThemeSlice";
+
+import a1 from "../assets/img/map/emoji-1-a.png";
+import a2 from "../assets/img/map/emoji-2-a.png";
+import a3 from "../assets/img/map/emoji-3-a.png";
+import a4 from "../assets/img/map/emoji-4-a.png";
+import a5 from "../assets/img/map/emoji-5-a.png";
+import b1 from "../assets/img/map/emoji-1-b.png";
+import b2 from "../assets/img/map/emoji-2-b.png";
+import b3 from "../assets/img/map/emoji-3-b.png";
+import b4 from "../assets/img/map/emoji-4-b.png";
+import b5 from "../assets/img/map/emoji-5-b.png";
+
+const emoji = [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5];
 
 export const LocModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -146,6 +160,8 @@ export const LocModalContainer = styled.div`
               box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
               line-height: 50px;
               text-align: center;
+              padding: 10px;
+              box-sizing: border-box;
 
               &:hover {
                 background-color: #eee;
@@ -156,6 +172,10 @@ export const LocModalContainer = styled.div`
 
               &.active {
                 background-color: #0581bb;
+              }
+
+              img {
+                width: 30px;
               }
             }
           }
@@ -294,6 +314,7 @@ export const LocModalContainer = styled.div`
     flex-flow: row nowrap;
     padding: 10px 0;
 
+    a,
     button {
       border: none;
       border-radius: 12px;
@@ -307,6 +328,12 @@ export const LocModalContainer = styled.div`
         cursor: pointer;
         box-shadow: 1px 1px 3px rgb(0 0 0 / 40%);
       }
+    }
+
+    a {
+      text-decoration: none;
+      text-align: center;
+      line-height: 56px;
     }
 
     .forKakao {
@@ -528,8 +555,8 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
           <div className="modal-info-container">
             {/* 왼쪽 줄 */}
             <div className="info">
+              <div className="title">여기는 어떤 곳인가요?</div>
               <div className="info-item">
-                <div className="title">여기는 어떤 곳인가요?</div>
                 {themeList?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
@@ -559,46 +586,14 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
                 <div className="title">직접 의견을 남겨보세요!</div>
                 <form className="comment" onSubmit={onCommentSubmit}>
                   <div className="comment__emojies">
-                    <label htmlFor="commentEmoji1" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji1" value="1" />
-                    </label>
-                    <label htmlFor="commentEmoji2" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji2" value="2" />
-                    </label>
-                    <label htmlFor="commentEmoji3" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji3" value="3" />
-                    </label>
-                    <label htmlFor="commentEmoji4" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji4" value="4" />
-                    </label>
-                    <label htmlFor="commentEmoji5" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji5" value="5" />
-                    </label>
-                    <label htmlFor="commentEmoji6" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji6" value="6" />
-                    </label>
-                    <label htmlFor="commentEmoji7" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji7" value="7" />
-                    </label>
-                    <label htmlFor="commentEmoji8" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji8" value="8" />
-                    </label>
-                    <label htmlFor="commentEmoji9" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji9" value="9" />
-                    </label>
-                    <label htmlFor="commentEmoji10" onClick={onCommentRadioChange}>
-                      O
-                      <input type="radio" name="commentEmoji" id="commentEmoji10" value="10" />
-                    </label>
+                    {emoji.map((v, i) => {
+                      return (
+                        <label key={i} htmlFor={`commentEmoji${i}`} onClick={onCommentRadioChange}>
+                          <input type="radio" name="commentEmoji" id={`commentEmoji${i}`} value={i} />
+                          <img src={v} />
+                        </label>
+                      );
+                    })}
                   </div>
                   <div className="comment__desc">
                     <span>ㅠㅠ</span>
@@ -641,8 +636,11 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
           </div>
         </div>
         <div className="modal-footer">
-          <button className="forKakao">카카오맵으로 자세히 보기</button>
-          <button className="scrap">O</button>
+          <a href={data.place_url} target="_blank" className="forKakao">
+            카카오맵으로 자세히 보기
+          </a>
+          {/* faBookmark : 북마크 눌렀을때 , faBookmark2: 북마크 누르지 않았을 때 (속이 빈 아이콘) */}
+          <button className="scrap">{false ? <FontAwesomeIcon icon={faBookmark} /> : <FontAwesomeIcon icon={faBookmark2} />}</button>
         </div>
       </LocModalContainer>
 

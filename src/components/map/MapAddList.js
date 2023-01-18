@@ -94,6 +94,11 @@ export const MapAddListContainer = styled.div`
     }
 
     #placesList {
+      .kakao {
+        color: #007cff;
+        font-size: 10px;
+        background-color: #f9e000;
+      }
     }
 
     #pagination {

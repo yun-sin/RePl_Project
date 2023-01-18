@@ -44,8 +44,9 @@ const Map = memo(() => {
 
   const [swLimit, setSwLimit] = useState([32, 123]);
   const [neLimit, setNeLimit] = useState([44, 133]);
-  const [centerCoord, setCenterCoord] = useState([37.5025506249856, 127.02485228946493]);
-  const [zoomLevel, setZoomLevel] = useState(6);
+  // const [centerCoord, setCenterCoord] = useState([37.5025506249856, 127.02485228946493]); // 이젠 아카데미 좌표
+  const [centerCoord, setCenterCoord] = useState([36.38, 127.51]); // 남한 중심 좌표
+  const [zoomLevel, setZoomLevel] = useState(12);
 
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -60,7 +61,6 @@ const Map = memo(() => {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
-      // 이젠 아카데미 위도 경도
       center: new kakao.maps.LatLng(centerCoord[0], centerCoord[1]),
       level: zoomLevel,
     };
@@ -146,7 +146,8 @@ const Map = memo(() => {
       const overSize = new kakao.maps.Size(29, 42); // 마커 이미지의 이미지 크기 입니다
 
       const markerImage = new kakao.maps.MarkerImage(markerBlue, imageSize); // 마커 이미지를 생성합니다
-      const overImage = new kakao.maps.MarkerImage(markerStar, overSize); // 확대된 마커 이미지를 생성합니다
+      const overImage = new kakao.maps.MarkerImage(markerBlue, overSize); // 확대된 마커 이미지를 생성합니다
+      // const overImage = new kakao.maps.MarkerImage(markerStar, overSize); // 확대된 마커 이미지를 생성합니다
 
       LocData.forEach((v, i) => {
         // 마커를 생성합니다
@@ -161,13 +162,9 @@ const Map = memo(() => {
         /**
          * 마커에 mouseover, mouseout 이벤트
          */
-        // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-        var iwContent = `<div style="padding:5px;">${v.place_name}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-        // 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({
           disableAutoPan: true,
-          content: iwContent,
+          content: `<div class="info_title" >${v.place_name}</div>`, // 인포윈도우
         });
 
         const listItem = document.querySelector(".loc" + i);

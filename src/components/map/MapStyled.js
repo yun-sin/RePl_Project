@@ -21,6 +21,26 @@ export const MapContainer = styled.div`
       opacity: 1;
     }
   }
+
+  .info_title {
+    display: block;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    max-width: 864px;
+    min-width: 150px;
+    width: fit-content;
+    /* width: 300px; */
+    font-size: 17px;
+    color: #0581bb;
+    border-radius: 5px;
+    margin: auto;
+    text-align: center;
+    white-space: nowrap;
+
+    border-radius: none;
+    font-family: "S-CoreDream", "Spoqa Han Sans", Sans-serif;
+    font-weight: 600;
+  }
 `;
 
 /** ListContainer */

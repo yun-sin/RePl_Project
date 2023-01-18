@@ -20,7 +20,7 @@ import "../../assets/css/MapAddModal.css";
 import "animate.css";
 // 아이콘, 이미지
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faInfoCircle, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import markerBlue from "../../assets/img/map/markerBlue.png";
 import { set } from "lodash";
 
@@ -332,8 +332,8 @@ const MapAdd = memo(({ zoomLevel }) => {
                   <div>
                     <h1>{v.place_name}</h1>
                     <h4>{category}</h4>
-                    <a href={v.place_url} target="_blank">
-                      🔍
+                    <a href={v.place_url} target="_blank" className="kakao">
+                      <FontAwesomeIcon icon={faLocationDot} />
                     </a>
                     <a>{v.road_address_name ? v.road_address_name : v.address_name}</a>
                   </div>

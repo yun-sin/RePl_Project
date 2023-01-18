@@ -109,6 +109,17 @@
       "category_item_name": "냉면",
       "phone": "02-447-8806",
       "place_url": "http://place.map.kakao.com/10921559"
+    },
+    {
+      "id": 21160720,
+      "place_name": "먹골역 7호선",
+      "address_name": "서울 중랑구 묵동 189-5",
+      "road_address_name": "서울 중랑구 동일로 지하 901",
+      "lat": "37.6106193846197",
+      "lng": "127.077762187968",
+      "category_item_name": "수도권7호선",
+      "phone": "02-6311-7181",
+      "place_url": "http://place.map.kakao.com/21160720"
     }
   ],
   "theme_place": [
@@ -357,6 +368,30 @@
       "theme_id": 6,
       "user_id": 2,
       "id": 41
+    },
+    {
+      "place_id": 1149707328,
+      "theme_id": 7,
+      "user_id": 2,
+      "id": 42
+    },
+    {
+      "place_id": 7918217,
+      "theme_id": 2,
+      "user_id": 2,
+      "id": 43
+    },
+    {
+      "place_id": 21160720,
+      "theme_id": 2,
+      "user_id": 2,
+      "id": 44
+    },
+    {
+      "place_id": 21160720,
+      "theme_id": 4,
+      "user_id": 2,
+      "id": 45
     }
   ],
   "theme": [
