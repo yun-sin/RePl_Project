@@ -83,6 +83,29 @@ class PostService {
         return data;
     }
 
+    /** 게시글에 선정된 카테고리들 조회 */
+    async getTags(params) {
+        let dbcon = null;
+        let data = null;
+
+        console.log(params);
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('PostMapper', 'getTags', params);
+            let [result] = await dbcon.query(sql);
+
+            data = result;
+        } catch (err) {
+            throw err
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
     /** 게시자의 팔로워 수 조회 */
     async getFollower(params) {
         let dbcon = null;

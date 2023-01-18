@@ -11,6 +11,7 @@ import Spinner from '../../common/Spinner';
 import { getPost } from '../../slices/bulletin/PostViewSlice';
 import { getOtherPosts } from '../../slices/bulletin/OtherPostSlice';
 import { getRecommendedPlaces } from '../../slices/bulletin/RecommendedPlaceSlice';
+import { getPostsTags } from '../../slices/bulletin/HashtagSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
@@ -253,74 +254,6 @@ const OtherPostsArea = styled.div`
     }
 `;
 
-const testData3 = [
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-    {
-        imgSrc: breadSample,
-        title: '김밥',
-        preview: '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세'
-    },
-]
-
 const NewPost = memo(props => {
     /** 게시글 데이터 불러오기 */
     const dispatch = useDispatch();
@@ -328,8 +261,10 @@ const NewPost = memo(props => {
     const { data, loading, error } = useSelector(state => state.PostViewSlice);
     // 본 게시물에서 작성자가 추천한 장소들 데이터
     const { data: places, loading: loading2, error: error2 } = useSelector(state => state.RecommendedPlaceSlice);
+    // 본 게시물에서 작성자가 선정한 카테고리들 데이터
+    const { data: categories, loading: loading3, error: error3 } = useSelector(state => state.HashtagSlice);
     // 작성자의 다른 게시글들 데이터
-    const { data: otherPosts, loading: loading3, error: error3 } = useSelector(state => state.OtherPostSlice);
+    const { data: otherPosts, loading: loading4, error: error4 } = useSelector(state => state.OtherPostSlice);
 
     // 패스파라미터 변수
     const postId = useParams().id;
@@ -337,14 +272,13 @@ const NewPost = memo(props => {
     // 해당 패스 게시글 불러오기
     useEffect(() => {
         dispatch(getPost(postId));
-        dispatch(getRecommendedPlaces(postId));
     }, [postId]);
-
-    console.log(places);
 
     // 게시글 데이터 적재 시 게시자의 다른 게시물 정보 불러오기
     useEffect(() => {
-        if (data && data.userId) {
+        if (data) {
+            dispatch(getRecommendedPlaces(postId));
+            dispatch(getPostsTags(postId));
             dispatch(getOtherPosts(data.userId));
         }
     }, [data]);
@@ -446,9 +380,9 @@ const NewPost = memo(props => {
                                 <CategoryArea>
                                     <div className='category-tags'>
                                         {
-                                            data.selectedTags && data.selectedTags.map((v, i) => {
+                                            categories && categories.map((v, i) => {
                                                 return (
-                                                    <span key={i}>{v}</span>
+                                                    <span key={i}>{v.name}</span>
                                                 );
                                             })
                                         }
@@ -470,9 +404,9 @@ const NewPost = memo(props => {
                             </PublisherDiv>
                                 
                             <OtherPostsArea>
-                                <Spinner loading={loading3} />
+                                <Spinner loading={loading4} />
                                 {
-                                    error3 ? (
+                                    error4 ? (
                                         <div>작성자의 다른 게시글을 불러오지 못했습니다.</div>
                                     ) : (
                                         <>

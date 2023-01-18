@@ -77,26 +77,12 @@ const SelectHashtagBox = styled.div`
 `
 
 const PlaceHashtag = memo(props => {
-    const { data: data_hashtag, loading: loading_hashtag, error: error_hashtag } = useSelector(state => state.HashtagSlice);
+    const { data, loading, error } = useSelector(state => state.HashtagSlice);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getTags());
     }, []);
-
-    const onClosePopUpClick = useCallback(e => {
-        const targets = document.querySelectorAll('li');
-        let values = [];
-
-        targets.forEach(v => {
-            if (v.classList.contains('active')) values.push(v.innerHTML);
-        });
-
-        console.log(values);
-        props.setSelectedTags(state => values);
-
-        props.closeModal();
-    }, [props]);
 
     return (
         <Modal
@@ -112,7 +98,7 @@ const PlaceHashtag = memo(props => {
                     <p>어울리는 태그를 선택해주세요</p>
                 </div>
                 {
-                    data_hashtag && data_hashtag.map((v, i) => {
+                    data && data.map((v, i) => {
                         return (
                             <TagBox
                                 key={i}
@@ -120,6 +106,7 @@ const PlaceHashtag = memo(props => {
                                 values={v.values}
                                 selectedTags={props.selectedTags}
                                 setSelectedTags={props.setSelectedTags}
+                                setSelectedTagID={props.setSelectedTagID}
                             />
                         );
                     })

@@ -113,6 +113,7 @@ const TagBox = memo(props => {
         current.classList.toggle('active');
 
         const value = current.innerHTML;
+        const id = current.dataset.id;
 
         props.setSelectedTags(state => {
             let temp = [];
@@ -124,6 +125,20 @@ const TagBox = memo(props => {
                 temp = temp.splice(idx, 1);
             } else {
                 temp.push(value);
+            }
+
+            return temp;
+        });
+        props.setSelectedTagID(state => {
+            let temp = [];
+            for (const k of state) {
+                temp.push(k);
+            }
+            const idx = temp.indexOf(id);
+            if (idx !== -1) {
+                temp = temp.splice(idx, 1);
+            } else {
+                temp.push(id);
             }
 
             return temp;
@@ -142,12 +157,13 @@ const TagBox = memo(props => {
                         return (
                             <li
                                 key={i}
+                                data-id={v.id}
                                 onClick={onHashtagClick}
                                 className={classNames({
-                                    active: props.selectedTags.indexOf(v) !== -1
+                                    active: props.selectedTags.indexOf(v.name) !== -1
                                 })}
                             >
-                                {v}
+                                {v.name}
                             </li>
                         )
                     })

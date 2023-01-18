@@ -8,19 +8,29 @@ const pending = (state, { payload }) => {
 const fulfilled = (state, { payload }) => {
     return {
         data: payload,
+        pagenation: payload.pagenation,
         loading: false,
         error: null
     }
 };
 
 const rejected = (state, { payload }) => {
+    const err = new Error();
+
+    if (typeof payload.data === "string") {
+        err.code = payload.status ? payload.status : 500;
+        err.name = "React Error";
+        err.message = payload.data;
+    } else {
+        err.code = payload.data.rtcode;
+        err.name = payload.data.rt;
+        err.message = payload.data.rtmsg;
+    }
+
     return {
         ...state,
         loading: false,
-        error: {
-            code: payload.status ? payload.status : 500,
-            message: payload.statusText ? payload.statusText : 'Server Error'
-        }
+        error: err
     }
 };
 

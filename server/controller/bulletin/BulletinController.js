@@ -11,13 +11,15 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 검색 파라미터 있을 시 저장
-        const { query, page=1, rows=5 } = req.query;
+        const { query, tag, page=1, rows=8 } = req.query;
 
         // 검색 파라미터를 MyBatis 전송용 객체로 변환
         const params = {};
         if (query) {
-            
+            params.title = query;
+            params.userId = query;
         }
+        if (tag) params.tagId = parseInt(tag);
 
         /** 데이터 조회 */
         let json = null;
@@ -36,7 +38,7 @@ module.exports = (() => {
             return next(err);
         }
 
-        res.sendResult({ meta: pageInfo, item: json });
+        res.sendResult({ pagenation: pageInfo, item: json });
     });
 
     /** 내가 후기 남긴 장소 목록 불러오기 */
@@ -55,9 +57,52 @@ module.exports = (() => {
     });
 
     /** 게시글 작성 처리 */
-    router.post(url, async (req, res, next) => {
-        // 파라미터 받기
-        // const { title,  }
+    router.post(`${url}/newPost`, async (req, res, next) => {
+        const { user_id, title, postdate, bgcolor, bgimage, content, selectedPlaces, selectedTags } = req.body;
+
+        // 유효성 검사
+        try {
+            regexHelper.value(user_id, '작성자 정보가 없습니다.');
+            regexHelper.num(user_id, '작성자 정보가 잘못되었습니다.');
+            regexHelper.value(title, '게시글 제목이 없습니다.');
+            regexHelper.value(postdate, '게시일이 없습니다.');
+            regexHelper.value(bgcolor, '글 배경색이 지정되지 않았습니다');
+            regexHelper.value(content, '글 의 내용이 없습니다');
+        } catch (err) {
+            return next(err);
+        }
+
+        let json = null;
+
+        try {
+            json = await bulletinService.addPost({
+                user_id: user_id,
+                title: title,
+                postdate: postdate,
+                bgcolor: bgcolor,
+                bgimage: bgimage,
+                content: content,
+                selectedPlaces: selectedPlaces,
+                selectedTags: selectedTags
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
+    });
+
+    /** 카테고리 선택창 태그들 불러오기 */
+    router.get(`${url}/categories`, async (req, res, next) => {
+        let json = null;
+
+        try {
+            json = await bulletinService.getCategories();
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
     });
 
     return router;

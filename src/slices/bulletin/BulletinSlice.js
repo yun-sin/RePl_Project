@@ -6,26 +6,27 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST);
+        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST, {
+            params: {
+                query: payload?.query || '',
+                tag: payload?.tag || -1,
+                page: payload?.page || 1,
+                rows: payload?.rows || 8
+            }
+        });
         result = response.data;
     } catch (err) {
         result = rejectWithValue(err.response);
     }
 
-    console.log(result.meta);
-
-    if (result.rtcode === 200) {
-        return result.item;
-    }
-
-    return result.rtmsg;
+    return result;
 });
 
 export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload, { rejectWithValue }) => {
     let result = null;
 
     try {
-        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST, payload);
+        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST + '/newPost', payload);
 
         result = response.data;
     } catch (err) {
@@ -39,6 +40,7 @@ const BulletinSlice = createSlice({
     name: 'BulletinSlice',
     initialState: {
         data: null,
+        pagenation: null,
         loading: false,
         error: null
     },

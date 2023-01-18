@@ -11,7 +11,6 @@ import NavbarSlice from "./slices/NavbarSlice";
 import BulletinSlice from "./slices/bulletin/BulletinSlice";
 import RecommendPlaceSlice from "./slices/bulletin/RecommendPlaceSlice";
 import HashtagSlice from "./slices/bulletin/HashtagSlice";
-
 import PostViewSlice from './slices/bulletin/PostViewSlice';
 import CommentsSlice from './slices/bulletin/CommentsSlice';
 import OtherPostSlice from './slices/bulletin/OtherPostSlice';

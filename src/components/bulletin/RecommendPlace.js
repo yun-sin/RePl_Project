@@ -178,7 +178,7 @@ const PopUpBox = styled.div`
                 }
             }
 
-            img {
+            .img {
                 width: 90px;
                 height: 60px;
                 object-fit: cover;
@@ -209,7 +209,7 @@ const PopUpBox = styled.div`
 
 const RecommendPlace = memo(props => {
     /** slice 연동, 내가 리뷰한 장소 목록 불러오기 */
-    const { data: data_place, loading: loading_place, error: error_place } = useSelector(state => state.RecommendPlaceSlice);
+    const { data, loading, error } = useSelector(state => state.RecommendPlaceSlice);
     const dispatch = useDispatch();
 
     // 처음 내가 쓴 전체 게시글 불러오기
@@ -226,8 +226,8 @@ const RecommendPlace = memo(props => {
 
     // 내 리뷰 남긴 장소 수만큼 배열 생성
     useEffect(() => {
-        if (data_place) setSelectedIndex(new Array(data_place.length).fill(false));
-    }, [data_place]);
+        if (data) setSelectedIndex(new Array(data.length).fill(false));
+    }, [data]);
 
     // 검색창 초기화(비우기, 목록 전체로 갱신)
     const resetForm = useCallback(e => {
@@ -287,7 +287,7 @@ const RecommendPlace = memo(props => {
         const items = [];
         for (let i = 0; i < selectedIndex.length; i++) {
             if (selectedIndex[i] === true) {
-                items.push(data_place[i]);
+                items.push(data[i]);
             }
         }
 
@@ -313,7 +313,7 @@ const RecommendPlace = memo(props => {
                         selectedIndex.map((v, i) => {
                             if (v === true) {
                                 return (
-                                    <span key={i} data-idx={i}>{data_place[i].place_name} <button onClick={onDeletePlaceClick}>X</button></span> 
+                                    <span key={i} data-idx={i}>{data[i].place_name} <button onClick={onDeletePlaceClick}>X</button></span> 
                                 )
                             } else return '';
                         })
@@ -335,27 +335,51 @@ const RecommendPlace = memo(props => {
                 <ul className='searched-list'>
                     {
                         keyword ? (
-                            data_place && data_place.map((v, i) => {
+                            data && data.map((v, i) => {
                                 if (v.place_name.indexOf(keyword) !== -1) {
                                     return (
                                         <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                            <img src={v?.place_img[0]} alt="장소 사진" />
+                                            {
+                                                data?.place_img ? (
+                                                    <div className='img' />
+                                                ) : (
+                                                    <img className='img' src={v?.place_img[0]} alt="장소 사진" />
+                                                )
+                                            }
                                             <div>
                                                 <h4>{v.place_name}</h4>
-                                                <p>{v.address_name}</p>
+                                                {
+                                                    v.road_address_name ? (
+                                                        <p>{v.address_name}</p>
+                                                    ) : (
+                                                        <p>{v.road_address_name}</p>
+                                                    )
+                                                }
                                             </div>
                                         </li>
                                     );
                                 } else return '';
                             })
                         ) : (
-                            data_place && data_place.map((v, i) => {
+                            data && data.map((v, i) => {
                                 return (
                                     <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
-                                        <img src={v?.place_img[0]} alt="장소 사진" />
+                                        {
+                                            data?.place_img ? (
+                                                <div className='img' />
+                                            ) : (
+                                                <img className='img' src={v?.place_img[0]} alt="장소 사진" />
+                                            )
+                                        }
                                         <div>
                                             <h4>{v.place_name}</h4>
-                                            <p>{v.address_name}</p>
+                                            {
+                                                v.road_address_name ? (
+                                                    <p>{v.address_name}</p>
+                                                ) : (
+                                                    <p>{v.road_address_name}</p>
+                                                )
+                                            }
                                         </div>
                                     </li>
                                 );
