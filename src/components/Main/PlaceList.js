@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
+import { getTP } from "../../slices/MapThemeSlice";
 
 
 import LocModal from "../../common/LocModal";
@@ -67,7 +68,10 @@ const PlaceList = memo(() => {
 
   const { data: data } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
+  const { data: data3} = useSelector((state) => state.MapThemeSlice);
 
+
+  
    // 모달 오픈여부
    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
    const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
@@ -97,6 +101,7 @@ const PlaceList = memo(() => {
   useEffect(() => {
     dispatch(getMapData());
     dispatch(getThemeData());
+    dispatch(getTP());
   }, []);
 
 
@@ -138,20 +143,19 @@ const PlaceList = memo(() => {
       <ul>
         {randomData &&
           randomData
-            .map(({ id, place_name, address_name, theme }, i) => {
+            .map(({ id, place_name, address_name }, i) => {
               return (
                 <li key={i} onClick={onModalIsOpen} data-id={id}>
                   <div>
                     <div className="place_name">{place_name}</div>
                     <div className="address">{address_name}</div>
-
-                    {theme.map((v, i) => {
-                      return (
-                        <div className="theme" key={i}>
-                          {data2?.find((item) => item.id === v)?.icon} {data2?.find((item) => item.id === v)?.text} 
-                        </div>
-                      );
-                    })}
+                    <div className="theme" key={i}>
+                        {(data3?.filter((item) => item.place_id === id))?.map((v, i) => v.theme_id).map((v2, i2) => {
+                          return (
+                            <div key={i2}>{data2 && data2[v2].icon} {data2 && data2[v2].text}</div>
+                          )
+                        })}
+                    </div>
                   </div>
                 </li>
               );

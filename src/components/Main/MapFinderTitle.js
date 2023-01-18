@@ -10,9 +10,11 @@ import img from "../../assets/img/main/magnifyingglass2.png";
 import { setKeyword } from "../../slices/MapFinderSlice";
 
 const TitleContainer = styled.div`
+  height: 100%;
   width: 60%;
   margin: auto;
   padding-top: 150px;
+
 
   .title {
     margin-bottom: 60px;
@@ -89,6 +91,8 @@ const MapFinderTitle = memo(() => {
   const all = useRef();
   const theme = useRef();
   const following = useRef();
+  
+  const container = useRef();
 
   useEffect(() => {
     switch (filter) {
@@ -103,6 +107,10 @@ const MapFinderTitle = memo(() => {
         break;
     }
   }, [filter]);
+
+  // useEffect(() => {
+  //   if(setActive) { container.current.style.overflow-y = "hidden"};
+  // })
 
   const onAllClick = useCallback((e) => {
     dispatch(setFilter(0));
@@ -132,7 +140,7 @@ const MapFinderTitle = memo(() => {
 
   // console.log(keyword);
   return (
-    <TitleContainer>
+    <TitleContainer ref={container}>
       <Sidebar />
       <div className="title">
         <div className="icon">🗺</div>

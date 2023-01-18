@@ -11,7 +11,10 @@ import _ from  "lodash";
 const SidebarContainer = styled.div`
   width: 33%;
   max-width: 520px;
+  /* min-height: 100%; */
   height: 100vh;
+  /* height: 100%; */
+
   background-color: #fefefe;
   padding: 40px 10px;
   box-sizing: border-box;
@@ -20,6 +23,7 @@ const SidebarContainer = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
+  /* left: 0; */
   overflow-y: auto;
   -ms-overflow-style: none;
   z-index: 9999;
@@ -341,6 +345,8 @@ const Sidebar = memo(() => {
           })}
         </ul>
       </div>
+
+     
     </SidebarContainer>
   );
 });

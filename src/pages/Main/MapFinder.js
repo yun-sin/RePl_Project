@@ -14,7 +14,11 @@ import { setActive } from "../../slices/SidebarSlice";
 
 const MapFinderContaier = styled.div`
   background: linear-gradient(180deg, #0584bb 35%, #046795 100%);
-  height: 100vw;
+  /* height: 100vh; */
+  height: 100%;
+
+  /* overflow-x:hidden; overflow-y:scroll; */
+
 
   .shadow {
     &.active {
