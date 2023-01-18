@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./common/Header";
-import Login from "./pages/login/Login";
 import Main from "./pages/Main";
 
 /* 지도 */
@@ -9,9 +8,9 @@ import Map from "./pages/map/Map";
 import MapAdd from "./pages/map/MapAdd";
 import MapCurator from "./pages/map/MapCurator";
 
-import Raffle from "./pages/raffle/Raffle";
-
 import MyPage from "./pages/mypage/MyPage";
+import Login from "./pages/login/Login";
+import Join from "./pages/login/Join";
 
 /* 메인 컴포넌트 모듈 */
 import MapFinder from "./pages/Main/MapFinder";
@@ -38,19 +37,16 @@ const App = memo(() => {
         <Route path="/map/add" element={<MapAdd />} />
         <Route path="/map/curator/:id" element={<MapCurator />} />
 
-        {/* 경품 Routes */}
-        <Route path="/raffle" element={<Raffle />} />
-
         {/* 마이페이지, 로그인 Routes */}
         <Route path="/mypage/*" element={<MyPage />} />
         <Route path="/login/repl" element={<Login />} />
+        <Route path="/join" element={<Join />} />
 
         {/* 메인 Routes */}
         <Route path="/map_finder" element={<MapFinder />} />
         <Route path="/theme/:id" element={<Theme />} />
         <Route path="/themelist" element={<ThemeList />} />
         <Route path="/theme/create" element={<CreateTheme />} />
-
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />

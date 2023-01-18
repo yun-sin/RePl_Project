@@ -1,14 +1,18 @@
 /*global kakao*/
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
+import { getTP } from "../../slices/MapThemeSlice";
 
 import { MapContainer, ListContainer } from "../../components/map/MapStyled";
 import MapThemeBar from "../../components/map/MapThemeBar";
 import LocModal from "../../common/LocModal";
 import SearchLoc from "../../components/map/SearchLoc";
 import MapAddLink from "../../components/map/MapAddLink";
+import MapAddLink2 from "../../components/map/MapAddLink2";
+import ThemeModal from "../../components/map/ThemeModal";
 import Spinner from "../../common/Spinner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,7 +31,10 @@ const Map = memo(() => {
   const dispatch = useDispatch();
   const { data: data, loading: loading, error: error } = useSelector((state) => state.MapSlice);
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
+  const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
+
   const { theme } = useQueryString();
+  const [TModal, setTModal] = useState(false);
 
   const yourLoc = useRef();
   const [yourCoord, setYourCoord] = useState();
@@ -45,6 +52,7 @@ const Map = memo(() => {
 
   const [LocData, setLocData] = useState();
   const [ThemeData, setThemeData] = useState();
+  const [TPList, setTPList] = useState({});
 
   /**
    * 처음 열릴때 지도를 렌더링하고 전체 데이터를 가져옴 (1회)
@@ -62,10 +70,19 @@ const Map = memo(() => {
 
     // 장소 데이터
     dispatch(getMapData());
-
     // 테마 데이터
     dispatch(getThemeData()).then((e) => {
       setThemeData(e.payload);
+    });
+    // theme_place 데이터
+    dispatch(getTP()).then((e) => {
+      let obj = {};
+      Array.from(e.payload)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
+      });
+      console.log(obj);
+
+      setTPList(obj);
     });
   }, []);
 
@@ -84,14 +101,14 @@ const Map = memo(() => {
     setReplMap(map);
     console.log("♻️ 지도 재 렌더링");
 
-    if (data) {
+    if (data && TPList) {
       setLocData((LocData) => {
         const newData = [];
 
         if (theme) {
           data.forEach((v, i) => {
             // 지도 범위 제한 , 테마 별로 필터링(querystring 존재할 시)
-            if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1] && v.theme.includes(+theme)) {
+            if (v["lat"] > swLimit[0] && v["lat"] < neLimit[0] && v["lng"] > swLimit[1] && v["lng"] < neLimit[1] && TPList[v.id]?.includes(+theme)) {
               newData.push(v);
             }
           });
@@ -107,7 +124,7 @@ const Map = memo(() => {
         return newData;
       });
     }
-  }, [data, centerCoord, theme]);
+  }, [data, centerCoord, theme, TPList]);
 
   /**
    * 데이터가 바뀔때 마다 마커와 목록을 출력
@@ -205,15 +222,6 @@ const Map = memo(() => {
           listItem.classList.remove("animate__animated", "animate__flipInX");
         });
       });
-
-      /**
-       * 지도 클릭 위치 콘솔에 띄움
-       */
-      // kakao.maps.event.addListener(kakaoMap, "click", function (mouseEvent) {
-      //   //클릭한 위도, 경도 정보를 가져옵니다.
-      //   const latlng = mouseEvent.latLng;
-      //   console.log("현재 클릭한 위치의 위도: " + latlng.getLat() + ", 경도: " + latlng.getLng());
-      // });
     }
   }, [LocData]);
 
@@ -300,6 +308,22 @@ const Map = memo(() => {
     console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
   });
 
+  const onThemeModalOpen = useCallback((e) => {
+    setTModal(true);
+  });
+
+  useEffect(() => {
+    if (data3) {
+      let obj = {};
+      Array.from(data3)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
+      });
+      console.log(obj);
+
+      setTPList(obj);
+    }
+  }, [data3]);
+
   return (
     <MapContainer>
       <Spinner loading={loading} />
@@ -308,7 +332,7 @@ const Map = memo(() => {
       <div ref={kakaoRef} id="map" style={{ width: "100%", height: "95vh" }}></div>
 
       {/* 보고있는 테마 */}
-      <MapThemeBar theme={theme} ThemeData={ThemeData} />
+      <MapThemeBar theme={theme} ThemeData={ThemeData} Add={false} />
 
       {/* 내 위치 찾기 버튼 */}
       <FontAwesomeIcon ref={yourLoc} className="yourLoc" icon={faLocationCrosshairs} onClick={onYourLoc} />
@@ -317,7 +341,10 @@ const Map = memo(() => {
       <SearchLoc onClick={onSearchLoc} />
 
       {/* 장소 추가하기 링크 */}
-      {theme && <MapAddLink theme={theme} />}
+      {theme ? <MapAddLink theme={theme && theme} /> : <MapAddLink2 onClick={onThemeModalOpen} />}
+
+      {/* 테마 선택 모달창 */}
+      <ThemeModal modalIsOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} />
 
       {/* 장소 목록 */}
       <ListContainer id="container">
@@ -328,7 +355,15 @@ const Map = memo(() => {
               <span className="category">{v.category_item_name}</span>
               <br />
               <span className="address">{v.road_address_name ? v.road_address_name : v.address_name}</span>
-              <a>{v.theme && ThemeData && !theme && ThemeData[v.theme[0]]?.icon + " " + ThemeData[v.theme[0]]?.text}</a>
+              {TPList &&
+                ThemeData &&
+                TPList[v.id]?.map((v2, i2) => {
+                  return (
+                    <a key={i2} className="theme">
+                      {ThemeData[v2]?.icon + " " + ThemeData[v2]?.text}
+                    </a>
+                  );
+                })}
               <div className="more_btn" onClick={onModalIsOpen} data-id={v.id}>
                 <img src={iconMore} />
               </div>
@@ -346,12 +381,11 @@ const Map = memo(() => {
             </div>
           </div>
         )}
-
         {/* 장소 정보 모달창 */}
         {LocData?.map((v, i) => {
           let themeList = [];
           if (ThemeData) {
-            v.theme.forEach((v2, i2) => {
+            TPList[v.id]?.forEach((v2, i2) => {
               themeList.push(ThemeData[v2]);
             });
           }

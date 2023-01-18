@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
+import { useSelector, useDispatch } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +9,11 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import iconPlus from "../assets/img/map/icon-plus-grey-sm.svg";
 
 import breadSample from "../assets/img/bulletin/bread_sample.jpg";
+
+import ThemeModal2 from "../components/map/ThemeModal2";
+
+import { getThemeData } from "../slices/ThemeSlice";
+import { getTP } from "../slices/MapThemeSlice";
 
 export const LocModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -102,6 +108,15 @@ export const LocModalContainer = styled.div`
             box-sizing: border-box;
             box-shadow: 3px 3px 8px rgb(0 0 0 / 20%);
             border-radius: 12px;
+
+            &.center {
+              text-align: center;
+              cursor: pointer;
+
+              &:hover {
+                background-color: #eee;
+              }
+            }
           }
 
           .theme-card__about {
@@ -359,7 +374,58 @@ const testData = [
   },
 ];
 
-const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) => {
+const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
+  const dispatch = useDispatch();
+  const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
+  const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
+
+  const [TModal, setTModal] = useState(false);
+  const [ThemeData, setThemeData] = useState();
+  const [TPList, setTPList] = useState({});
+  const [themeList, setThemeList] = useState([]);
+
+  const onThemeModalOpen = useCallback((e) => {
+    setTModal(true);
+  });
+
+  useEffect(() => {
+    // 테마 데이터
+    dispatch(getThemeData()).then((e) => {
+      setThemeData(e.payload);
+    });
+    // theme_place 데이터
+    dispatch(getTP()).then((e) => {
+      let obj = {};
+      Array.from(e.payload)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
+      });
+      console.log(obj);
+
+      setTPList(obj);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (data && data2 && data3) {
+      let arr = [];
+      if (ThemeData) {
+        TPList[data.id]?.forEach((v2, i2) => {
+          arr.push(ThemeData[v2]);
+        });
+      }
+      // console.log(arr);
+      setThemeList(arr);
+
+      let obj = {};
+      Array.from(data3)?.forEach((v, i) => {
+        obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
+      });
+      console.log(obj);
+
+      setTPList(obj);
+    }
+  }, [data, data2, data3, TModal]);
+
   useEffect(() => {
     document.body.style.cssText = `
       position: fixed; 
@@ -464,13 +530,16 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
             <div className="info">
               <div className="info-item">
                 <div className="title">여기는 어떤 곳인가요?</div>
-                {theme?.map((v, i) => {
+                {themeList?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
                       {v?.icon + " " + v?.text}
                     </div>
                   );
                 })}
+                <div className="theme-card center" onClick={onThemeModalOpen}>
+                  ➕
+                </div>
               </div>
             </div>
 
@@ -576,6 +645,9 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data, theme }) =>
           <button className="scrap">O</button>
         </div>
       </LocModalContainer>
+
+      {/* 테마 선택 모달창 */}
+      <ThemeModal2 modalIsOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} placeId={data?.id} setTModal={setTModal} themeList={themeList} />
     </Modal>
   );
 });
