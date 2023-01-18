@@ -74,7 +74,7 @@ const RecommendListItem = memo(props => {
         <Item>
             <div className='recommend-Item__1'>
                 {
-                    props.img ? (
+                    props.place_img ? (
                         <img className='img' src={props.img} alt={`${props.title} 후기 이미지`} />
                     ) : (
                         <div className='img'>No Photo</div>

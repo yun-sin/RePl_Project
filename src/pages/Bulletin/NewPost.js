@@ -10,7 +10,6 @@ import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 import { useSelector, useDispatch } from 'react-redux';
 import { newPost } from '../../slices/bulletin/BulletinSlice';
 
-import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 import { useEffect } from 'react';
 
 const MainForm = styled.form`
@@ -78,6 +77,7 @@ const TitleArea = styled.div`
             height: 70px;
             font-size: 40px;
             margin-bottom: 20px;
+            background: none;
         }
 
         .title-input__desc {
@@ -269,6 +269,7 @@ const NewPost = memo(() => {
 
     /** 관련 태그 설정하기 */
     const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTagID, setSelectedTagID] = useState([]);
     
     /** 게시물 게시하기 */
     const onPosting = useCallback(e => {
@@ -286,36 +287,31 @@ const NewPost = memo(() => {
             return;
         }
 
-        const backgroundImage = e.currentTarget.backgroundImageInput.value;
+        let backgroundImage = null;
+        if (e.currentTarget.backgroundImageInput.value) {
+            backgroundImage = e.currentTarget.backgroundImageInput.value;
+        }
         const postUser = 1; // <TO DO> 로그인 정보 불러오기
 
         const selectedPlace_light = [];
         for (const k of selectedPlaces) {
-            const temp = {};
-            temp.id = k.id;
-            temp.place_name = k.place_name;
-            temp.address_name = k.address_name;
-            temp.place_img = k.place_img;
-            temp.like = k.like;
-            temp.rating = k.rating;
-
-            selectedPlace_light.push(temp);
+            selectedPlace_light.push(k.id);
         }
 
+        console.log(selectedTagID);
         const data = {
+            user_id: postUser,
             title: postTitle,
             postdate: dayjs().format('YYYY-MM-DD'),
-            user_id: postUser,
             bgcolor: backgroundColor,
             bgimage: backgroundImage,
             content: content,
             selectedPlaces: selectedPlace_light,
-            selectedTags: selectedTags,
-            like: 0,
+            selectedTags: selectedTagID
         }
 
         dispatch(newPost(data));
-    }, [backgroundColor, content, selectedPlaces, selectedTags]);
+    }, [content, selectedTagID, selectedPlaces, backgroundColor]);
 
     return (
         <MainForm onSubmit={onPosting}>
@@ -334,7 +330,7 @@ const NewPost = memo(() => {
                 <div className='title-input'>
                     <input type="text" name='postTitle' className='title-input__main-title' placeholder='제목을 입력하세요' />
                     <div className='title-input__desc'>
-                        <input type="text" name='postDate' placeholder='게시일' disabled />
+                        <input type="text" name='postDate' defaultValue={dayjs().format('YYYY-MM-DD')} disabled />
                         <input type="text" name='postUser' placeholder='게시자' disabled />
                     </div>
                 </div>
@@ -359,7 +355,7 @@ const NewPost = memo(() => {
                                     return (
                                         <RecommendListItem
                                             key={i}
-                                            img={v?.place_img[0] ? v.place_img[0] : breadSample}
+                                            img={v.place_img}
                                             alt='플레이스 이미지'
                                             title={v.place_name}
                                             address={v.address_name}
@@ -379,6 +375,7 @@ const NewPost = memo(() => {
                         closeModal={closeHashtagModal}
                         selectedTags={selectedTags}
                         setSelectedTags={setSelectedTags}
+                        setSelectedTagID={setSelectedTagID}
                     />
                     <div className='category-tags'>
                         {

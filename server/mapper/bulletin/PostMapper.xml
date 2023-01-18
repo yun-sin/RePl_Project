@@ -35,6 +35,15 @@
         WHERE place_id = #{id}
     </select>
 
+    <!-- 게시글 카테고리 해시태그 불러오기 -->
+    <select id="getTags">
+        SELECT name FROM category
+        WHERE id IN (
+            SELECT category_id FROM bulletin_category
+            WHERE bulletin_id = #{id}
+        )
+    </select>
+
     <!-- 게시자 팔로워 수 -->
     <select id="selectFollower">
         SELECT COUNT(*) FROM user

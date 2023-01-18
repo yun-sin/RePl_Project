@@ -142,8 +142,6 @@ const Bulletin = memo(() => {
       dispatch(getList());
     }, []);
 
-    console.log(data);
-
     return (
         <>
             <BannerArea>

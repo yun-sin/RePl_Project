@@ -55,9 +55,52 @@ module.exports = (() => {
     });
 
     /** 게시글 작성 처리 */
-    router.post(url, async (req, res, next) => {
-        // 파라미터 받기
-        // const { title,  }
+    router.post(`${url}/newPost`, async (req, res, next) => {
+        const { user_id, title, postdate, bgcolor, bgimage, content, selectedPlaces, selectedTags } = req.body;
+
+        // 유효성 검사
+        try {
+            regexHelper.value(user_id, '작성자 정보가 없습니다.');
+            regexHelper.num(user_id, '작성자 정보가 잘못되었습니다.');
+            regexHelper.value(title, '게시글 제목이 없습니다.');
+            regexHelper.value(postdate, '게시일이 없습니다.');
+            regexHelper.value(bgcolor, '글 배경색이 지정되지 않았습니다');
+            regexHelper.value(content, '글 의 내용이 없습니다');
+        } catch (err) {
+            return next(err);
+        }
+
+        let json = null;
+
+        try {
+            json = await bulletinService.addPost({
+                user_id: user_id,
+                title: title,
+                postdate: postdate,
+                bgcolor: bgcolor,
+                bgimage: bgimage,
+                content: content,
+                selectedPlaces: selectedPlaces,
+                selectedTags: selectedTags
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
+    });
+
+    /** 카테고리 선택창 태그들 불러오기 */
+    router.get(`${url}/categories`, async (req, res, next) => {
+        let json = null;
+
+        try {
+            json = await bulletinService.getCategories();
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
     });
 
     return router;
