@@ -26,9 +26,15 @@
             "hash": "3f3c9e7236c7921a1f17006a68df178759921c3a98cca88ce86484809ce0ca30"
         },
         {
+<<<<<<< Updated upstream
             "date": 1674006910638,
             "name": "server\\_files\\_logs\\log_230118.log",
             "hash": "eb1f6561cc72c74078c3b971c0b561d17c1ec89290d3215e37761b9ac980096d"
+=======
+            "date": 1674003226339,
+            "name": "server\\_files\\_logs\\log_230118.log",
+            "hash": "8fa418032b8023166e2978b335af40881182ee78b8a1d583fc69e222e4967749"
+>>>>>>> Stashed changes
         }
     ],
     "hashType": "sha256"
