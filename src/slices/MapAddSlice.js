@@ -1,3 +1,6 @@
+/**
+ * MapAdd 페이지 모달창 제어 - 장윤신
+ */
 import { createSlice } from "@reduxjs/toolkit";
 
 const MapAddSlice = createSlice({

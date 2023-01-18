@@ -1,3 +1,6 @@
+/**
+ * theme 데이터 슬라이스 - 장윤신
+ */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { pending, fulfilled, rejected } from "../helper/ReduxHelper";
@@ -6,14 +9,14 @@ import { cloneDeep } from "lodash";
 /** 모든 테마 데이터를 불러오는 비동기 함수 */
 export const getThemeData = createAsyncThunk("ThemeSlice/getThemeData", async (payload, { rejectWithValue }) => {
   let result = null;
-  
+
   try {
     const response = await axios.get("/theme");
     result = response.data;
   } catch (err) {
     result = rejectWithValue(err.response);
   }
- 
+
   return result;
 });
 

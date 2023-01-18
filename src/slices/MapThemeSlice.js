@@ -1,3 +1,6 @@
+/**
+ * theme_place 데이터 슬라이스 - 장윤신
+ */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { pending, fulfilled, rejected } from "../helper/ReduxHelper";
