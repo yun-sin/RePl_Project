@@ -283,8 +283,6 @@ const NewPost = memo(props => {
         }
     }, [data]);
 
-    console.log(categories);
-
     /** 작성자의 다른 게시글 영역 */
     // 현재 스크롤 위치 저장
     const [scrollPosition, setScrollPosition] = useState(0);

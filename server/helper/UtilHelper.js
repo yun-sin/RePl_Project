@@ -74,6 +74,7 @@ class UtilHelper {
      * @return  Object      - nowPage       : 현재 페이지
      *                      - totalCount    : 전체 데이터 수
      *                      - listCount     : 한 페이지에 보여질 목록의 수
+     *                      - totalPage     : 전체 페이지 수
      *                      - groupCount    : 한 페이지에 보여질 그룹의 수
      *                      - totalGroup    : 전체 그룹 수
      *                      - nowGroup      : 현재 페이지가 속해 있는 그룹 번호
@@ -114,6 +115,7 @@ class UtilHelper {
             nowPage: nowPage,
             totalCount: totalCount,
             listCount: listCount,
+            totalPage: totalPage,
             groupCount: groupCount,
             totalGroup: totalGroup,
             nowGroup: nowGroup,

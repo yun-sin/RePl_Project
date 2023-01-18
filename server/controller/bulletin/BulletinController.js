@@ -11,12 +11,13 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 검색 파라미터 있을 시 저장
-        const { query, page=1, rows=5 } = req.query;
+        const { query, page=1, rows=8 } = req.query;
 
         // 검색 파라미터를 MyBatis 전송용 객체로 변환
         const params = {};
         if (query) {
-            
+            params.title = query;
+            params.userId = query;
         }
 
         /** 데이터 조회 */
@@ -36,7 +37,7 @@ module.exports = (() => {
             return next(err);
         }
 
-        res.sendResult({ meta: pageInfo, item: json });
+        res.sendResult({ pagenation: pageInfo, item: json });
     });
 
     /** 내가 후기 남긴 장소 목록 불러오기 */

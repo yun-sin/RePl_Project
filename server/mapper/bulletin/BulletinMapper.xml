@@ -18,10 +18,21 @@
         FROM bulletin AS b
         LEFT JOIN user AS u
         ON u.id = b.user_id
+
+        <where>
+            <if test="title != null and title != ''">
+                b.title LIKE concat('%', #{title}, '%')
+            </if>
+
+            <if test="userId != null and userId != ''">
+                OR u.username LIKE concat('%', #{userId}, '%')
+            </if>
+        </where>
+        
         ORDER BY b.id DESC
 
         <!-- 페이지 구현을 위한 LIMIT절 추가 -->
-        <if test="liscCount > 0">
+        <if test="listCount > 0">
             LIMIT ${offset}, ${listCount}
         </if>
     </select>

@@ -23,6 +23,7 @@ class BulletinService {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('BulletinMapper', 'selectList', params);
+
             let [result] = await dbcon.query(sql);
 
             if (result.length === 0) {

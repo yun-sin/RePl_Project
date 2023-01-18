@@ -1,18 +1,15 @@
-import React, { memo, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { memo, useEffect, useState, useCallback } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { useQueryString } from '../../hooks/useQueryString';
+import Pagenation from '../../components/Pagenation';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getList } from '../../slices/bulletin/BulletinSlice';
 
 import Post from '../../components/bulletin/Post';
-
-import postImg1 from '../../assets/img/bulletin/post_sample01.jpg';
-import postImg2 from '../../assets/img/bulletin/post_sample02.jpg';
-import postImg3 from '../../assets/img/bulletin/post_sample03.jpg';
-import postImg4 from '../../assets/img/bulletin/post_sample04.jpg';
-import postImg5 from '../../assets/img/bulletin/post_sample05.jpg';
-import postImg6 from '../../assets/img/bulletin/post_sample06.jpg';
+import Spinner from '../../components/Spinner';
 
 const BannerArea = styled.div`
   width: 100%;
@@ -108,38 +105,33 @@ const PostList = styled.div`
   }
 `;
 
-const PageControl = styled.div`
-  width: 50%;
-  margin: auto;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-
-  a {
-    display: inline-block;
-    width: 8.3%;
-    text-align: center;
-    padding: 10px 5px;
-
-    background-color: #fff;
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-
-    &:hover,
-    .active {
-      background-color: #ccc;
-      color: white;
-    }
-  }
-`;
-
 const Bulletin = memo(() => {
-    const { data, loading, error } = useSelector(state => state.BulletinSlice);
+  /** QueryString 변수 받기 */
+  const { query, page=1 } = useQueryString();
+
+    const { pagenation, data, loading, error } = useSelector(state => state.BulletinSlice);
     const dispatch = useDispatch();
 
     useEffect(() => {
-      dispatch(getList());
+      dispatch(getList({
+        query: query,
+        page: page,
+        rows: 8
+      }));
+    }, [query, page]);
+
+    const navigate = useNavigate();
+
+    /** 게시글 검색 이벤트 */
+    const onSearchSubmit = useCallback(e => {
+      e.preventDefault();
+
+      // 검색어
+      const query = e.currentTarget.query.value;
+
+      // 검색어에 따라 URL을 구성
+      let redirectUrl = query ? `/?query=${query}` : '/';
+      navigate(redirectUrl);
     }, []);
 
     return (
@@ -173,8 +165,9 @@ const Bulletin = memo(() => {
 
                 <PostList>
                     <div className='list-box'>
+                        <Spinner loading={loading} />
                         {
-                            data && data.map((v, i) => {
+                            data?.item && data?.item.map((v, i) => {
                                 return (
                                     <Post
                                         key={i}
@@ -192,20 +185,7 @@ const Bulletin = memo(() => {
                         }
                     </div>
 
-                    <PageControl>
-                        <NavLink>&lt;</NavLink>
-                        <NavLink to='/bulletin?page=1'>1</NavLink>
-                        <NavLink to='/bulletin?page=2'>2</NavLink>
-                        <NavLink to='/bulletin?page=3'>3</NavLink>
-                        <NavLink to='/bulletin?page=4'>4</NavLink>
-                        <NavLink to='/bulletin?page=5'>5</NavLink>
-                        <NavLink to='/bulletin?page=6'>6</NavLink>
-                        <NavLink to='/bulletin?page=7'>7</NavLink>
-                        <NavLink to='/bulletin?page=8'>8</NavLink>
-                        <NavLink to='/bulletin?page=9'>9</NavLink>
-                        <NavLink to='/bulletin?page=10'>10</NavLink>
-                        <NavLink>&gt;</NavLink>
-                    </PageControl>
+                    {pagenation && (<Pagenation pagenation={pagenation} />)}
                 </PostList>
             </MainArea>
         </>
