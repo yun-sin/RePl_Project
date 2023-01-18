@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PostMapper">
+    <!-- 단일 게시글 조회를 위한 기능 정의 -->
+    <select id="selectItem">
+        SELECT b.title, b.postdate, b.bgcolor, b.bgimage, b.content, u.id AS userId, u.username, u.icon
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON b.user_id = u.id
+        WHERE b.id = #{id};
+    </select>
+
+    <!-- 게시글에서 추천한 장소 조회 기능 정의 -->
+    <select id="selectPlaces">
+        SELECT p.place_name, p.address_name, p.road_address_name, p.id
+        FROM place AS p
+        LEFT JOIN bulletin_place AS bp
+        ON p.id = bp.place_id
+        WHERE bp.bulletin_id = #{id}
+    </select>
+
+    <!-- 추천된 장소의 댓글 개수, 평점 -->
+    <select id="selectPlaceInfo">
+        SELECT COUNT(comment) AS comment, AVG(rating) AS rating
+        FROM review
+        WHERE place_id = #{id}
+    </select>
+
+    <!-- 추천된 장소의 대표 사진 -->
+    <select id="selectPlacePhoto">
+        SELECT filename
+        FROM photo
+        WHERE place_id = #{id}
+    </select>
+
+    <!-- 게시자 팔로워 수 -->
+    <select id="selectFollower">
+        SELECT COUNT(*) FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 게시글 댓글 조회 기능 정의 -->
+    <select id="selectComments">
+        SELECT u.icon, u.username, c.content, c.commentdate
+        FROM comment AS c
+        LEFT JOIN user AS u
+        ON u.id = c.user_id
+        WHERE c.bulletin_id = #{id}
+    </select>
+
+    <!-- 게시글 댓글 추가 기능 정의 -->
+    <insert id="postComment">
+        INSERT INTO comment (user_id, bulletin_id, content, commentdate)
+        VALUES (#{user_id}, #{bulletin_id}, #{content}, #{commentdate})
+    </insert>
+
+    <!-- 게시자의 다른 게시글 데이터 조회 -->
+    <select id="selectOtherPosts">
+        SELECT title, substring(content, 1, 100) AS content, bgimage, bgcolor
+        FROM bulletin
+        WHERE user_id = #{id}
+    </select>
+</mapper>

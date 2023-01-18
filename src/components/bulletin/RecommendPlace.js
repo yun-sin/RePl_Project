@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getMyReview } from '../../slices/bulletin/RecommendPlaceSlice';
+import { getMyPlace } from '../../slices/bulletin/RecommendPlaceSlice';
 
 import Modal from 'react-modal';
 
@@ -209,13 +209,13 @@ const PopUpBox = styled.div`
 
 const RecommendPlace = memo(props => {
     /** slice 연동, 내가 리뷰한 장소 목록 불러오기 */
-    /** To Do: 아직 완벽하지 않음. 장소 그냥 다 불러옴 */
     const { data: data_place, loading: loading_place, error: error_place } = useSelector(state => state.RecommendPlaceSlice);
     const dispatch = useDispatch();
 
     // 처음 내가 쓴 전체 게시글 불러오기
     useEffect(() => {
-        dispatch(getMyReview());
+        // TO DO: 여기 안에 파라미터로 가는 id 로그인 정보에서 불러와야함 ㅠㅠ
+        dispatch(getMyPlace(1));
     }, []);
 
     /** 장소 선택하기 */

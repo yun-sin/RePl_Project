@@ -6,13 +6,18 @@ export const getPost = createAsyncThunk('PostViewSlice/getPost', async (payload,
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/' + payload.id);
+        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/postview/' + payload);
+
         result = response.data;
     } catch (err) {
         result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.rtcode === 200) {
+        return result.item;
+    }
+
+    return result.rtmsg;
 });
 
 const PostViewSlice = createSlice({

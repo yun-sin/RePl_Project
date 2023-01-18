@@ -287,8 +287,7 @@ const NewPost = memo(() => {
         }
 
         const backgroundImage = e.currentTarget.backgroundImageInput.value;
-        const postDate = dayjs().format('YYYY-MM-DD');
-        const postUser = 'test'; // <TO DO> 로그인 정보 불러오기
+        const postUser = 1; // <TO DO> 로그인 정보 불러오기
 
         const selectedPlace_light = [];
         for (const k of selectedPlaces) {
@@ -304,11 +303,11 @@ const NewPost = memo(() => {
         }
 
         const data = {
-            postTitle: postTitle,
-            postDate: postDate,
-            postUser: postUser,
-            bgColor: backgroundColor,
-            backgroundImage: backgroundImage,
+            title: postTitle,
+            postdate: dayjs().format('YYYY-MM-DD'),
+            user_id: postUser,
+            bgcolor: backgroundColor,
+            bgimage: backgroundImage,
             content: content,
             selectedPlaces: selectedPlace_light,
             selectedTags: selectedTags,

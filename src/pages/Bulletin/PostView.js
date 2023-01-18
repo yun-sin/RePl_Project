@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useRef, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { useParams } from 'react-router-dom';
@@ -9,10 +9,11 @@ import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import Spinner from '../../common/Spinner';
 
 import { getPost } from '../../slices/bulletin/PostViewSlice';
+import { getOtherPosts } from '../../slices/bulletin/OtherPostSlice';
+import { getRecommendedPlaces } from '../../slices/bulletin/RecommendedPlaceSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
-import { getCurrentData } from '../../slices/bulletin/BulletinSlice';
 
 const TitleArea = styled.div`
     width: 100%;
@@ -252,27 +253,6 @@ const OtherPostsArea = styled.div`
     }
 `;
 
-const testData2 = [
-    {
-        profileImg: breadSample,
-        writer: '작성자 1',
-        writeDate: '2022-11-30',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-        profileImg: breadSample,
-        writer: '작성자 2',
-        writeDate: '2022-11-30',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-        profileImg: breadSample,
-        writer: '작성자 3',
-        writeDate: '2022-11-30',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    }
-];
-
 const testData3 = [
     {
         imgSrc: breadSample,
@@ -343,15 +323,31 @@ const testData3 = [
 
 const NewPost = memo(props => {
     /** 게시글 데이터 불러오기 */
-    const { data, loading, error } = useSelector(state => state.PostViewSlice);
     const dispatch = useDispatch();
+    // 게시글 본문 및 작성자 데이터
+    const { data, loading, error } = useSelector(state => state.PostViewSlice);
+    // 본 게시물에서 작성자가 추천한 장소들 데이터
+    const { data: places, loading: loading2, error: error2 } = useSelector(state => state.RecommendedPlaceSlice);
+    // 작성자의 다른 게시글들 데이터
+    const { data: otherPosts, loading: loading3, error: error3 } = useSelector(state => state.OtherPostSlice);
 
     // 패스파라미터 변수
     const postId = useParams().id;
+
     // 해당 패스 게시글 불러오기
     useEffect(() => {
-        dispatch(getPost({ id: postId }));
+        dispatch(getPost(postId));
+        dispatch(getRecommendedPlaces(postId));
     }, [postId]);
+
+    console.log(places);
+
+    // 게시글 데이터 적재 시 게시자의 다른 게시물 정보 불러오기
+    useEffect(() => {
+        if (data && data.userId) {
+            dispatch(getOtherPosts(data.userId));
+        }
+    }, [data]);
 
     /** 작성자의 다른 게시글 영역 */
     // 현재 스크롤 위치 저장
@@ -404,10 +400,10 @@ const NewPost = memo(props => {
                         data && <>
                             <TitleArea bgColor={data.bgColor}>
                                 <div className='title'>
-                                    <h2 className='title__main-title'>{data.postTitle}</h2>
+                                    <h2 className='title__main-title'>{data.title}</h2>
                                     <div className='title__desc'>
-                                        <h3>{data.postUser}</h3>
-                                        <h3>{data.postDate}</h3>
+                                        <h3>{data.username}</h3>
+                                        <h3>{data.postdate}</h3>
                                     </div>
                                 </div>
                             </TitleArea>
@@ -421,23 +417,29 @@ const NewPost = memo(props => {
                                         <h3>이 글에서 추천한 장소들</h3>
                                     </div>
                                     <div className='recommend-place-body'>
-                                        <ul>
-                                            {
-                                                data.selectedPlaces && data.selectedPlaces.map((v, i) => {
-                                                    return (
-                                                        <RecommendListItem
-                                                            key={i}
-                                                            img={breadSample}
-                                                            title={v.place_name}
-                                                            address={v.address_name}
-                                                            commend='3'
-                                                            reaction={v.rating}
-                                                            /** To Do: 댓글 개수(commend)랑 평점(v.rating) 둘 다 후기 릴레이션에서 가져와야 함 */
-                                                        />
-                                                    );
-                                                })
-                                            }
-                                        </ul>
+                                        <Spinner loading={loading2} />
+                                        {
+                                            error2 ? (
+                                                <div>추천된 장소 목록을 불러오지 못했습니다.</div>
+                                            ) : (
+                                                <ul>
+                                                    {
+                                                        places && places.map((v, i) => {
+                                                            return (
+                                                                <RecommendListItem
+                                                                    key={i}
+                                                                    img={v.img}
+                                                                    title={v.place_name}
+                                                                    address={v.address_name}
+                                                                    comment={v.comment}
+                                                                    rating={v.rating}
+                                                                />
+                                                            );
+                                                        })
+                                                    }
+                                                </ul>
+                                            )
+                                        }
                                     </div>
                                 </RecommendPlaceArea>
 
@@ -453,37 +455,46 @@ const NewPost = memo(props => {
                                     </div>
                                 </CategoryArea>
 
-                                {/** To Do: 댓글 데이터 또한 각 게시글마다... 릴레이션 빼야한다는.. 하아 걍 게시글 데이터에 합쳐야하나? */}
-                                <Comments data={testData2} />
+                                <Comments id={postId} />
                             </PostingArea>
 
                             <PublisherDiv>
                                 <div>
-                                    <img src={breadSample} alt="작성자 프로필" />
-                                    <h2>작성자명</h2>
+                                    <img src={breadSample} alt="작성자 프로필 이모지" />
+                                    <h2>{data.username}</h2>
                                 </div>
                                 <div>
-                                    <p>구독자<span>23</span></p>
+                                    <p>구독자<span>{data.follower}</span></p>
                                     <button>구독하기</button>
                                 </div>
                             </PublisherDiv>
-
+                                
                             <OtherPostsArea>
-                                <h3>작성자의 다른 게시글</h3>
-                                <div className="other-posts">
-                                    <button className={classNames({active: scrollPosition > 0})} ref={toLeft} onClick={onToLeftClick}>&lt;</button>
-                                    <div className='other_posts__wrap'>
-                                        {
-                                            /** To Do: 여기 또한 작성자 아이디 -> 게시글 테이블에서 해당 아이디 게시물들 얻어와서 뿌려야 함 */
-                                            testData3.map((v, i) => {
-                                                return (
-                                                    <OtherPost key={i} imgSrc={v.imgSrc} title={v.title} preview={v.preview} />
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <button className={classNames({active: scrollPosition < maxScroll - 900})} ref={toRight} onClick={onToRightClick}>&gt;</button>
-                                </div>
+                                <Spinner loading={loading3} />
+                                {
+                                    error3 ? (
+                                        <div>작성자의 다른 게시글을 불러오지 못했습니다.</div>
+                                    ) : (
+                                        <>
+                                            <h3>작성자의 다른 게시글</h3>
+                                            <div className="other-posts">
+                                                <button className={classNames({active: scrollPosition > 0})} ref={toLeft} onClick={onToLeftClick}>&lt;</button>
+                                                <div className='other_posts__wrap'>
+                                                    {
+                                                        otherPosts && otherPosts.map((v, i) => {
+                                                            return (
+                                                                <OtherPost key={i} imgSrc={v.bgimage}
+                                                                bgColor={v.bgColor}
+                                                                title={v.title} preview={v.content} />
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                                <button className={classNames({active: scrollPosition < maxScroll - 900})} ref={toRight} onClick={onToRightClick}>&gt;</button>
+                                            </div>
+                                        </>
+                                    )
+                                }
                             </OtherPostsArea>
                         </>
                     )

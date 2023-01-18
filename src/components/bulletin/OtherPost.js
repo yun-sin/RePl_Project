@@ -7,6 +7,7 @@ const Post = styled.div`
     background-color: #fff;
     margin: 0 10px;
     box-sizing: border-box;
+    box-shadow: 0 0 6px rgb(0 0 0 / 20%);
 
     &:hover {
         cursor: pointer;
@@ -14,7 +15,8 @@ const Post = styled.div`
         border: 1px solid #eee;
     }
 
-    img {
+    img,
+    div {
         width: 100%;
         aspect-ratio: 10 / 6;
         object-fit: cover;
@@ -41,9 +43,15 @@ const Post = styled.div`
 const OtherPost = memo(props => {
     return (
         <Post>
-            <img src={props.imgSrc} alt="미리보기 사진" />
+            {
+                props.bgImage ? (
+                    <img src={props.imgSrc} alt="미리보기 사진" />
+                ) : (
+                    <div style={{backgroundColor: props.bgColor}} />
+                )
+            }
             <h4>{props.title}</h4>
-            <p>{props.preview}</p>
+            <p>{props.preview.replace(/(<([^>]+)>)/gi, '')}</p>
         </Post>
     );
 });

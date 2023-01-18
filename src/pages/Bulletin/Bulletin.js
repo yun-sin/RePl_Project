@@ -142,6 +142,8 @@ const Bulletin = memo(() => {
       dispatch(getList());
     }, []);
 
+    console.log(data);
+
     return (
         <>
             <BannerArea>
@@ -175,18 +177,19 @@ const Bulletin = memo(() => {
                     <div className='list-box'>
                         {
                             data && data.map((v, i) => {
-                                    return (
-                                        <Post
-                                            key={i}
-                                            targetId={v.id}
-                                            postTitle={v.postTitle}
-                                            backgroundImage={postImg1}
-                                            postUser={v.postUser}
-                                            like={v.like}
-                                            postDate={v.postDate}
-                                            selectedTags={v.selectedTags}
-                                        />
-                                    );
+                                return (
+                                    <Post
+                                        key={i}
+                                        targetId={v.id}
+                                        postTitle={v.title}
+                                        backgroundImage={v.bgimage}
+                                        backgroundColor={v.bgcolor}
+                                        postUser={v.username}
+                                        like={v.like}
+                                        postDate={v.postdate}
+                                        selectedTags={v.tags}
+                                    />
+                                );
                             })
                         }
                     </div>
