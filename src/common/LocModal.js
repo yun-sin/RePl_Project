@@ -422,7 +422,7 @@ const testData = [
   },
 ];
 
-const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
+const LocModal = memo(({ isModalOpen, closeModal, data }) => {
   const dispatch = useDispatch();
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
@@ -474,27 +474,6 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
     }
   }, [data, data2, data3, TModal]);
 
-  useEffect(() => {
-    document.body.style.cssText = `
-      position: fixed; 
-      top: -${window.scrollY}px;
-      overflow-y: scroll;
-      width: 100%;`;
-    return () => {
-      const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (modalIsOpen) {
-      console.group("리뷰 모달창 열림 : " + data.place_name);
-      console.log(data);
-      console.groupEnd();
-    }
-  }, [modalIsOpen]);
-
   const onCommentRadioChange = useCallback((e) => {
     e.preventDefault();
     const current = e.currentTarget;
@@ -533,8 +512,8 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
 
   return (
     <Modal
-      isOpen={modalIsOpen}
-      onRequestClose={onRequestClose}
+      isOpen={isModalOpen}
+      onRequestClose={closeModal}
       ariaHideApp={false}
       style={{
         overlay: {
@@ -558,7 +537,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
         <div className="modal-header">
           <h3>{data?.place_name}</h3>
           <span>{data?.road_address_name ? data?.road_address_name : data?.address_name}</span>
-          <FontAwesomeIcon className="faX" icon={faX} onClick={onClick} />
+          <FontAwesomeIcon className="faX" icon={faX} onClick={closeModal} />
         </div>
         <div className="modal-body">
           {/* 이미지 칸 */}
@@ -674,7 +653,7 @@ const LocModal = memo(({ modalIsOpen, onRequestClose, onClick, data }) => {
       </LocModalContainer>
 
       {/* 테마 선택 모달창 */}
-      <ThemeModal2 modalIsOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} placeId={data?.id} setTModal={setTModal} themeList={themeList} />
+      <ThemeModal2 isModalOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} placeId={data?.id} setTModal={setTModal} themeList={themeList} />
     </Modal>
   );
 });

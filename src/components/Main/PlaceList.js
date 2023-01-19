@@ -6,7 +6,6 @@ import { getMapData } from "../../slices/MapSlice";
 import { getThemeData } from "../../slices/ThemeSlice";
 import { getTP } from "../../slices/MapThemeSlice";
 
-
 import LocModal from "../../common/LocModal";
 
 const ListContainer = styled.div`
@@ -57,11 +56,9 @@ const ListContainer = styled.div`
   }
 `;
 
-
-
 const PlaceList = memo(() => {
   const [modalContent, setModalContent] = useState(0);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [LocData, setLocData] = useState();
   const [ThemeData, setThemeData] = useState();
@@ -70,33 +67,7 @@ const PlaceList = memo(() => {
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3} = useSelector((state) => state.MapThemeSlice);
 
-
-  
-   // 모달 오픈여부
-   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
-   const [isHashtagModalOpen, setIsHasgtagModalOpen] = useState(false);
-
   const dispatch = useDispatch();
-
-  // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
-
-  const randomData  = useMemo(() => {
-    return data && [...data]?.sort(() => Math.random() - 0.5);
-  },[data])
-
-
-  // 모달창 이벤트
-  const onModalIsOpen = useCallback((e) => {
-    e.preventDefault();
-    setModalContent(e.currentTarget.dataset.id);
-    setModalIsOpen(true);
-    console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
-
-    setIsPlaceModalOpen(state => true);
-    setIsHasgtagModalOpen(state => true);
-
-
-  });
 
   useEffect(() => {
     dispatch(getMapData());
@@ -104,27 +75,21 @@ const PlaceList = memo(() => {
     dispatch(getTP());
   }, []);
 
+  // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
+  const randomData  = useMemo(() => {
+    return data && [...data]?.sort(() => Math.random() - 0.5);
+  },[data])
 
- 
-  // 모달창 열기 함수
-  const openPlaceModal = useCallback(e => {
-      e.preventDefault();
-      setIsPlaceModalOpen(state => true);
+  // 모달창 이벤트
+  const onModalIsOpen = useCallback((e) => {
+    e.preventDefault();
+    setModalContent(e.currentTarget.dataset.id);
+    setIsModalOpen(true);
+    console.log("모달창 열림 id: " + e.currentTarget.dataset.id);
   }, []);
-  const openHashtagModal = useCallback(e => {
-      e.preventDefault();
-      setIsHasgtagModalOpen(state => true);
-  }, []);
-  // 모달창 닫기 함수
-  const closePlaceModal = useCallback(e => {
-      setIsPlaceModalOpen(state => false);
-  }, []);
-  const closeHashtagModal = useCallback(e => {
-      setIsHasgtagModalOpen(state => false);
-  }, []);
-  
+
   useEffect(() => {
-    if (isPlaceModalOpen || isHashtagModalOpen) {
+    if (isModalOpen) {
         document.body.style.cssText = `
             position: fixed; 
             top: -${window.scrollY}px;
@@ -136,8 +101,8 @@ const PlaceList = memo(() => {
         document.body.style.cssText = '';
         window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
     }
-}, [isPlaceModalOpen, isHashtagModalOpen]);
-  
+  }, [isModalOpen]);
+
   return (
     <ListContainer>
       <ul>
@@ -171,9 +136,18 @@ const PlaceList = memo(() => {
           });
         }
 
-        if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClick={() => setModalIsOpen(false)} data={v} theme={themeList} style={{
-          content: { width: "300px"}
-        }} />;
+        if (v.id == modalContent) {
+          return (
+            <LocModal
+              key={i}
+              isModalOpen={isModalOpen}
+              closeModal={() => setIsModalOpen(false)}
+              data={v}
+              theme={themeList}
+              style={{content: { width: "300px"}}}
+            />
+          )
+        }
       })}
     </ListContainer>
   );
