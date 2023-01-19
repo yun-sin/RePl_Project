@@ -117,6 +117,7 @@ const Bulletin = memo(() => {
     const { data: tags, loading: loading2, error: error2 } = useSelector(state => state.HashtagSlice);
 
     const [isUpdate, setIsUpdate] = useState(0);
+    const [sort, setSort] = useState(false);
 
     // 데이터 적재
     useEffect(() => {
@@ -124,14 +125,26 @@ const Bulletin = memo(() => {
             query: query,
             tag: tag,
             page: page,
-            rows: 8
+            rows: 8,
+            sortByLike: sort
         }));
         dispatch(getTags());
-    }, [query, page, isUpdate]);
+    }, [query, page, isUpdate, sort]);
 
     /** 옵션 검색 구현을 위한 State들 */
     const [classification, setClassification] = useState(0);
     const [tagOptions, setTagOptions] = useState([]);
+
+    // 정렬 방식 변경시 이벤트
+    const onSortWayChange = useCallback(e => {
+        e.preventDefault();
+
+        const way = e.currentTarget.value;
+
+        setSort(state => {
+            return (way === 'p');
+        });
+    }, []);
 
     // 대분류 select 변경시 이벤트
     const onCategoryFieldChange = useCallback(e => {
@@ -148,14 +161,6 @@ const Bulletin = memo(() => {
             setTagOptions(tags[classification - 1].values);
         }
     }, [classification]);
-
-    // 정렬 방식 변경시 이벤트
-    const onSortWayChange = useCallback(e => {
-        e.preventDefault();
-
-        // TO DO: 여기 정렬 방식 바꿔야함. (1) 쿼리스트링으로 백엔드로 보내고 백엔드에 ORDER BY를 바꾸는 방식 (2) 그냥 이미 있는 Redux state 데이터를 sort 함수로 돌리는 방식
-        console.log(data);
-    }, []);
 
     // 소분류 select 변경시 이벤트
     const onSubCategoryChange = useCallback(e => {
@@ -196,8 +201,8 @@ const Bulletin = memo(() => {
             <MainArea>
                 <div className='main__option-bar'>
                     <select name="align" id="align" onChange={onSortWayChange}>
-                        <option value="popularity">인기순</option>
-                        <option value="latest">최신순</option>
+                        <option value="l">최신순</option>
+                        <option value="p">인기순</option>
                     </select>
                     <select name="category" id="category" onChange={onCategoryFieldChange}>
                         <option value="0">-- 카테고리 --</option>

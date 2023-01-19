@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 
@@ -207,6 +208,8 @@ const CategoryArea = styled.div`
 `;
 
 const NewPost = memo(() => {
+    const navigate = useNavigate();
+
     /** 슬라이스 */
     const { data, loading, error } = useSelector(state => state.BulletinSlice);
     const dispatch = useDispatch();
@@ -298,7 +301,6 @@ const NewPost = memo(() => {
             selectedPlace_light.push(k.id);
         }
 
-        console.log(selectedTagID);
         const data = {
             user_id: postUser,
             title: postTitle,
@@ -310,7 +312,14 @@ const NewPost = memo(() => {
             selectedTags: selectedTagID
         }
 
-        dispatch(newPost(data));
+        dispatch(newPost(data)).then(({ payload, error }) => {
+            if (error) {
+                window.alert(payload.item.rtmsg);
+                return;
+            }
+
+            navigate(`/bulletin/postView/${payload.item.id}`);
+        });
     }, [content, selectedTagID, selectedPlaces, backgroundColor]);
 
     return (

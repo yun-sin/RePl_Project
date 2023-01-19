@@ -14,7 +14,10 @@
 
     <!-- 다중행 조회를 위한 기능 정의 -->
     <select id="selectList">
-        SELECT b.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content
+        SELECT b.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content,
+            (
+	            SELECT COUNT(*) FROM `like` AS l WHERE l.bulletin_id = b.id
+            ) AS `like`
         FROM bulletin AS b
         LEFT JOIN user AS u
         ON u.id = b.user_id
@@ -35,8 +38,17 @@
                 )
             </if>
         </where>
+
+        <choose>
+            <when test="sortByLike == 'true'">
+                ORDER BY `like` DESC
+            </when>
+
+            <otherwise>
+                ORDER BY b.id DESC
+            </otherwise>
+        </choose>
         
-        ORDER BY b.id DESC
 
         <!-- 페이지 구현을 위한 LIMIT절 추가 -->
         <if test="listCount > 0">
@@ -55,7 +67,27 @@
 
     <!-- 데이터 수 조회하기 -->
     <select id="selectAllCount">
-        SELECT COUNT(*) AS cnt FROM bulletin
+        SELECT COUNT(*) AS cnt
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON u.id = b.user_id
+
+        <where>
+            <if test="title != null and title != ''">
+                b.title LIKE concat('%', #{title}, '%')
+            </if>
+
+            <if test="userId != null and userId != ''">
+                OR u.username LIKE concat('%', #{userId}, '%')
+            </if>
+
+            <if test="tagId != null and tagId != -1">
+                b.id IN (
+                    SELECT bulletin_id FROM bulletin_category
+                    WHERE category_id = ${tagId}
+                )
+            </if>
+        </where>
     </select>
 
     <!-- 내가 댓글쓴 장소 목록 조회 -->

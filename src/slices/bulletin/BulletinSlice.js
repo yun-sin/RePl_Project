@@ -11,7 +11,8 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
                 query: payload?.query || '',
                 tag: payload?.tag || -1,
                 page: payload?.page || 1,
-                rows: payload?.rows || 8
+                rows: payload?.rows || 8,
+                sortByLike: payload?.sortByLike || false,
             }
         });
         result = response.data;

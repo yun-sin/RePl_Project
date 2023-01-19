@@ -11,10 +11,11 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 검색 파라미터 있을 시 저장
-        const { query, tag, page=1, rows=8 } = req.query;
+        const { query, tag, page=1, rows=8, sortByLike } = req.query;
 
         // 검색 파라미터를 MyBatis 전송용 객체로 변환
         const params = {};
+        params.sortByLike = sortByLike;
         if (query) {
             params.title = query;
             params.userId = query;
