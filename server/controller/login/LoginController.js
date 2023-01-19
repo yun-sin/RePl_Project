@@ -1,0 +1,49 @@
+const express = require('express');
+const logger = require('../../helper/LogHelper');
+const regexHelper = require('../../helper/RegexHelper');
+const LoginService = require('../../service/login/LoginService');
+
+module.exports = (() => {
+    const url = process.env.LOGIN_PATH;
+    const router = express.Router();
+
+    router.post(url, async (req, res, next) => {
+        // 프론트엔드 form에서 넘겨준 데이터들 구조분해해 저장
+        const { name, userId, username, email, password, icon, introduction } = req.body;
+
+        // 받아온 데이터 유효성 검사
+        try {
+            regexHelper.value(name, '이름이 없습니다.');
+            regexHelper.value(userId, '아이디가 없습니다.');
+            regexHelper.value(username, '닉네임이 없습니다.');
+            regexHelper.value(email, '이메일이 없습니다.');
+            regexHelper.value(password, '비밀번호가 없습니다.');
+
+            regexHelper.engNum(userId, '아이디는 영문과 숫자로만 입력하십시오.');
+            regexHelper.email(email, '이메일 형식이 올바르지 않습니다.');
+            regexHelper.engNum(password, '비밀번호는 영문과 숫자로만 입력하십시오.');
+        } catch (err) {
+            return next(err);
+        }
+
+        let json = null;
+
+        try {
+            json = await LoginService.addUser({
+                name: name,
+                userid: userId,
+                username: username,
+                email: email,
+                password: password,
+                icon: icon,
+                introduction: introduction,
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: json });
+    });
+
+    return router;
+})();
