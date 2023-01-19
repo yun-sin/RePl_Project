@@ -6,7 +6,7 @@ export const getOtherPosts = createAsyncThunk('OtherPostSlice/getOtherPosts', as
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/otherPosts/' + payload);
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/otherPosts/' + payload);
 
         result = response.data;
     } catch (err) {

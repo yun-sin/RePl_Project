@@ -179,8 +179,12 @@ app.use('/', router);
 /*--------------------------------------------------------
     5) 각 URL별 백엔드 기능 정의
 ---------------------------------------------------------*/
+
+
 app.use(require('./controller/bulletin/BulletinController'));
 app.use(require('./controller/bulletin/PostController'));
+
+app.use(require('./controller/SessionController'));
 
 /** 에러 처리 -> 반드시 모든 route 처리의 마지막에 위치해야 함 */
 // 컨트롤러에서 에러 발생시 `next(에러객체)`를 호출, 해당 동작을 여기서 처리

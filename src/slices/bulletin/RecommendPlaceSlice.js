@@ -6,7 +6,7 @@ export const getMyPlace = createAsyncThunk('RecommendPlaceSlice/getMyPlace', asy
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/myplace/' + payload);
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/myplace/' + payload);
 
         result = response.data;
     } catch (err) {

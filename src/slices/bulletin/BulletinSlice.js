@@ -6,7 +6,7 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST, {
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH, {
             params: {
                 query: payload?.query || '',
                 tag: payload?.tag || -1,
@@ -27,7 +27,7 @@ export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload,
     let result = null;
 
     try {
-        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST + '/newPost', payload);
+        const response = await axios.post(process.env.REACT_APP_BULLETIN_PATH + '/newPost', payload);
 
         result = response.data;
     } catch (err) {

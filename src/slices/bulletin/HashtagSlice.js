@@ -6,7 +6,7 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/categories');
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/categories');
 
         result = response.data;
     } catch (err) {
@@ -46,7 +46,7 @@ export const getPostsTags = createAsyncThunk('HashtagSlice/getPostsTags', async 
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/getTags/' + payload);
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/getTags/' + payload);
 
         result = response.data;
     } catch (err) {

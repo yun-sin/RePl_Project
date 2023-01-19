@@ -6,7 +6,7 @@ export const getComments = createAsyncThunk('CommentsSlice/getComments', async (
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_EDITOR_TEST + '/comments/' + payload);
+        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/comments/' + payload);
 
         result = response.data;
     } catch (err) {
@@ -24,7 +24,7 @@ export const postComment = createAsyncThunk('CommentsSlice/postComment', async (
     let result = null;
 
     try {
-        const response = await axios.post(process.env.REACT_APP_EDITOR_TEST + '/comments/' + payload.id, payload);
+        const response = await axios.post(process.env.REACT_APP_BULLETIN_PATH + '/comments/' + payload.id, payload);
 
         result = response.data;
     } catch (err) {
