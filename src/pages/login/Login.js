@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import PageButton from '../../components/mypage/PageButton';
 import { NavLink } from 'react-router-dom';
@@ -57,16 +57,40 @@ const EmailLoginCon = styled.div`
 `
 
 const Login = memo(() => {
+
+    const userId = useRef();
+    const userPw = useRef();
+
+    const onSubmit = useCallback((e) => {
+        e.preventDefault();
+
+        const regexHelper = RegexHelper.getInstance();
+
+        try {
+            regexHelper.value(
+              userId.current,
+              "아이디를 입력하세요."
+            );
+            regexHelper.value(
+              userPw.current,
+              "비밀번호를 입력하세요."
+            );
+          } catch (e) {
+            alert(e.message);
+            return;
+          }
+    });
+
     return (
         <EmailLoginCon>
             <h2>리플 로그인하기</h2>
             <div className='loginCon'>
                 <form action="">
                     <label htmlFor='emailId'>아이디</label>
-                    <input type="text" name='emailId' id='emailId' placeholder='아이디를 입력하세요'/>
+                    <input type="text" ref={userId} name='emailId' id='emailId' placeholder='아이디를 입력하세요'/>
                     <label htmlFor='emailPwd'>비밀번호</label>
-                    <input type="text" name='emailPwd' id='emailPwd' placeholder='비밀번호를 입력하세요'/>
-                    <PageButton type='submit' className='loginButton' width='180px' height='50px' color='#0584BB'>로그인</PageButton>
+                    <input type="password" ref={userPw} name='emailPwd' id='emailPwd' placeholder='비밀번호를 입력하세요'/>
+                    <PageButton type='submit' className='loginButton' width='180px' height='50px' color='#0584BB' onClick={onSubmit}>로그인</PageButton>
                 </form>
                 <div className='link'>
                     <NavLink>아이디/비밀번호 찾기</NavLink>
