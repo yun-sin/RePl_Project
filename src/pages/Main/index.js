@@ -29,10 +29,8 @@ const MainContainer = styled.div`
     font-weight: 400;
     opacity: .7;
     /* margin: 0 140px 10px 140px; */
-    
   }
 `;
-
 
 const index = memo(() => {
   return (

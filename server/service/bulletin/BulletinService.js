@@ -26,7 +26,6 @@ class BulletinService {
             let [result] = await dbcon.query(sql);
 
             if (result.length === 0) {
-                console.log(params);
                 if (params.query || params.tag != -1) {
                     return [];
                 } else {
