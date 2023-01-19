@@ -2,7 +2,7 @@ import React, { memo, useEffect, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import PageButton from '../../components/mypage/PageButton';
 import { NavLink } from 'react-router-dom';
-import RegexHelper from '../../helper/RegexHelper';
+import regex from '../../helper/RegexHelper';
 import axios from 'axios';
 
 const JoinCon = styled.div`
@@ -74,6 +74,7 @@ const JoinCon = styled.div`
 `
 
 const Join = memo(() => {
+
     // 중복확인 됐는지, 확인 후 값 바뀌었는지 여부 확인용 state
     const [isIdChanged, setIsIdChanged] = useState(false);
     const [isUsernameChanged, setIsUsernameChanged] = useState(false);
@@ -82,13 +83,18 @@ const Join = memo(() => {
     const onIdCheckClick = useCallback(e => {
         e.preventDefault();
 
-        const value = document.querySelector('#joinForm').userId.value;
-        if (!value) {
-            window.alert('아이디를 입력하세요.');
+        const field = document.querySelector('#joinForm').userId;
+
+        try {
+            regex.minLength(field, 5, '아이디는 5~15자로 입력해주세요.');
+            regex.maxLength(field, 15, '아이디는 5~15자로 입력해주세요.');
+            regex.engNum(field, '아이디는 영문과 숫자로만 이루어져 있어야 합니다.');
+        } catch (err) {
+            window.alert(err.message);
             return;
         }
 
-        axios.get(`${process.env.REACT_APP_LOGIN_URL}/check/userid/${value}`)
+        axios.get(`${process.env.REACT_APP_LOGIN_URL}/check/userid/${field.value}`)
             .then(({ data }) => {
                 if (data.rtcode !== 200) {
                     window.alert(`서버 에러! Error Code [${data.rtcode}]`);
@@ -109,13 +115,17 @@ const Join = memo(() => {
     const onUsernameCheckClick = useCallback(e => {
         e.preventDefault();
 
-        const value = document.querySelector('#joinForm').eName.value;
-        if (!value) {
-            window.alert('닉네임을 입력하세요.');
+        const field = document.querySelector('#joinForm').eName;
+
+        try {
+            regex.minLength(field, 5, '닉네임은 2~8자로 입력해주세요.');
+            regex.maxLength(field, 15, '닉네임은 2~8자로 입력해주세요.');
+        } catch (err) {
+            window.alert(err.message);
             return;
         }
 
-        axios.get(`${process.env.REACT_APP_LOGIN_URL}/check/username/${value}`)
+        axios.get(`${process.env.REACT_APP_LOGIN_URL}/check/username/${field.value}`)
             .then(({ data }) => {
                 if (data.rtcode !== 200) {
                     console.error(`서버 에러! Error Code [${data.rtcode}]`);
@@ -143,6 +153,8 @@ const Join = memo(() => {
         e.preventDefault();
         setIsUsernameChanged(true);
     }, []);
+
+    /** TO DO: 이제 회원가입 처리 슬라이스로 넘기기.. 너모귀찮고 */
 
     return (
         <JoinCon>
