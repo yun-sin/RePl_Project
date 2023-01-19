@@ -11,6 +11,7 @@ import { getThemeData } from "../../slices/ThemeSlice";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
+import Spinner from "../../common/Spinner";
 
 const MapAddModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -121,6 +122,8 @@ const ThemeModal = memo(({ modalIsOpen, onRequestClose, onClick }) => {
 
   return (
     <div>
+      <Spinner loading={loading2} />
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}

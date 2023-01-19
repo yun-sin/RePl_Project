@@ -20,6 +20,13 @@ const MapAddModalContainer = styled.div`
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
 
+  .theme_title {
+    font-weight: 600;
+    margin-bottom: 30px;
+    letter-spacing: 1.5px;
+    color: #0581bb;
+  }
+
   .theme_list {
     display: flex;
     flex-wrap: wrap;
@@ -148,6 +155,7 @@ const ThemeModal2 = memo(({ modalIsOpen, onRequestClose, onClick, placeId, setTM
           },
         }}>
         <MapAddModalContainer>
+          <div className="theme_title">테마를 선택해주세요</div>
           <div className="theme_list">
             {data2?.map((v, i) => {
               if (!themeArr.includes(v.id))
