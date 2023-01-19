@@ -45,5 +45,25 @@ module.exports = (() => {
         res.sendResult({ item: json });
     });
 
+    /** 데이터 있는지 중복 여부 검사 */
+    router.get(`${url}/check/:fieldName/:value`, async (req, res, next) => {
+        const { fieldName, value } = req.params;
+        let result = {
+            fieldName: fieldName,
+            data: 0
+        };
+
+        try {
+            result.data = await LoginService.checkValue({
+                fieldName: fieldName,
+                value: value,
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
     return router;
 })();

@@ -18,6 +18,8 @@ import RecommendedPlaceSlice from './slices/bulletin/RecommendedPlaceSlice';
 
 import MapFinderSlice from "./slices/MapFinderSlice";
 
+/** 로그인, 마이페이지 */
+import LoginSlice from "./slices/login/LoginSlice";
 import InfoSlice from "./slices/InfoSlice";
 import MyPageSlice from "./slices/MyPageSlice";
 import InterestSlice from "./slices/InterestSlice";
@@ -46,7 +48,8 @@ const store = configureStore({
 
     MapFinderSlice: MapFinderSlice,
 
-    /** 마이페이지 */
+    /** 로그인, 마이페이지 */
+    LoginSlice: LoginSlice,
     InfoSlice: InfoSlice,
     MyPageSlice: MyPageSlice,
     InterestSlice: InterestSlice,
