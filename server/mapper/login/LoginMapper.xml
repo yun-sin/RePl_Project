@@ -23,4 +23,18 @@
             </if>
         </where>
     </select>
+
+    <!-- 단일 회원 정보 탐색 -->
+    <select id="selectItem">
+        SELECT id, userid, name, username, email, icon, introduction
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 로그인 처리 - 아이디 탐색 -->
+    <select id="findId">
+        SELECT id, userid, password
+        FROM user
+        WHERE userid = #{userid}
+    </select>
 </mapper>

@@ -1,9 +1,11 @@
 import React, { memo, useEffect, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import PageButton from '../../components/mypage/PageButton';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import regex from '../../helper/RegexHelper';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { addUser } from '../../slices/login/LoginSlice';
 
 const JoinCon = styled.div`
     display: flex;
@@ -74,6 +76,10 @@ const JoinCon = styled.div`
 `
 
 const Join = memo(() => {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector(state => state.LoginSlice);
 
     // 중복확인 됐는지, 확인 후 값 바뀌었는지 여부 확인용 state
     const [isIdChanged, setIsIdChanged] = useState(false);
@@ -155,12 +161,56 @@ const Join = memo(() => {
     }, []);
 
     /** TO DO: 이제 회원가입 처리 슬라이스로 넘기기.. 너모귀찮고 */
+    const onAddUserSubmit = useCallback(e => {
+        e.preventDefault();
+
+        if (isIdChanged) {
+            window.alert('아이디 검사를 수행하세요.');
+            return;
+        }
+        if (isUsernameChanged) {
+            window.alert('닉네임 검사를 수행하세요.');
+            return;
+        }
+
+        const target = e.currentTarget;
+        const email = target.email;
+        const password = target.userPw;
+        const passwordCheck = target.userPw2;
+
+        try {
+            regex.email(email, '이메일 형식이 올바르지 않습니다.');
+            regex.compareTo(password, passwordCheck, '비밀번호가 동일하지 않습니다.');
+        } catch (err) {
+            window.alert(err.message);
+            return;
+        }
+
+        const params = {
+            name: target.name.value,
+            userId: target.userId.value,
+            username: target.eName.value,
+            email: email.value,
+            password: password.value
+        }
+
+        dispatch(addUser(params)).then(() => {
+            if (data === null) return;
+            if (data?.item !== 200) {
+                window.alert('서버 오류! 회원가입에 실패했습니다.');
+                return;
+            }
+    
+            window.alert('회원가입에 성공했습니다. 로그인 페이지로 이동합니다.');
+            navigate('/login/repl');
+        });
+    }, [isIdChanged, isUsernameChanged]);
 
     return (
         <JoinCon>
             <h2>회원가입</h2>
             <div className='joinCon'>
-                <form action="" id='joinForm'>
+                <form id='joinForm' onSubmit={onAddUserSubmit}>
                     <label htmlFor='name'>이름</label>
                     <input type="text" name='name' id='name' placeholder='이름을 입력하세요' required />
 

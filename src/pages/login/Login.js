@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import PageButton from '../../components/mypage/PageButton';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import RegexHelper from '../../helper/RegexHelper';
+import { useSelector, useDispatch } from 'react-redux';
+import { makeLogin } from '../../slices/login/LoginSlice';
+import cookieHelper from '../../helper/CookieHelper';
 
 const EmailLoginCon = styled.div`
     display: flex;
@@ -57,15 +60,49 @@ const EmailLoginCon = styled.div`
 `
 
 const Login = memo(() => {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector(state => state.LoginSlice);
+
+    const onLoginSubmit = useCallback(e => {
+        e.preventDefault();
+
+        const target = e.currentTarget;
+
+        console.log(target.emailId.value, target.emailPwd.value);
+        const params = {
+            userId: target.emailId.value,
+            userPw: target.emailPwd.value
+        }
+
+        dispatch(makeLogin(params)).then(({ payload, error }) => {
+            if (error) {
+                window.alert(payload.data.rtmsg);
+                return;
+            }
+
+            cookieHelper.setCookie('loginInfo', JSON.stringify(payload.item), {
+                'max-age': 60 * 60 * 24,
+
+            });
+            navigate('/');
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log(data);
+    }, data);
+
     return (
         <EmailLoginCon>
             <h2>리플 로그인하기</h2>
             <div className='loginCon'>
-                <form action="">
+                <form onSubmit={onLoginSubmit}>
                     <label htmlFor='emailId'>아이디</label>
-                    <input type="text" name='emailId' id='emailId' placeholder='아이디를 입력하세요'/>
+                    <input type="text" name='emailId' id='emailId' placeholder='아이디를 입력하세요' required />
                     <label htmlFor='emailPwd'>비밀번호</label>
-                    <input type="text" name='emailPwd' id='emailPwd' placeholder='비밀번호를 입력하세요'/>
+                    <input type="password" name='emailPwd' id='emailPwd' placeholder='비밀번호를 입력하세요' required />
                     <PageButton type='submit' className='loginButton' width='180px' height='50px' color='#0584BB'>로그인</PageButton>
                 </form>
                 <div className='link'>
