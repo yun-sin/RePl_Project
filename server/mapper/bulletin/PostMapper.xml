@@ -67,7 +67,7 @@
 
     <!-- 게시자의 다른 게시글 데이터 조회 -->
     <select id="selectOtherPosts">
-        SELECT title, substring(content, 1, 100) AS content, bgimage, bgcolor
+        SELECT id, title, substring(content, 1, 100) AS content, bgimage, bgcolor
         FROM bulletin
         WHERE user_id = #{id}
     </select>

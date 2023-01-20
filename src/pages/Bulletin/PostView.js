@@ -283,7 +283,7 @@ const NewPost = memo(props => {
         }
     }, [data]);
 
-    /** 작성자의 다른 게시글 영역 */
+    /** 작성자의 다른 게시글 영역 좌우 스크롤 관련*/
     // 현재 스크롤 위치 저장
     const [scrollPosition, setScrollPosition] = useState(0);
     const [maxScroll, setMaxScroll] = useState(0);
@@ -321,6 +321,8 @@ const NewPost = memo(props => {
             current.removeAttribute('disabled');
         }, 500);
     }, []);
+
+    console.log(scrollPosition, maxScroll);
 
     return (
         <>  
@@ -416,10 +418,15 @@ const NewPost = memo(props => {
                                                 <div className='other_posts__wrap'>
                                                     {
                                                         otherPosts && otherPosts.map((v, i) => {
+                                                            if (postId == v.id) return <></>;
                                                             return (
-                                                                <OtherPost key={i} imgSrc={v.bgimage}
-                                                                bgColor={v.bgColor}
-                                                                title={v.title} preview={v.content} />
+                                                                <OtherPost
+                                                                    key={i}
+                                                                    id={v.id}
+                                                                    imgSrc={v.bgimage}
+                                                                    bgColor={v.bgColor}
+                                                                    title={v.title} preview={v.content}
+                                                                />
                                                             )
                                                         })
                                                     }

@@ -15,7 +15,6 @@ class RegexHelper {
         return RegexHelper.#current;
     }
 
-
     /**
      * 값의 존재 여부를 검사한다.
      * @param {HTMLElement} field 검사할 대상에 대한 <INPUT>요소의 DOM 객체
@@ -26,11 +25,11 @@ class RegexHelper {
     value(field, msg) {
         const content = field.value;
         if(content == undefined || content == null ||
-            (typeof content == 'string' && content.trim().length === 0)) {
-                throw new BadRequestException(msg);
-            }
+        (typeof content == 'string' && content.trim().length === 0)) {
+            throw new BadRequestException(msg);
+        }
 
-            return true;
+        return true;
     }
 
     /**
@@ -40,7 +39,7 @@ class RegexHelper {
      * @param {string} msg     값이 없을 경우 표시될 메세지
      */
     maxLength(field, len, msg) {
-        this.value(field,msg);
+        this.value(field, msg);
 
         const content = field.value;
 
@@ -57,10 +56,11 @@ class RegexHelper {
      * @param {int} len        최소 글자수
      * @param {string} msg     값이 없을 경우 표시될 메세지
      */
-    mixLength(field, len, msg) {
-        this.value(field,msg);
+    minLength(field, len, msg) {
+        this.value(field, msg);
 
         const content = field.value;
+        console.log(content);
 
         if (content.trim().length < len) {
             throw new BadRequestException(msg, field);
@@ -121,7 +121,7 @@ class RegexHelper {
      * @param {NodeList} field    검사할 CheckBox에 대한 컬랙션
      * @param {string} msg   검사에 실패할 경우 표시할 메시지
      */
-      checkMax(field, len, msg) {
+    checkMax(field, len, msg) {
         const checkedItem = Array.from(field).filter((v, i) => v.checked);
 
         if (checkedItem.length > len) {
@@ -239,4 +239,4 @@ class RegexHelper {
     }
 }
 
-export default RegexHelper;
+export default RegexHelper.getInstance();
