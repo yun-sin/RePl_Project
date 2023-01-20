@@ -124,7 +124,7 @@ const Map = memo(() => {
         return newData;
       });
     }
-  }, [data, centerCoord, theme, TPList]);
+  }, [data, centerCoord, theme]);
 
   /**
    * 데이터가 바뀔때 마다 마커와 목록을 출력
@@ -315,7 +315,7 @@ const Map = memo(() => {
       Array.from(data3)?.forEach((v, i) => {
         obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
       });
-      console.log(obj);
+      // console.log(obj);
 
       setTPList(obj);
     }
@@ -387,7 +387,7 @@ const Map = memo(() => {
             });
           }
 
-          if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClick={() => setModalIsOpen(false)} data={v} theme={themeList} />;
+          if (v.id == modalContent) return <LocModal key={i} isModalOpen={modalIsOpen} closeModal={() => setModalIsOpen(false)} data={v} />;
         })}
       </ListContainer>
     </MapContainer>

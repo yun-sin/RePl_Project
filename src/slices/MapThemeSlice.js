@@ -1,6 +1,7 @@
 /**
  * theme_place 데이터 슬라이스 - 장윤신
  */
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { pending, fulfilled, rejected } from "../helper/ReduxHelper";
@@ -37,7 +38,7 @@ export const getUserTP = createAsyncThunk("MapThemeSlice/getUserTP", async (payl
 export const postTP = createAsyncThunk("MapThemeSlice/postTP", async (payload, { rejectWithValue }) => {
   let result = null;
   const URL = "/theme_place";
-  const user_id = 2;
+  const user_id = 2; // 임시 유저 아이디 (로그인 정보에서 불러오는 것으로 수정 예정)
 
   try {
     const response = await axios.post(URL, {
