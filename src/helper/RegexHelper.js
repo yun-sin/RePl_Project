@@ -239,4 +239,4 @@ class RegexHelper {
     }
 }
 
-export default RegexHelper.getInstance();
+export default RegexHelper;
