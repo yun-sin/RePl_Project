@@ -82,13 +82,17 @@ const Login = memo(() => {
                 return;
             }
 
-            cookieHelper.setCookie('loginInfo', JSON.stringify(payload.item[0]), {
+            cookieHelper.setCookie('loginInfo', JSON.stringify(payload.item), {
                 'max-age': 60 * 60 * 24,
-                
+
             });
             navigate('/');
         });
     }, []);
+
+    useEffect(() => {
+        console.log(data);
+    }, data);
 
     return (
         <EmailLoginCon>

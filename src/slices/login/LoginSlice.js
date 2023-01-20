@@ -55,10 +55,14 @@ const LoginSlice = createSlice({
         data: null,
         pagenation: null,
         loading: false,
-        error: null
+        error: null,
     },
     reducers: {
         getCurrentUser: (state, action) => {
+            return state;
+        },
+        setLoginInfo: (state, action) => {
+            state.data = action.payload;
             return state;
         }
     },
@@ -77,6 +81,6 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { getCurrentUser } = LoginSlice.actions;
+export const { getCurrentUser, setLoginInfo } = LoginSlice.actions;
 
 export default LoginSlice.reducer;

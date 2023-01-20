@@ -101,7 +101,7 @@ class LoginService {
             });
             [result] = await dbcon.query(sql);
 
-            data = result;
+            [data] = result;
         } catch (err) {
             throw err;
         } finally {

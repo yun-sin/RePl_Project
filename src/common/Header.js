@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNavActive } from "../slices/NavbarSlice";
 import { NavLink } from "react-router-dom";
@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "../components/login/LoginModal";
+
+import { setLoginInfo } from '../slices/login/LoginSlice';
+import cookieHelper from "../helper/CookieHelper";
 
 const HeaderContainer = styled.div`
   height: 50px;
@@ -151,18 +154,30 @@ const SidebarContainer = styled.div`
   hr {
     color: #ccc;
     border-width: 0.3px 0 0 0;
-
   }
 `;
 
 const Header = memo(() => {
+  const dispatch = useDispatch();
+
+  const { data: loginInfo } = useSelector(state => state.LoginSlice);
+
+  useEffect(() => {
+    console.group('------------------------------------------------');
+    console.log(loginInfo);
+    const value = cookieHelper.getCookie('loginInfo');
+    console.log(value);
+    console.groupEnd();
+    if (loginInfo === null && value) {
+      dispatch(setLoginInfo(JSON.parse(value)));
+    }
+  }, [loginInfo]);
+
   const SidebarCon = useRef();
   const [sideActive, SetSideActive] = useState(false);
 
   //로그인 모달 상태관리
   const [LMDIsOpen, setLMDIsOpen] = useState(false);
-
-  const dispatch = useDispatch();
 
   const { navActive } = useSelector((state) => state.SidebarSlice);
 
@@ -196,9 +211,19 @@ const Header = memo(() => {
         <NavLink to="/">리플</NavLink>
       </div>
       <div className="navbarMenu">
-        <a onClick={handleLoginModal}>로그인</a>
+        {
+          !loginInfo ? (
+            <a onClick={handleLoginModal}>
+              로그인
+            </a>
+          ) : (
+            <a>
+              { loginInfo.username }님
+            </a>
+          )
+        }
         <a
-          onClick={onSidebarClick}
+          onClick={onSidebarClick} for an anchor to be keyboard a
           className={`Sidebar ${sideActive ? "active" : ""}`}
         >
           <FontAwesomeIcon icon={faBars} className="hamburger" />
