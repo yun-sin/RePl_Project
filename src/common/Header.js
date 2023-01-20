@@ -1,14 +1,13 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNavActive } from "../slices/NavbarSlice";
+import { getCurrentUser, makeLogout } from '../slices/login/LoginSlice';
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "../components/login/LoginModal";
-
-import { setLoginInfo } from '../slices/login/LoginSlice';
 import cookieHelper from "../helper/CookieHelper";
 
 const HeaderContainer = styled.div`
@@ -160,18 +159,25 @@ const SidebarContainer = styled.div`
 const Header = memo(() => {
   const dispatch = useDispatch();
 
-  const { data: loginInfo } = useSelector(state => state.LoginSlice);
+  const [loginInfo, setLoginInfo] = useState(null);
+
+  const { data, loading } = useSelector(state => state.LoginSlice);
 
   useEffect(() => {
-    console.group('------------------------------------------------');
-    console.log(loginInfo);
-    const value = cookieHelper.getCookie('loginInfo');
-    console.log(value);
-    console.groupEnd();
-    if (loginInfo === null && value) {
-      dispatch(setLoginInfo(JSON.parse(value)));
-    }
-  }, [loginInfo]);
+    if (data?.item) setLoginInfo(data.item);
+    else setLoginInfo(null);
+  }, [data]);
+  useEffect(() => {
+    let value = cookieHelper.getCookie('loginInfo');
+    if (value) setLoginInfo(JSON.parse(value));
+  }, []);
+  
+  const onLogout = useCallback(e => {
+    e.preventDefault();
+
+    cookieHelper.deleteCookie('loginInfo');
+    dispatch(makeLogout());
+  }, []);
 
   const SidebarCon = useRef();
   const [sideActive, SetSideActive] = useState(false);
@@ -200,6 +206,7 @@ const Header = memo(() => {
     e.preventDefault();
     setLMDIsOpen(true);
   });
+
   return (
     <HeaderContainer>
       <div
@@ -212,14 +219,14 @@ const Header = memo(() => {
       </div>
       <div className="navbarMenu">
         {
-          !loginInfo ? (
-            <a onClick={handleLoginModal}>
-              로그인
-            </a>
+          loading ? (
+            <></>
           ) : (
-            <a>
-              { loginInfo.username }님
-            </a>
+            loginInfo ? (
+              <a>{ loginInfo.username }님</a>
+            ) : (
+              <a onClick={handleLoginModal}>로그인</a>
+            )
           )
         }
         <a
@@ -241,7 +248,7 @@ const Header = memo(() => {
         <NavLink to="/map_finder">🗺 지도찾기</NavLink>
         <hr />
         <NavLink to="/mypage">🧒 마이페이지</NavLink>
-        <NavLink to="!#">👋 로그아웃</NavLink>
+        <NavLink to="!#" onClick={onLogout}>👋 로그아웃</NavLink>
         <NavLink to="/bulletin">📌 게시판</NavLink>
         <NavLink to="/raffle">🎉 경품페이지</NavLink>
         <NavLink to="!#">💬 의견 및 오류제보</NavLink>

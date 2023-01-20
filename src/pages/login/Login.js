@@ -84,16 +84,11 @@ const Login = memo(() => {
 
             cookieHelper.setCookie('loginInfo', JSON.stringify(payload.item), {
                 'max-age': 60 * 60 * 24,
-
             });
             navigate('/');
         });
     }, []);
-
-    useEffect(() => {
-        console.log(data);
-    }, data);
-
+    
     return (
         <EmailLoginCon>
             <h2>리플 로그인하기</h2>

@@ -61,10 +61,14 @@ const LoginSlice = createSlice({
         getCurrentUser: (state, action) => {
             return state;
         },
-        setLoginInfo: (state, action) => {
-            state.data = action.payload;
-            return state;
-        }
+        makeLogout: (state, action) => {
+            return {
+                data: 'logouted',
+                pagenation: null,
+                loading: false,
+                error: null
+            }
+        },
     },
     extraReducers: {
         [addUser.pending]: pending,
@@ -81,6 +85,6 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { getCurrentUser, setLoginInfo } = LoginSlice.actions;
+export const { getCurrentUser, makeLogout } = LoginSlice.actions;
 
 export default LoginSlice.reducer;
