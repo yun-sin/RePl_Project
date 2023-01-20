@@ -121,7 +121,7 @@ class RegexHelper {
      * @param {NodeList} field    검사할 CheckBox에 대한 컬랙션
      * @param {string} msg   검사에 실패할 경우 표시할 메시지
      */
-      checkMax(field, len, msg) {
+    checkMax(field, len, msg) {
         const checkedItem = Array.from(field).filter((v, i) => v.checked);
 
         if (checkedItem.length > len) {
