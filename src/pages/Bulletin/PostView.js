@@ -296,7 +296,7 @@ const NewPost = memo(props => {
         if (!data) return;
         const target = document.querySelector('.other_posts__wrap');
         setMaxScroll(target.scrollWidth);
-    }, [data]);
+    }, [otherPosts]);
 
     // 좌 우 클릭
     const onToRightClick = useCallback(e => {
@@ -322,7 +322,17 @@ const NewPost = memo(props => {
         }, 500);
     }, []);
 
-    console.log(scrollPosition, maxScroll);
+    // TO DO: 여기 팔로우 관련 처리,,,
+    // (1) 처음엔 이 게시물 주인이 내가 팔로우하는 사람인지 봐야하고
+    // (2) 두 번째론 팔로우 버튼 눌렀을 시 처리 해야함.
+    // --> 그러면 state가 아니라 그냥 slice로 처리하는게 나을지도.
+    // --> 그럼 이 한 페이지에 슬라이스만 5개 ㅋㅋ 하아
+    const [isFollowed, setIsFollowed] = useState(false);
+    const onFollowClick = useCallback(e => {
+        e.preventDefault();
+
+        
+    }, []);
 
     return (
         <>  
@@ -400,8 +410,8 @@ const NewPost = memo(props => {
                                     <h2>{data.username}</h2>
                                 </div>
                                 <div>
-                                    <p>구독자<span>{data.follower}</span></p>
-                                    <button>구독하기</button>
+                                    <p>팔로워<span>{data.follower}</span></p>
+                                    <button onClick={onFollowClick}>필로우</button>
                                 </div>
                             </PublisherDiv>
                                 

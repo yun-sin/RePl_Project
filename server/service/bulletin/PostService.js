@@ -127,6 +127,31 @@ class PostService {
         return data;
     }
 
+    /** 게시자 팔로우 처리 */
+    async addFollow(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('PostMapper', 'insertFollow', params);
+            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows.length === 0) {
+                throw new RuntimeException('팔로우 처리에 실패했습니다.');
+            }
+            
+            
+        } catch (err) {
+            throw err
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
     /** 게시글의 댓글 데이터 조회 */
     async getComments(params) {
         let dbcon = null;
