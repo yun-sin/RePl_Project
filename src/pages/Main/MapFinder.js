@@ -20,6 +20,7 @@ const MapFinderContaier = styled.div`
   /* overflow-x:hidden; overflow-y:scroll; */
 
 
+
   .shadow {
     &.active {
       position: fixed;
