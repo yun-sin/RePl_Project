@@ -7,6 +7,7 @@ import Main from "./pages/Main";
 import Map from "./pages/map/Map";
 import MapAdd from "./pages/map/MapAdd";
 import MapCurator from "./pages/map/MapCurator";
+import MapBookmark from "./pages/map/MapBookmark";
 
 import MyPage from "./pages/mypage/MyPage";
 import Login from "./pages/login/Login";
@@ -36,6 +37,7 @@ const App = memo(() => {
         <Route path="/map" element={<Map />} />
         <Route path="/map/add" element={<MapAdd />} />
         <Route path="/map/curator/:id" element={<MapCurator />} />
+        <Route path="/map/bookmark/:id" element={<MapBookmark />} />
 
         {/* 마이페이지, 로그인 Routes */}
         <Route path="/mypage/*" element={<MyPage />} />

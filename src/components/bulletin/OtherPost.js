@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Post = styled.div`
@@ -41,8 +42,16 @@ const Post = styled.div`
 `
 
 const OtherPost = memo(props => {
+    const navigate = useNavigate();
+
+    const onOtherPostClick = useCallback(e => {
+        e.preventDefault();
+
+        navigate(`${process.env.REACT_APP_BULLETIN_PATH}/postview/${props.id}`);
+    }, []);
+
     return (
-        <Post>
+        <Post onClick={onOtherPostClick}>
             {
                 props.bgImage ? (
                     <img src={props.imgSrc} alt="미리보기 사진" />

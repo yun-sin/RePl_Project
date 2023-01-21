@@ -125,33 +125,9 @@
   "theme_place": [
     {
       "place_id": 1344772608,
-      "theme_id": 1,
-      "user_id": 2,
-      "id": 1
-    },
-    {
-      "place_id": 1344772608,
-      "theme_id": 6,
-      "user_id": 2,
-      "id": 2
-    },
-    {
-      "place_id": 1344772608,
-      "theme_id": 2,
-      "user_id": 2,
-      "id": 3
-    },
-    {
-      "place_id": 1344772608,
       "theme_id": 0,
       "user_id": 2,
       "id": 4
-    },
-    {
-      "place_id": 1344772608,
-      "theme_id": 5,
-      "user_id": 2,
-      "id": 5
     },
     {
       "place_id": 11378324,
@@ -340,12 +316,6 @@
       "id": 36
     },
     {
-      "place_id": 1344772608,
-      "theme_id": 8,
-      "user_id": 2,
-      "id": 37
-    },
-    {
       "place_id": 1149707328,
       "theme_id": 5,
       "user_id": 2,
@@ -398,6 +368,24 @@
       "theme_id": 6,
       "user_id": 2,
       "id": 46
+    },
+    {
+      "place_id": 1344772608,
+      "theme_id": 4,
+      "user_id": 2,
+      "id": 47
+    },
+    {
+      "place_id": 11378324,
+      "theme_id": 3,
+      "user_id": 2,
+      "id": 48
+    },
+    {
+      "place_id": 1344772608,
+      "theme_id": 7,
+      "user_id": 2,
+      "id": 50
     }
   ],
   "theme": [
@@ -469,6 +457,23 @@
       "icon": "😆",
       "text": "테스트테스트",
       "id": 11
+    }
+  ],
+  "bookmark": [
+    {
+      "place_id": 1344772608,
+      "user_id": 2,
+      "id": 3
+    },
+    {
+      "place_id": 10921559,
+      "user_id": 2,
+      "id": 5
+    },
+    {
+      "place_id": 21160720,
+      "user_id": 2,
+      "id": 6
     }
   ],
   "editorTest": [
