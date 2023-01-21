@@ -65,7 +65,7 @@ const PlaceList = memo(() => {
 
   const { data: data } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
-  const { data: data3} = useSelector((state) => state.MapThemeSlice);
+  const { data: data3 } = useSelector((state) => state.MapThemeSlice);
 
   const dispatch = useDispatch();
 
@@ -76,9 +76,9 @@ const PlaceList = memo(() => {
   }, []);
 
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
-  const randomData  = useMemo(() => {
+  const randomData = useMemo(() => {
     return data && [...data]?.sort(() => Math.random() - 0.5);
-  },[data])
+  }, [data]);
 
   // 모달창 이벤트
   const onModalIsOpen = useCallback((e) => {
@@ -90,16 +90,16 @@ const PlaceList = memo(() => {
 
   useEffect(() => {
     if (isModalOpen) {
-        document.body.style.cssText = `
+      document.body.style.cssText = `
             position: fixed; 
             top: -${window.scrollY}px;
             overflow-y: scroll;
             width: 100%;
         `;
     } else {
-        const scrollY = document.body.style.top;
-        document.body.style.cssText = '';
-        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     }
   }, [isModalOpen]);
 
@@ -115,10 +115,15 @@ const PlaceList = memo(() => {
                     <div className="place_name">{place_name}</div>
                     <div className="address">{address_name}</div>
                     <div className="theme" key={i}>
-                        {(data3?.filter((item) => item.place_id === id))?.map((v, i) => v.theme_id).map((v2, i2) => {
+                      {data3
+                        ?.filter((item) => item.place_id === id)
+                        ?.map((v, i) => v.theme_id)
+                        .map((v2, i2) => {
                           return (
-                            <div key={i2}>{data2 && data2[v2].icon} {data2 && data2[v2].text}</div>
-                          )
+                            <div key={i2}>
+                              {data2 && data2[v2].icon} {data2 && data2[v2].text}
+                            </div>
+                          );
                         })}
                     </div>
                   </div>
@@ -127,7 +132,7 @@ const PlaceList = memo(() => {
             })
             ?.slice(0, 4)}
       </ul>
-      
+
       {data?.map((v, i) => {
         let themeList = [];
         if (ThemeData) {
@@ -137,16 +142,7 @@ const PlaceList = memo(() => {
         }
 
         if (v.id == modalContent) {
-          return (
-            <LocModal
-              key={i}
-              isModalOpen={isModalOpen}
-              closeModal={() => setIsModalOpen(false)}
-              data={v}
-              theme={themeList}
-              style={{content: { width: "300px"}}}
-            />
-          )
+          return <LocModal key={i} isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} data={v} theme={themeList} style={{ content: { width: "300px" } }} />;
         }
       })}
     </ListContainer>

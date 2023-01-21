@@ -4,8 +4,8 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark as faBookmark2 } from "@fortawesome/free-regular-svg-icons";
+import { faX, faBookmark } from "@fortawesome/free-solid-svg-icons"; // 속이 찬 북마크
+import { faBookmark as faBookmark2 } from "@fortawesome/free-regular-svg-icons"; // 속이 빈 북마크
 
 import iconPlus from "../assets/img/map/icon-plus-grey-sm.svg";
 
@@ -15,6 +15,7 @@ import ThemeModal2 from "../components/map/ThemeModal2";
 
 import { getThemeData } from "../slices/ThemeSlice";
 import { getTP } from "../slices/MapThemeSlice";
+import { getBookmarkItem, postBookmark, delBookmark } from "../slices/BookmarkSlice";
 
 import a1 from "../assets/img/map/emoji-1-a.png";
 import a2 from "../assets/img/map/emoji-2-a.png";
@@ -422,18 +423,23 @@ const testData = [
   },
 ];
 
-const LocModal = memo(({ isModalOpen, closeModal, data }) => {
+// delCount, setDelCount 내 북마크 페이지에서 삭제될때마다 재렌더링을 위한 state (자식에서 부모로 전달하기 위해 props로 set까지 전달) - 장윤신
+const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount }) => {
   const dispatch = useDispatch();
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
+  const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
 
   const [TModal, setTModal] = useState(false);
   const [ThemeData, setThemeData] = useState();
   const [TPList, setTPList] = useState({});
   const [themeList, setThemeList] = useState([]);
+  const [BookmarkId, setBookmarkId] = useState();
+  const [BookmarkBtn, setBookmarkBtn] = useState(false);
 
   const onThemeModalOpen = useCallback((e) => {
     setTModal(true);
+    console.log("테마추가 모달 오픈");
   });
 
   useEffect(() => {
@@ -441,17 +447,65 @@ const LocModal = memo(({ isModalOpen, closeModal, data }) => {
     dispatch(getThemeData()).then((e) => {
       setThemeData(e.payload);
     });
+
     // theme_place 데이터
     dispatch(getTP()).then((e) => {
       let obj = {};
       Array.from(e.payload)?.forEach((v, i) => {
         obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
       });
-      console.log(obj);
+      // console.log(obj);
 
       setTPList(obj);
     });
+
+    return () => {
+      console.log("모달창 닫음");
+    };
   }, []);
+
+  useEffect(() => {
+    if (data4) {
+      console.log(data4[0]?.id);
+      setBookmarkId(data4[0]?.id);
+      if (data4[0]?.id) {
+        setBookmarkBtn(true);
+      }
+    }
+  }, [data4]);
+
+  /** 북마크 useEffect - 장윤신 */
+  useEffect(() => {
+    if (isModalOpen) {
+      setBookmarkBtn(false);
+    }
+
+    // bookmark 여부 데이터
+    dispatch(getBookmarkItem({ user_id: 2, place_id: data.id })).then((e) => {
+      console.log(e.payload);
+      if (e.payload.length != 0) {
+        setBookmarkId(e.payload[0]?.id);
+        setBookmarkBtn(true);
+      }
+    });
+
+    if (!isModalOpen) {
+      console.log("BookmarkId: " + BookmarkId);
+      console.log("BookmarkBtn: " + BookmarkBtn);
+
+      if (!BookmarkId && BookmarkBtn) {
+        console.log("북마크 등록");
+        dispatch(postBookmark({ place_id: data.id }));
+      }
+
+      if (BookmarkId && !BookmarkBtn) {
+        console.log("북마크 삭제");
+        dispatch(delBookmark({ index: BookmarkId }));
+        setBookmarkId(null);
+        setDelCount(delCount + 1);
+      }
+    }
+  }, [isModalOpen]);
 
   useEffect(() => {
     if (data && data2 && data3) {
@@ -468,7 +522,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data }) => {
       Array.from(data3)?.forEach((v, i) => {
         obj[v.place_id] ? obj[v.place_id].push(v.theme_id) : (obj[v.place_id] = [v.theme_id]);
       });
-      console.log(obj);
+      // console.log(obj);
 
       setTPList(obj);
     }
@@ -509,6 +563,18 @@ const LocModal = memo(({ isModalOpen, closeModal, data }) => {
   const onCommentSubmit = useCallback((e) => {
     e.preventDefault();
   }, []);
+
+  /** 북마크 클릭 이벤트 - 장윤신 */
+  const onPostBookmarkClick = useCallback((e) => {
+    console.log("hi");
+    setBookmarkBtn(true);
+  });
+
+  const ondelBookmarkClick = useCallback((e) => {
+    console.log("bye");
+    console.log(BookmarkId);
+    setBookmarkBtn(false);
+  });
 
   return (
     <Modal
@@ -648,12 +714,20 @@ const LocModal = memo(({ isModalOpen, closeModal, data }) => {
             카카오맵으로 자세히 보기
           </a>
           {/* faBookmark : 북마크 눌렀을때 , faBookmark2: 북마크 누르지 않았을 때 (속이 빈 아이콘) */}
-          <button className="scrap">{false ? <FontAwesomeIcon icon={faBookmark} /> : <FontAwesomeIcon icon={faBookmark2} />}</button>
+          {BookmarkBtn ? (
+            <button className="scrap" onClick={ondelBookmarkClick}>
+              <FontAwesomeIcon icon={faBookmark} />
+            </button>
+          ) : (
+            <button className="scrap" onClick={onPostBookmarkClick}>
+              <FontAwesomeIcon icon={faBookmark2} />
+            </button>
+          )}
         </div>
       </LocModalContainer>
 
       {/* 테마 선택 모달창 */}
-      <ThemeModal2 isModalOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} placeId={data?.id} setTModal={setTModal} themeList={themeList} />
+      <ThemeModal2 modalIsOpen={TModal} onRequestClose={() => setTModal(false)} onClick={() => setTModal(false)} placeId={data?.id} setTModal={setTModal} themeList={themeList} />
     </Modal>
   );
 });

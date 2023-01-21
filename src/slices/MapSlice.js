@@ -1,6 +1,7 @@
 /**
  * place 데이터 슬라이스 - 장윤신
  */
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { pending, fulfilled, rejected } from "../helper/ReduxHelper";
@@ -12,6 +13,22 @@ export const getMapData = createAsyncThunk("MapSlice/getMapData", async (payload
 
   try {
     const response = await axios.get("/map");
+    result = response.data;
+  } catch (err) {
+    result = rejectWithValue(err.response);
+  }
+
+  return result;
+});
+
+/** 특정 장소 데이터를 불러오는 비동기 함수 */
+export const getMapItem = createAsyncThunk("MapSlice/getMapItem", async (payload, { rejectWithValue }) => {
+  const URL = "/map/" + payload.id;
+
+  let result = null;
+
+  try {
+    const response = await axios.get(URL);
     result = response.data;
   } catch (err) {
     result = rejectWithValue(err.response);
@@ -74,6 +91,11 @@ const MapSlice = createSlice({
     [getMapData.pending]: pending,
     [getMapData.fulfilled]: fulfilled,
     [getMapData.rejected]: rejected,
+
+    /** 특정 장소 데이터를 불러오는 액션 함수 */
+    [getMapItem.pending]: pending,
+    [getMapItem.fulfilled]: fulfilled,
+    [getMapItem.rejected]: rejected,
 
     /** 장소 저장을 위한 액션 함수 */
     [postLoc.pending]: pending,

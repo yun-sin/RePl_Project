@@ -132,10 +132,10 @@ const MapCurator = memo(() => {
 작성하신 의견은 장소 상세페이지에서 삭제해야 합니다.`)
     ) {
       console.log("삭제 진행" + "place_id: " + place_id + ", theme_id: " + theme_id);
-      document.querySelector(".loc" + e.currentTarget.dataset.element).classList.add("animate__flipOutX");
+      // document.querySelector(".loc" + e.currentTarget.dataset.element).classList.add("animate__flipOutX");
 
       try {
-        await wait(500);
+        // await wait(500);
         await dispatch(deleteTP({ index: index }));
         await setDelCount(delCount + 1);
       } catch (err) {
@@ -205,7 +205,7 @@ const MapCurator = memo(() => {
           });
         }
 
-        if (v.id == modalContent) return <LocModal key={i} modalIsOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClick={() => setModalIsOpen(false)} data={v} theme={themeList} />;
+        if (v.id == modalContent) return <LocModal key={i} isModalOpen={modalIsOpen} closeModal={() => setModalIsOpen(false)} data={v} />;
       })}
     </div>
   );
