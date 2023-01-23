@@ -127,13 +127,14 @@ const PostCard = styled.div`
     }
 `
 
-const Post = memo(props => {
-    const [isHover, setIsHover] = useState(false);
-    
+const Post = memo(props => {    
     const navigate = useNavigate();
+
+    const [isHover, setIsHover] = useState(false);
+
     const onLinkClick = useCallback(e => {
         navigate(`/bulletin/postview/${props.targetId}`);
-    }, []);
+    }, [props]);
 
     useEffect(() => {
         const targets = document.querySelectorAll('.post__hashtags');

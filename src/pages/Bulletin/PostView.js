@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import Comments from '../../components/bulletin/Comments';
 import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import Spinner from '../../common/Spinner';
+import cookieHelper from '../../helper/CookieHelper';
 
 import { getPost } from '../../slices/bulletin/PostViewSlice';
 import { getOtherPosts } from '../../slices/bulletin/OtherPostSlice';
@@ -190,6 +192,10 @@ const PublisherDiv = styled.div`
             cursor: pointer;
             background-color: #eee;
         }
+
+        &.unfollow {
+            color: tomato;
+        }
     }
 `;
 
@@ -255,6 +261,8 @@ const OtherPostsArea = styled.div`
 `;
 
 const NewPost = memo(props => {
+    const navigate = useNavigate();
+
     /** 게시글 데이터 불러오기 */
     const dispatch = useDispatch();
     // 게시글 본문 및 작성자 데이터
@@ -268,6 +276,9 @@ const NewPost = memo(props => {
 
     // 패스파라미터 변수
     const postId = useParams().id;
+
+    // 팔로우 여부
+    const [isFollowed, setIsFollowed] = useState(false);
 
     // 해당 패스 게시글 불러오기
     useEffect(() => {
@@ -283,6 +294,44 @@ const NewPost = memo(props => {
         }
     }, [data]);
 
+    // 로그인 여부에 따라 팔로우 정보 처리
+    useEffect(() => {
+        const loginInfo = cookieHelper.getCookie('loginInfo');
+
+        if (data && loginInfo) {
+            setIsFollowed(data.follower.findIndex(v => {
+                return v === JSON.parse(loginInfo).id;
+            }) > -1);
+        }
+    }, [data]);
+
+    // 팔로우/언팔로우 클릭시 이벤트
+    const onFollowClick = useCallback(e => {
+        e.preventDefault();
+
+        let loginInfo = cookieHelper.getCookie('loginInfo');
+        if (!loginInfo) {
+            if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                navigate('/login/repl');
+                return;
+            } else {
+                return;
+            }
+        }
+
+        loginInfo = JSON.parse(loginInfo);
+        if (data.userId === loginInfo.id) return;
+
+        const params = {};
+        params.follow_from = loginInfo.id;
+        params.follow_to = data.userId;
+
+        if (isFollowed) axios.post(`${process.env.REACT_APP_BULLETIN_PATH}/unfollow`, params);
+        else axios.post(`${process.env.REACT_APP_BULLETIN_PATH}/follow`, params);
+
+        setIsFollowed(state => !state);
+    }, [data, isFollowed]);
+
     /** 작성자의 다른 게시글 영역 좌우 스크롤 관련*/
     // 현재 스크롤 위치 저장
     const [scrollPosition, setScrollPosition] = useState(0);
@@ -293,9 +342,9 @@ const NewPost = memo(props => {
 
     // 최대 길이 적재
     useEffect(() => {
-        if (!data) return;
+        if (!otherPosts) return;
         const target = document.querySelector('.other_posts__wrap');
-        setMaxScroll(target.scrollWidth);
+        setMaxScroll(target?.scrollWidth);
     }, [otherPosts]);
 
     // 좌 우 클릭
@@ -320,18 +369,6 @@ const NewPost = memo(props => {
         setTimeout(() => {
             current.removeAttribute('disabled');
         }, 500);
-    }, []);
-
-    // TO DO: 여기 팔로우 관련 처리,,,
-    // (1) 처음엔 이 게시물 주인이 내가 팔로우하는 사람인지 봐야하고
-    // (2) 두 번째론 팔로우 버튼 눌렀을 시 처리 해야함.
-    // --> 그러면 state가 아니라 그냥 slice로 처리하는게 나을지도.
-    // --> 그럼 이 한 페이지에 슬라이스만 5개 ㅋㅋ 하아
-    const [isFollowed, setIsFollowed] = useState(false);
-    const onFollowClick = useCallback(e => {
-        e.preventDefault();
-
-        
     }, []);
 
     return (
@@ -410,8 +447,14 @@ const NewPost = memo(props => {
                                     <h2>{data.username}</h2>
                                 </div>
                                 <div>
-                                    <p>팔로워<span>{data.follower}</span></p>
-                                    <button onClick={onFollowClick}>필로우</button>
+                                    <p>팔로워<span>{data.follower.length}</span></p>
+                                    {
+                                        isFollowed ? (
+                                            <button className='unfollow' onClick={onFollowClick}>언필로우</button>
+                                        ) : (
+                                            <button className='follow' onClick={onFollowClick}>필로우</button>
+                                        )
+                                    }
                                 </div>
                             </PublisherDiv>
                                 
@@ -428,7 +471,7 @@ const NewPost = memo(props => {
                                                 <div className='other_posts__wrap'>
                                                     {
                                                         otherPosts && otherPosts.map((v, i) => {
-                                                            if (postId == v.id) return <></>;
+                                                            if (postId !== v.id)
                                                             return (
                                                                 <OtherPost
                                                                     key={i}

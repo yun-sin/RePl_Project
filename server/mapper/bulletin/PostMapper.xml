@@ -44,10 +44,10 @@
         )
     </select>
 
-    <!-- 게시자 팔로워 수 -->
+    <!-- 게시자 팔로워 정보 -->
     <select id="selectFollower">
-        SELECT COUNT(*) FROM user
-        WHERE id = #{id}
+        SELECT `from` FROM follow
+        WHERE `to` = #{id}
     </select>
 
     <!-- 게시자 팔로우 처리 -->
@@ -55,6 +55,12 @@
         INSERT INTO follow (`from`, `to`)
         VALUES (#{follow_from}, #{follow_to})
     </insert>
+
+     <!-- 게시자 언팔로우 처리 -->
+    <delete id="deleteFollow">
+        DELETE FROM follow
+        WHERE `from` = #{follow_from} AND `to` = #{follow_to}
+    </delete>
 
     <!-- 게시글 댓글 조회 기능 정의 -->
     <select id="selectComments">

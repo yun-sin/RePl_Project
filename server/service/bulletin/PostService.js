@@ -88,8 +88,6 @@ class PostService {
         let dbcon = null;
         let data = null;
 
-        console.log(params);
-
         try {
             dbcon = await DBPool.getConnection();
 
@@ -106,7 +104,7 @@ class PostService {
         return data;
     }
 
-    /** 게시자의 팔로워 수 조회 */
+    /** 게시자의 팔로워 정보 조회 */
     async getFollower(params) {
         let dbcon = null;
         let data = null;
@@ -115,9 +113,33 @@ class PostService {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('PostMapper', 'selectFollower', params);
+            [data] = await dbcon.query(sql);
+
+        } catch (err) {
+            throw err
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    /** 게시자 팔로우 여부 검색 */
+    async getIsFollowed(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('PostMapper', 'selectIsFollowed', params);
             let [result] = await dbcon.query(sql);
 
-            [data] = result;
+            if (result.length > 0) {
+                data = 1;
+            } else {
+                data = 0;
+            }
         } catch (err) {
             throw err
         } finally {
@@ -130,18 +152,16 @@ class PostService {
     /** 게시자 팔로우 처리 */
     async addFollow(params) {
         let dbcon = null;
-        let data = null;
 
         try {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('PostMapper', 'insertFollow', params);
-            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+            let [{ affectedRows }] = await dbcon.query(sql);
 
             if (affectedRows.length === 0) {
                 throw new RuntimeException('팔로우 처리에 실패했습니다.');
             }
-            
             
         } catch (err) {
             throw err
@@ -149,7 +169,32 @@ class PostService {
             if (dbcon) dbcon.release();
         }
 
-        return data;
+        return 1;
+    }
+
+    /** 게시자 언팔로우 처리 */
+    async deleteFollow(params) {
+
+        console.log(params);
+        let dbcon = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+
+            let sql = mybatisMapper.getStatement('PostMapper', 'deleteFollow', params);
+            let [{ affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows.length === 0) {
+                throw new RuntimeException('언팔로우 처리에 실패했습니다.');
+            }
+            
+        } catch (err) {
+            throw err
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return 1;
     }
 
     /** 게시글의 댓글 데이터 조회 */

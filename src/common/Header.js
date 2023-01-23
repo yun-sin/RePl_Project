@@ -175,8 +175,11 @@ const Header = memo(() => {
   const onLogout = useCallback(e => {
     e.preventDefault();
 
-    cookieHelper.deleteCookie('loginInfo');
-    dispatch(makeLogout());
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      cookieHelper.deleteCookie('loginInfo');
+      dispatch(makeLogout());
+      window.location.reload();
+    }
   }, []);
 
   const SidebarCon = useRef();

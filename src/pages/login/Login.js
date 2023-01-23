@@ -85,7 +85,8 @@ const Login = memo(() => {
             cookieHelper.setCookie('loginInfo', JSON.stringify(payload.item), {
                 'max-age': 60 * 60 * 24,
             });
-            navigate('/');
+
+            window.history.back();
         });
     }, []);
     

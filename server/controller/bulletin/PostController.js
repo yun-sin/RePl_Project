@@ -23,7 +23,7 @@ module.exports = (() => {
 
         /** 데이터 조회 */
         let json = null;
-        let follower = null;
+        let follower = [];
 
         try {
             json = await postService.getItem({ id: id });
@@ -32,14 +32,58 @@ module.exports = (() => {
         }
 
         try {
-            follower = await postService.getFollower({ id: json.userId });
+            let data = await postService.getFollower({ id: json.userId });
+            data.map(v => follower.push(v.from));
         } catch (err) {
             return next(err);
         }
 
-        json.follower = follower['COUNT(*)'];
-
+        json.follower = follower;
+ 
         res.sendResult({ item: json });
+    });
+
+    /** 팔로우 처리 */
+    router.post(`${url}/follow`, async (req, res, next) => {
+        const { follow_from, follow_to } = req.body;
+        let result = null;
+
+        try {
+            regexHelper.value(follow_from, '팔로워 정보가 없습니다.');
+            regexHelper.num(follow_from, '팔로워 정보가 잘못되었습니다.');
+            regexHelper.value(follow_to, '대상 정보가 없습니다.');
+            regexHelper.num(follow_to, '대상 정보가 잘못되었습니다.');
+
+            result = postService.addFollow({
+                follow_from: follow_from,
+                follow_to: follow_to
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
+    router.post(`${url}/unfollow`, async (req, res, next) => {
+        const { follow_from, follow_to } = req.body;
+        let result = null;
+
+        try {
+            regexHelper.value(follow_from, '팔로워 정보가 없습니다.');
+            regexHelper.num(follow_from, '팔로워 정보가 잘못되었습니다.');
+            regexHelper.value(follow_to, '대상 정보가 없습니다.');
+            regexHelper.num(follow_to, '대상 정보가 잘못되었습니다.');
+
+            result = postService.deleteFollow({
+                follow_from: follow_from,
+                follow_to: follow_to
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
     });
 
     /** 게시글에서 추천된 장소 목록 */
