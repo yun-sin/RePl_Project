@@ -51,7 +51,7 @@ const Info = memo(() => {
 
     const idData = data?.find((v, i) => v.id === 2)
 
-    console.log("idData", idData);
+    // console.log("idData", idData);
 
     return (
         

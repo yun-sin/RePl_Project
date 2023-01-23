@@ -121,7 +121,7 @@ const Map = memo(() => {
     //로그인된 id 데이터 가져오기
     const idData = data?.find((v, i) => v.id === 2)
 
-    console.log("idData", idData);
+    // console.log("idData", idData);
 
 
     // 지도찾기로 이동하는 함수

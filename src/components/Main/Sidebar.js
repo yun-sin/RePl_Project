@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../../slices/MainSlice";
 import { setKeyword } from "../../slices/MapFinderSlice";
@@ -104,6 +104,8 @@ const SidebarContainer = styled.div`
 `;
 
 const Sidebar = memo(() => {
+  const navigate = useNavigate();
+
   const { isActive } = useSelector((state) => state.SidebarSlice);
   const { keyword } = useSelector((state) => state.MapFinderSlice);
   const { filter } = useSelector((state) => state.MainSlice);
@@ -174,8 +176,12 @@ const Sidebar = memo(() => {
     e.preventDefault();
     dispatch(setKeyword(e.target.search.value));
     dispatch(setActive(false));
-    console.log(e.target.search.value);
-  }, []);
+
+    const current = e.currentTarget;
+    const keyword = current.search.value;
+    let redirectUrl = keyword ? `/map_finder?keyword=${keyword}` : '/map_finder'
+    navigate(redirectUrl);
+  }, [keyword]);
 
   const onWhereMoreView = useCallback((Where) => {
     setWhereMoreView(true);
@@ -211,7 +217,6 @@ const Sidebar = memo(() => {
   });
 
   console.log(selectedItems);
-
 
   const more = useCallback((whereArr,length) => {
     if ( !length)

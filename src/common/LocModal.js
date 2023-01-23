@@ -502,7 +502,11 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
         console.log("북마크 삭제");
         dispatch(delBookmark({ index: BookmarkId }));
         setBookmarkId(null);
-        setDelCount(delCount + 1);
+
+        // 북마크 페이지에서만 삭제시 재 렌더링을 위한 dependency (북마크 페이지에서만 delCount를 props로 전달)
+        if (delCount) {
+          setDelCount(delCount + 1);
+        }
       }
     }
   }, [isModalOpen]);
@@ -566,12 +570,10 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
   /** 북마크 클릭 이벤트 - 장윤신 */
   const onPostBookmarkClick = useCallback((e) => {
-    console.log("hi");
     setBookmarkBtn(true);
   });
 
   const ondelBookmarkClick = useCallback((e) => {
-    console.log("bye");
     console.log(BookmarkId);
     setBookmarkBtn(false);
   });

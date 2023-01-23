@@ -253,7 +253,6 @@ const Header = memo(() => {
         <NavLink to="/mypage">🧒 마이페이지</NavLink>
         <NavLink to="!#" onClick={onLogout}>👋 로그아웃</NavLink>
         <NavLink to="/bulletin">📌 게시판</NavLink>
-        <NavLink to="/raffle">🎉 경품페이지</NavLink>
         <NavLink to="!#">💬 의견 및 오류제보</NavLink>
         <NavLink to="!#">📝 사용 설명서</NavLink>
       </SidebarContainer>

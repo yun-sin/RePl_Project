@@ -1,7 +1,14 @@
-import React, { memo, useCallback, useRef } from "react";
+import React, { memo, useEffect, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import RegexHelper from "../../helper/RegexHelper";
+
+import Spinner from "../../components/Spinner";
+
+import { useSelector, useDispatch } from "react-redux";
+import { postItem } from "../../slices/ThemeSlice";
+
 
 const CreateThemeContainer = styled.div`
   /* height: 100vw; */
@@ -172,38 +179,59 @@ const CreateThemeContainer = styled.div`
 `;
 
 const CreateTheme = memo(() => {
+  const navigate = useNavigate();
+
+
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.ThemeSlice);
+
   const myIcon = useRef();
   const mySentence = useRef();
 
   const onIconPress = useCallback((e) => {
     myIcon.current.innerHTML = e.target.value;
-    console.log(e.target.value);
   }, []);
 
   const onSentencePress = useCallback((e) => {
     mySentence.current.innerHTML = e.target.value;
-    console.log(e.target.value);
   }, []);
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
 
-    // 유효성검사 
+    // 이벤트가 발생한 폼 객체
+    const current = e.currentTarget;
+    console.log(current);
+    console.log(current.text)
+
+    // 입력값 유효성검사
     const regexHelper = RegexHelper.getInstance();
 
     try {
       regexHelper.value(
-        document.querySelector(".icon"),
-        "아이콘을 입력하세요."
-      );
-      regexHelper.value(
         document.querySelector(".theme"),
         "테마명을 입력하세요."
+      );
+      regexHelper.value(
+        document.querySelector(".icon"),
+        "아이콘을 입력하세요."
       );
     } catch (e) {
       alert(e.message);
       return;
     }
+
+    // 리덕스를 통한 데이터 저장 요청
+    dispatch(
+      postItem({
+        text: current.text.value,
+        icon: current.icon.value,
+      })
+    ).then((result) => {
+      console.log(result);
+
+      navigate(`/map?theme=${result.payload.id}`);
+    });
   }, []);
 
   return (
@@ -219,7 +247,7 @@ const CreateTheme = memo(() => {
       </div>
 
       <div className="form-box">
-        <form action="">
+        <form onSubmit={onSubmit}>
           <div className="margin">
             <h2>테마명</h2>
             <input
@@ -228,6 +256,7 @@ const CreateTheme = memo(() => {
               placeholder="ex) 간단하게 혼밥하기 좋은 곳"
               maxLength={15}
               className="theme"
+              name="text"
             ></input>
             <div className="help">
               <dl>
@@ -268,6 +297,7 @@ const CreateTheme = memo(() => {
               maxLength={15}
               onChange={onIconPress}
               className="icon"
+              name="icon"
             ></input>
           </div>
           <div className="text-align-right">
@@ -354,7 +384,7 @@ const CreateTheme = memo(() => {
           </div>
 
           <div className="form-submit">
-            <button type="submit" onClick={onSubmit}>
+            <button type="submit">
               생성하기
             </button>
           </div>

@@ -3,8 +3,12 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getThemeData } from "../../slices/ThemeSlice";
+import { setKeyword } from "../../slices/MapFinderSlice";
+
 import { useNavigate } from "react-router-dom";
 import { current } from "@reduxjs/toolkit";
+
+import { useQueryString } from '../../hooks/useQueryString';
 
 
 
@@ -55,12 +59,19 @@ const ThemeContainer = styled.div`
 
 const AllList = memo(() => {
   const { data: data } = useSelector((state) => state.ThemeSlice);
+  const { keyword } = useQueryString();
+  console.log(keyword);
 
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    dispatch(getThemeData());
-  },[]);
+    dispatch(getThemeData({
+      keyword: keyword,
+    }));
+  },[keyword]);
+
+  console.log(data&&data)
 
   const navigate = useNavigate();
 

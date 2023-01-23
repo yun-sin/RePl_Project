@@ -442,23 +442,43 @@
       "icon": "🍛",
       "text": "혼밥하기 좋은 곳",
       "user_number": 20
+    },
+    {
+      "icon": "👩🏻‍💻",
+      "text": "test",
+      "id": 9
+    },
+    {
+      "icon": "🥹",
+      "text": "테스트테마",
+      "id": 10
+    },
+    {
+      "icon": "😆",
+      "text": "테스트테스트",
+      "id": 11
     }
   ],
   "bookmark": [
     {
       "place_id": 1344772608,
       "user_id": 2,
-      "id": 3
+      "id": 4
     },
     {
-      "place_id": 10921559,
+      "place_id": 18613409,
       "user_id": 2,
-      "id": 5
+      "id": 7
     },
     {
-      "place_id": 21160720,
+      "place_id": 1649835405,
       "user_id": 2,
-      "id": 6
+      "id": 8
+    },
+    {
+      "place_id": 1149707328,
+      "user_id": 2,
+      "id": 9
     }
   ],
   "editorTest": [

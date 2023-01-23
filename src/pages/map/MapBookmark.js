@@ -62,7 +62,7 @@ const MapBookmark = memo(() => {
   const [modalContent, setModalContent] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const [delCount, setDelCount] = useState(0); // 데이터가 삭제될 경우 재 렌더링 되기위한 디펜던시
+  const [delCount, setDelCount] = useState(1); // 데이터가 삭제될 경우 재 렌더링 되기위한 디펜던시
 
   const [BookmarkPlace, setBookmarkPlace] = useState([]);
 
