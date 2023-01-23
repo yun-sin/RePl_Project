@@ -53,9 +53,6 @@ const Slider = memo(() => {
     
   }, [mouseover]);
 
-  console.log(mouseover.current);
-
-
   return (
     
     <div

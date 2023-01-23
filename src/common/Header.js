@@ -1,12 +1,14 @@
-import React, { memo, useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNavActive } from "../slices/NavbarSlice";
+import { getCurrentUser, makeLogout } from '../slices/login/LoginSlice';
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "../components/login/LoginModal";
+import cookieHelper from "../helper/CookieHelper";
 
 const HeaderContainer = styled.div`
   height: 50px;
@@ -151,18 +153,37 @@ const SidebarContainer = styled.div`
   hr {
     color: #ccc;
     border-width: 0.3px 0 0 0;
-
   }
 `;
 
 const Header = memo(() => {
+  const dispatch = useDispatch();
+
+  const [loginInfo, setLoginInfo] = useState(null);
+
+  const { data, loading } = useSelector(state => state.LoginSlice);
+
+  useEffect(() => {
+    if (data?.item) setLoginInfo(data.item);
+    else setLoginInfo(null);
+  }, [data]);
+  useEffect(() => {
+    let value = cookieHelper.getCookie('loginInfo');
+    if (value) setLoginInfo(JSON.parse(value));
+  }, []);
+  
+  const onLogout = useCallback(e => {
+    e.preventDefault();
+
+    cookieHelper.deleteCookie('loginInfo');
+    dispatch(makeLogout());
+  }, []);
+
   const SidebarCon = useRef();
   const [sideActive, SetSideActive] = useState(false);
 
   //로그인 모달 상태관리
   const [LMDIsOpen, setLMDIsOpen] = useState(false);
-
-  const dispatch = useDispatch();
 
   const { navActive } = useSelector((state) => state.SidebarSlice);
 
@@ -185,6 +206,7 @@ const Header = memo(() => {
     e.preventDefault();
     setLMDIsOpen(true);
   });
+
   return (
     <HeaderContainer>
       <div
@@ -196,9 +218,19 @@ const Header = memo(() => {
         <NavLink to="/">리플</NavLink>
       </div>
       <div className="navbarMenu">
-        <a onClick={handleLoginModal}>로그인</a>
+        {
+          loading ? (
+            <></>
+          ) : (
+            loginInfo ? (
+              <a>{ loginInfo.username }님</a>
+            ) : (
+              <a onClick={handleLoginModal}>로그인</a>
+            )
+          )
+        }
         <a
-          onClick={onSidebarClick}
+          onClick={onSidebarClick} for an anchor to be keyboard a
           className={`Sidebar ${sideActive ? "active" : ""}`}
         >
           <FontAwesomeIcon icon={faBars} className="hamburger" />
@@ -216,9 +248,8 @@ const Header = memo(() => {
         <NavLink to="/map_finder">🗺 지도찾기</NavLink>
         <hr />
         <NavLink to="/mypage">🧒 마이페이지</NavLink>
-        <NavLink to="!#">👋 로그아웃</NavLink>
+        <NavLink to="!#" onClick={onLogout}>👋 로그아웃</NavLink>
         <NavLink to="/bulletin">📌 게시판</NavLink>
-        <NavLink to="/raffle">🎉 경품페이지</NavLink>
         <NavLink to="!#">💬 의견 및 오류제보</NavLink>
         <NavLink to="!#">📝 사용 설명서</NavLink>
       </SidebarContainer>

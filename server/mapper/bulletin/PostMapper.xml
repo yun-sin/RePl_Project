@@ -50,6 +50,12 @@
         WHERE id = #{id}
     </select>
 
+    <!-- 게시자 팔로우 처리 -->
+    <insert id="insertFollow">
+        INSERT INTO follow (`from`, `to`)
+        VALUES (#{follow_from}, #{follow_to})
+    </insert>
+
     <!-- 게시글 댓글 조회 기능 정의 -->
     <select id="selectComments">
         SELECT u.icon, u.username, c.content, c.commentdate
@@ -67,7 +73,7 @@
 
     <!-- 게시자의 다른 게시글 데이터 조회 -->
     <select id="selectOtherPosts">
-        SELECT title, substring(content, 1, 100) AS content, bgimage, bgcolor
+        SELECT id, title, substring(content, 1, 100) AS content, bgimage, bgcolor
         FROM bulletin
         WHERE user_id = #{id}
     </select>

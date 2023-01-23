@@ -14,6 +14,7 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
     }
 
     if (result.rtcode === 200) {
+        console.log(result.item);
         const data = [];
         const keys = Object.keys(result.item);
         let subject = '';

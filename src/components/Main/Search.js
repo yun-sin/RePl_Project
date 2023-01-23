@@ -104,9 +104,6 @@ const Search = memo(() => {
 
     dispatch(setKeyword(keyword));
 
-
-
-    
   },[navigate]);
 
   const { keyword } = useSelector((state) => state.MapFinderSlice);

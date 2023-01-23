@@ -179,7 +179,7 @@ app.use('/', router);
 /*--------------------------------------------------------
     5) 각 URL별 백엔드 기능 정의
 ---------------------------------------------------------*/
-
+app.use(require('./controller/login/LoginController'));
 
 app.use(require('./controller/bulletin/BulletinController'));
 app.use(require('./controller/bulletin/PostController'));
