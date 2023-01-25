@@ -37,7 +37,7 @@
 
     <!-- 게시글 카테고리 해시태그 불러오기 -->
     <select id="getTags">
-        SELECT name FROM category
+        SELECT id, name FROM category
         WHERE id IN (
             SELECT category_id FROM bulletin_category
             WHERE bulletin_id = #{id}

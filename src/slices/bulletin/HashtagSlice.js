@@ -16,7 +16,6 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
     if (result.rtcode === 200) {
         const data = [];
         const keys = Object.keys(result.item);
-        let subject = '';
 
         for (const k of keys) {
             const temp = {};
@@ -36,6 +35,8 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
 
             data.push(temp);
         }
+
+        console.log(data);
 
         return data;
     }

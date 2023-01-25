@@ -1,7 +1,9 @@
 import React, { memo, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Spinner from '../../common/Spinner';
+import cookieHelper from '../../helper/CookieHelper';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getComments, postComment } from '../../slices/bulletin/CommentsSlice';
@@ -151,6 +153,8 @@ const CommentsArea = styled.div`
 `;
 
 const Comments = memo(props => {
+    const navigate = useNavigate();
+
     /* 댓글 데이터 불러오기 */
     const { data, loading, error } = useSelector(state => state.CommentsSlice);
     const dispatch = useDispatch();
@@ -166,17 +170,25 @@ const Comments = memo(props => {
     const onCommentAddSubmit = useCallback(e => {
         e.preventDefault();
 
+        const loginInfo = cookieHelper.getCookie('loginInfo');
+        if (!loginInfo) {
+            if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                navigate('/login/repl');
+            } else {
+                return;
+            }
+        }
+
+        const userId = JSON.parse(loginInfo).id;
+
         const current = e.currentTarget;
         const value = current.commentsInput.value;
         current.commentsInput.value = '';
 
-        /** TO DO: 여기에 세션 데이터에서 가져온 유저 아이디 넣어야 함 */
-        const user_id = 1;
-
         (async () => {
             await dispatch(postComment({
                 id: id,
-                user_id: user_id,
+                user_id: userId,
                 content: value,
             }));
 

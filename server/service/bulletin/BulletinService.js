@@ -23,14 +23,13 @@ class BulletinService {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('BulletinMapper', 'selectList', params);
+            console.log('1');
+            console.log(sql);
+
             let [result] = await dbcon.query(sql);
 
             if (result.length === 0) {
-                if (params.query || params.tag != -1) {
-                    return [];
-                } else {
-                    throw new RuntimeException('조회 결과 없음');
-                }
+                return [];
             }
 
             data = result;
@@ -67,6 +66,9 @@ class BulletinService {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('BulletinMapper', 'selectAllCount', params);
+            console.log('2');
+            console.log(sql);
+
             let [result] = await dbcon.query(sql);
 
             if (result.length > 0) {
