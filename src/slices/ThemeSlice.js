@@ -12,9 +12,7 @@ export const getThemeData = createAsyncThunk(
   "ThemeSlice/getThemeData",
   async (payload, { rejectWithValue }) => {
     let result = null;
-
     let params = null;
-
 
     if (payload?.keyword) {
       params = {
@@ -33,6 +31,7 @@ export const getThemeData = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
+    console.log(result);
     return result;
   }
 );

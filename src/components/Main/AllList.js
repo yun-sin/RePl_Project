@@ -58,20 +58,22 @@ const ThemeContainer = styled.div`
 `;
 
 const AllList = memo(() => {
-  const { data: data } = useSelector((state) => state.ThemeSlice);
+  const { data } = useSelector((state) => state.ThemeSlice);
   const { keyword } = useQueryString();
   console.log(keyword);
 
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     dispatch(getThemeData({
       keyword: keyword,
-    }));
+    })).then(({ payload, error }) => {
+      if (error) {
+        window.alert(error);
+        return;
+      }
+    });
   },[keyword]);
-
-  console.log(data&&data)
 
   const navigate = useNavigate();
 
@@ -88,12 +90,12 @@ const AllList = memo(() => {
     <ThemeContainer>
       <ul>
         {/* 추후에 인피니티 스크롤 적용해야함 */}
-        {data?.map(({ id, icon, text, user_number }, i) => {
+        {data && data?.item.map(({ id, icon, title, user_number }, i) => {
           return (
             <div className="link" key={i} onClick={onPageMove} data-id={id} >
               <li>
                 <div className="emoji">{icon}</div>
-                <div className="title">{text}</div>
+                <div className="title">{title}</div>
                 <div className="desc">{user_number}명의 큐레이터</div>
               </li>
             </div>

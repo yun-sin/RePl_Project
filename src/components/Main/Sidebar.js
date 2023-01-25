@@ -216,7 +216,7 @@ const Sidebar = memo(() => {
     theme.current.classList.remove("active");
   });
 
-  console.log(selectedItems);
+  // console.log(selectedItems);
 
   const more = useCallback((whereArr,length) => {
     if ( !length)

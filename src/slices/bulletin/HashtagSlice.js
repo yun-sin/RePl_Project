@@ -36,8 +36,6 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
             data.push(temp);
         }
 
-        console.log(data);
-
         return data;
     }
     return result.rtmsg;

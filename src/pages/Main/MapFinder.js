@@ -58,10 +58,10 @@ const MapFinder = memo(() => {
       ></div>
 
       <MapFinderTitle />
-      {filter == 0 && <AllList />}
+      {/* {filter == 0 && <AllList />} */}
       {/* {filter == 1 && <ThemeList />} */}
       {/* {filter == 2 && <FollowingList />} */}
-      {filter == 0 && <CreateMap />}
+      {/* {filter == 0 && <CreateMap />} */}
       {/* {filter == 1 && <ViewMap />} */}
       {/* {filter == 2 && <ViewMap />} */}
     </MapFinderContaier>
