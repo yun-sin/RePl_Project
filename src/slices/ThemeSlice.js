@@ -33,7 +33,9 @@ export const getThemeData = createAsyncThunk(
       return result.item
     } else {
       return result;
+
     }
+    
   }
 );
 

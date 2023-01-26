@@ -60,7 +60,10 @@ const ThemeContainer = styled.div`
 const AllList = memo(() => {
   const { data } = useSelector((state) => state.ThemeSlice);
   const { keyword } = useQueryString();
-  console.log(keyword);
+  if(keyword) {
+  console.log(`검색 키워드: ${keyword}`);
+    
+  }
 
   const dispatch = useDispatch();
 
@@ -90,12 +93,12 @@ const AllList = memo(() => {
     <ThemeContainer>
       <ul>
         {/* 추후에 인피니티 스크롤 적용해야함 */}
-        {data && data?.item.map(({ id, icon, title, user_number }, i) => {
+        {data && data?.map(({ id, icon, text, user_number }, i) => {
           return (
             <div className="link" key={i} onClick={onPageMove} data-id={id} >
               <li>
                 <div className="emoji">{icon}</div>
-                <div className="title">{title}</div>
+                <div className="text">{text}</div>
                 <div className="desc">{user_number}명의 큐레이터</div>
               </li>
             </div>

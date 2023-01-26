@@ -123,7 +123,6 @@ const PlaceList = memo(() => {
                         ?.filter((item) => item.place_id === id)
                         ?.map((v, i) => v.theme_id)
                         ?.map((v2, i2) => {
-                        console.log(data3)
                           return (
                             
                             <div key={i2}>
