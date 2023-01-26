@@ -54,7 +54,7 @@ const App = memo(() => {
         <Route path="/bulletin" element={<Bulletin />} />
         <Route path="/bulletin/mypost/:id" element={<MyPost />} />
         <Route path="/bulletin/newpost/:id" element={<NewPost />} />
-        <Route path="/bulletin/postview/:id" element={<PostView />} />
+        <Route path="/bulletin/:id" element={<PostView />} />
       </Routes>
     </div>
   );

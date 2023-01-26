@@ -75,13 +75,8 @@ const PlaceList = memo(() => {
     dispatch(getTP());
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
   const randomData = useMemo(() => {
-    console.log(data);
     return data && [...data]?.sort(() => Math.random() - 0.5);
   }, [data]);
 

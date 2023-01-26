@@ -133,7 +133,7 @@ const Post = memo(props => {
     const [isHover, setIsHover] = useState(false);
 
     const onLinkClick = useCallback(e => {
-        navigate(`/bulletin/postview/${props.targetId}`);
+        navigate(`/bulletin/${props.targetId}`);
     }, [props]);
 
     useEffect(() => {
