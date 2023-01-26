@@ -6,12 +6,14 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
     let result = null;
 
     try {
-        const response = await axios.get(process.env.REACT_APP_BULLETIN_PATH + '/categories');
+        const response = await axios.get('/categories');
 
         result = response.data;
     } catch (err) {
         result = rejectWithValue(err.response);
     }
+
+    if(!result.item) return result;
 
     if (result.rtcode === 200) {
         const data = [];

@@ -14,7 +14,6 @@ export const getMapData = createAsyncThunk("MapSlice/getMapData", async (payload
   try {
     const response = await axios.get("/map");
     result = response.data;
-    console.log(result)
   } catch (err) {
     result = rejectWithValue(err.response);
   }

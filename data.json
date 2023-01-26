@@ -997,7 +997,7 @@
       ]
     }
   ],
-  "categoryAll": [
+  "categories": [
     {
       "fieldName": "whereArr",
       "subject": "어디로 가고싶나요?",
