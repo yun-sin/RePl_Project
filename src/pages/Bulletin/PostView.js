@@ -299,7 +299,7 @@ const NewPost = memo(props => {
         const loginInfo = cookieHelper.getCookie('loginInfo');
 
         if (data && loginInfo) {
-            setIsFollowed(data.follower.findIndex(v => {
+            setIsFollowed(data?.follower?.findIndex(v => {
                 return v === JSON.parse(loginInfo).id;
             }) > -1);
         }
@@ -450,7 +450,7 @@ const NewPost = memo(props => {
                                     <h2>{data.username}</h2>
                                 </div>
                                 <div>
-                                    <p>팔로워<span>{data.follower.length}</span></p>
+                                    <p>팔로워<span>{data?.follower?.length}</span></p>
                                     {
                                         isFollowed ? (
                                             <button className='unfollow' onClick={onFollowClick}>언필로우</button>

@@ -249,7 +249,7 @@ const Bulletin = memo(() => {
                     <div className='list-box'>
                         <Spinner loading={loading} />
                         {
-                            data && data?.item.map((v, i) => {
+                            data && data?.map((v, i) => {
                                 return (
                                     <Post
                                         key={i}

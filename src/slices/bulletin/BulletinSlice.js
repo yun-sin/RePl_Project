@@ -20,7 +20,11 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
         result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+        return result.item
+      } else {
+        return result;
+      }
 });
 
 export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload, { rejectWithValue }) => {
@@ -34,7 +38,11 @@ export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload,
         result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+        return result.item
+      } else {
+        return result;
+      }
 });
 
 const BulletinSlice = createSlice({

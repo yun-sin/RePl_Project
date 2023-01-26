@@ -9,7 +9,7 @@ module.exports = (() => {
     const router = express.Router();
 
     /** 단일 게시글 데이터 조회 */
-    router.get(`${url}/postview/:id`, async (req, res, next) => {
+    router.get(`${url}/:id`, async (req, res, next) => {
         // 파라미터 받기
         const { id } = req.params;
 
