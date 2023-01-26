@@ -44,7 +44,7 @@ const ThemeContainer = styled.div`
         font-size: 30px;
         margin-bottom: 20px;
       }
-      .title {
+      .text {
         font-size: 15px;
         margin-bottom: 20px;
         color: #131017;
