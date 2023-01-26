@@ -12,17 +12,13 @@ export const getThemeData = createAsyncThunk(
   "ThemeSlice/getThemeData",
   async (payload, { rejectWithValue }) => {
     let result = null;
-
     let params = null;
-
 
     if (payload?.keyword) {
       params = {
         keyword: payload.keyword
       }
     }
-    console.log(payload?.keyword);
-    console.log(params);
 
     try {
       const response = await axios.get("/theme", {
@@ -33,7 +29,7 @@ export const getThemeData = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    return result;
+    return result.item;
   }
 );
 

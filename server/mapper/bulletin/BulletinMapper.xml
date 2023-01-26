@@ -22,22 +22,22 @@
         LEFT JOIN user AS u
         ON u.id = b.user_id
 
-        <where>
-            <if test="title != null and title != ''">
-                b.title LIKE concat('%', #{title}, '%')
-            </if>
-
-            <if test="userId != null and userId != ''">
-                OR u.username LIKE concat('%', #{userId}, '%')
+        <trim prefix='WHERE' prefixOverrides='AND'>
+            <if test="query != null and query != ''">
+                ( 
+                    b.title LIKE concat('%', #{query}, '%')
+                    OR 
+                    u.username LIKE concat('%', #{query}, '%')
+                )
             </if>
 
             <if test="tagId != null and tagId != -1">
-                b.id IN (
+                AND b.id IN (
                     SELECT bulletin_id FROM bulletin_category
                     WHERE category_id = ${tagId}
                 )
             </if>
-        </where>
+        </trim>
 
         <choose>
             <when test="sortByLike == 'true'">
@@ -72,22 +72,22 @@
         LEFT JOIN user AS u
         ON u.id = b.user_id
 
-        <where>
-            <if test="title != null and title != ''">
-                b.title LIKE concat('%', #{title}, '%')
-            </if>
-
-            <if test="userId != null and userId != ''">
-                OR u.username LIKE concat('%', #{userId}, '%')
+        <trim prefix='WHERE' prefixOverrides='AND'>
+            <if test="query != null and query != ''">
+                ( 
+                    b.title LIKE concat('%', #{query}, '%')
+                    OR 
+                    u.username LIKE concat('%', #{query}, '%')
+                )
             </if>
 
             <if test="tagId != null and tagId != -1">
-                b.id IN (
+                AND b.id IN (
                     SELECT bulletin_id FROM bulletin_category
                     WHERE category_id = ${tagId}
                 )
             </if>
-        </where>
+        </trim>
     </select>
 
     <!-- 내가 댓글쓴 장소 목록 조회 -->

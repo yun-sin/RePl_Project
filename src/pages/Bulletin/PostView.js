@@ -431,7 +431,10 @@ const NewPost = memo(props => {
                                         {
                                             categories && categories.map((v, i) => {
                                                 return (
-                                                    <span key={i}>{v.name}</span>
+                                                    <span key={i} onClick={e => {
+                                                        e.preventDefault();
+                                                        navigate(`/bulletin?tag=${v.id}`);
+                                                    }}>{v.name}</span>
                                                 );
                                             })
                                         }

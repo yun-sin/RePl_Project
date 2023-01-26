@@ -17,8 +17,7 @@ module.exports = (() => {
 
         // 검색 파라미터를 MyBatis 전송용 객체로 변환
         if (query) {
-            params.title = query;
-            params.userId = query;
+            params.query = query;
         }
         // 태그 저장
         if (tag) params.tagId = parseInt(tag);

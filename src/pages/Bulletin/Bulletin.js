@@ -81,13 +81,28 @@ const MainArea = styled.section`
     margin: auto;
     margin-bottom: 30px;
 
-    select {
+    select,
+    input,
+    button {
       border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #fff;
       margin: 0 5px;
       padding: 5px;
       font-size: 12px;
+    }
+
+    input {
+        width: 500px;
+    }
+
+    button {
+        padding: 5px 10px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #eee;
+        }
     }
   }
 `;
@@ -174,15 +189,17 @@ const Bulletin = memo(() => {
     }, []);
 
     /** 게시글 검색 이벤트 */
-    const onSearchSubmit = useCallback(e => {
+    const onPostQuerySubmit = useCallback(e => {
         e.preventDefault();
 
-        // 검색어에 따라 URL을 구성
-        let redirectUrl = `/bulletin?query=${e.currentTarget.query.value}`
-        redirectUrl = tag ? redirectUrl + `&tag=${tag}` : redirectUrl;
-        navigate(redirectUrl);
-    }, []);
+        let redirectUrl = '/bulletin?';
+        const query = e.currentTarget.query.value;
 
+        if (query) redirectUrl += `query=${query}`;
+        if (tag) redirectUrl += `&tag=${tag}`;
+
+        navigate(redirectUrl);
+    }, [tag]);
     return (
         <>
             <BannerArea>
@@ -199,7 +216,7 @@ const Bulletin = memo(() => {
             </BannerArea>
 
             <MainArea>
-                <div className='main__option-bar'>
+                <form className='main__option-bar' onSubmit={onPostQuerySubmit}>
                     <select name="align" id="align" onChange={onSortWayChange}>
                         <option value="l">최신순</option>
                         <option value="p">인기순</option>
@@ -224,7 +241,9 @@ const Bulletin = memo(() => {
                             })
                         }
                     </select>
-                </div>
+                    <input type="text" name="query" placeholder="검색어를 입력하세요."></input>
+                    <button type='submit'>검색하기</button>
+                </form>
 
                 <PostList>
                     <div className='list-box'>
