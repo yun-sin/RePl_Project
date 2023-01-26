@@ -13,11 +13,11 @@ export const getTP = createAsyncThunk("MapThemeSlice/getTP", async (payload, { r
   try {
     const response = await axios.get("/theme_place");
     result = response.data;
-    // console.log(result);
   } catch (err) {
     result = rejectWithValue(err.response);
   }
-  return result;
+
+  return result.item;
 });
 
 /** 특정 유저가 작성한 데이터만을 불러오는 비동기 함수 */

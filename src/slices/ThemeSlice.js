@@ -19,8 +19,6 @@ export const getThemeData = createAsyncThunk(
         keyword: payload.keyword
       }
     }
-    console.log(payload?.keyword);
-    console.log(params);
 
     try {
       const response = await axios.get("/theme", {
@@ -31,8 +29,7 @@ export const getThemeData = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    console.log(result);
-    return result;
+    return result.item;
   }
 );
 

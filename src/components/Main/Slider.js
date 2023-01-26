@@ -70,12 +70,12 @@ const Slider = memo(() => {
         slidesToScroll={1}
         ref={gliderRef1}
       >
-        {randomData?.map(({ id, icon, text, user_number }, i) => {
+        {randomData?.map(({ id, icon, title, user_number }, i) => {
           return (
             <div key={i}>
               <NavLink to={`/map?theme=${id}`}>
                 <div className="emoji">{icon}</div>
-                <div className="title">{text}</div>
+                <div className="title">{title}</div>
                 <div className="user_number">{user_number}명의 사용자</div>
               </NavLink>
             </div>

@@ -11,4 +11,9 @@
         ) AS user_number
         FROM theme AS t
     </select>
+
+    <select id="selectThemePlaces">
+        SELECT id, place_id, theme_id, user_id
+        FROM theme_place
+    </select>
 </mapper>

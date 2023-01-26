@@ -18,7 +18,7 @@ export const getMapData = createAsyncThunk("MapSlice/getMapData", async (payload
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  return result.item;
 });
 
 /** 특정 장소 데이터를 불러오는 비동기 함수 */

@@ -63,7 +63,7 @@ const PlaceList = memo(() => {
   const [LocData, setLocData] = useState();
   const [ThemeData, setThemeData] = useState();
 
-  const { data: data } = useSelector((state) => state.MapSlice);
+  const { data } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3 } = useSelector((state) => state.MapThemeSlice);
 
@@ -75,10 +75,16 @@ const PlaceList = memo(() => {
     dispatch(getTP());
   }, []);
 
+  useEffect(() => {
+    console.log(data, data2, data3);
+  }, [data, data2, data3])
+
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
   const randomData = useMemo(() => {
     return data && [...data]?.sort(() => Math.random() - 0.5);
   }, [data]);
+
+  console.log(randomData);
 
   // 모달창 이벤트
   const onModalIsOpen = useCallback((e) => {
@@ -108,20 +114,20 @@ const PlaceList = memo(() => {
       <ul>
         {randomData &&
           randomData
-            .map(({ id, place_name, address_name }, i) => {
+            ?.map(({ id, place_name, address_name }, i) => {
               return (
                 <li key={i} onClick={onModalIsOpen} data-id={id}>
                   <div>
                     <div className="place_name">{place_name}</div>
                     <div className="address">{address_name}</div>
                     <div className="theme" key={i}>
-                      {data3
+                      {data3 && data3
                         ?.filter((item) => item.place_id === id)
                         ?.map((v, i) => v.theme_id)
-                        .map((v2, i2) => {
+                        ?.map((v2, i2) => {
                           return (
                             <div key={i2}>
-                              {data2 && data2[v2].icon} {data2 && data2[v2].text}
+                              {data2 && data2[v2].icon} {data2 && data2[v2].title}
                             </div>
                           );
                         })}
@@ -133,7 +139,7 @@ const PlaceList = memo(() => {
             ?.slice(0, 4)}
       </ul>
 
-      {data?.map((v, i) => {
+      {data?.item.map((v, i) => {
         let themeList = [];
         if (ThemeData) {
           v.theme.forEach((v2, i2) => {
