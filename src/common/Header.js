@@ -233,7 +233,7 @@ const Header = memo(() => {
           )
         }
         <a
-          onClick={onSidebarClick} 
+          onClick={onSidebarClick}
           className={`Sidebar ${sideActive ? "active" : ""}`}
         >
           <FontAwesomeIcon icon={faBars} className="hamburger" />
