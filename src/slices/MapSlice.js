@@ -14,11 +14,12 @@ export const getMapData = createAsyncThunk("MapSlice/getMapData", async (payload
   try {
     const response = await axios.get("/map");
     result = response.data;
+    console.log(result)
   } catch (err) {
     result = rejectWithValue(err.response);
   }
 
-  return result.item;
+  return result;
 });
 
 /** 특정 장소 데이터를 불러오는 비동기 함수 */

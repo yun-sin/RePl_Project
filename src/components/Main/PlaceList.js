@@ -34,7 +34,7 @@ const ListContainer = styled.div`
           &:last-child {
             margin-bottom: 0;
           }
-          &.title {
+          &.text {
             font-size: 16px;
             color: #666;
             font-weight: 600;
@@ -77,6 +77,7 @@ const PlaceList = memo(() => {
 
   useEffect(() => {
     console.log(data, data2, data3);
+    console.log(randomData&&randomData)
   }, [data, data2, data3])
 
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
@@ -121,13 +122,16 @@ const PlaceList = memo(() => {
                     <div className="place_name">{place_name}</div>
                     <div className="address">{address_name}</div>
                     <div className="theme" key={i}>
+                      
                       {data3 && data3
                         ?.filter((item) => item.place_id === id)
                         ?.map((v, i) => v.theme_id)
                         ?.map((v2, i2) => {
+                        console.log(data3)
                           return (
+                            
                             <div key={i2}>
-                              {data2 && data2[v2].icon} {data2 && data2[v2].title}
+                              {data2 && data2[v2].icon} {data2 && data2[v2].text}
                             </div>
                           );
                         })}
@@ -139,7 +143,7 @@ const PlaceList = memo(() => {
             ?.slice(0, 4)}
       </ul>
 
-      {data?.item.map((v, i) => {
+      {data?.map((v, i) => {
         let themeList = [];
         if (ThemeData) {
           v.theme.forEach((v2, i2) => {
