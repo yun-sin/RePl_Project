@@ -94,16 +94,17 @@ module.exports = (() => {
     });
 
     /** 카테고리 선택창 태그들 불러오기 */
-    router.get(`${url}/categories`, async (req, res, next) => {
-        let json = null;
+    router.get(`/categories`, async (req, res, next) => {
+        let data = null;
 
         try {
-            json = await bulletinService.getCategories();
+            data = await bulletinService.getCategories();
         } catch (err) {
             return next(err);
         }
 
-        res.sendResult({ item: json });
+        console.log(data);
+        res.sendResult({ item: data });
     });
 
     return router;

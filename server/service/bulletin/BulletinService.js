@@ -120,7 +120,7 @@ class BulletinService {
     /** 전체 카테고리 태그들 조회 */
     async getCategories() {
         let dbcon = null;
-        let data = {};
+        let data = [];
 
         try {
             dbcon = await DBPool.getConnection();
@@ -128,19 +128,46 @@ class BulletinService {
             let sql = mybatisMapper.getStatement('BulletinMapper', 'selectCategories');
             let [result] = await dbcon.query(sql);
 
+            let json = {}
             if (result.length === 0) {
                 throw new RuntimeException('조회 결과 없음');
             }
 
             for (let i = 0; i < result.length; i++) {
-                if (data[result[i].classification]) {
-                    const temp = {};
-                    temp.id = result[i].id;
-                    temp.name = result[i].name;
-                    data[result[i].classification].push(temp);
+                if (json[`${result[i].classification}`]) {
+                    json[`${result[i].classification}`].push([result[i].id, result[i].name]);
+                } else {
+                    json[`${result[i].classification}`] = [];
                 }
-                else data[result[i].classification] = [];
             };
+
+            for (const k in json) {
+                const temp = {};
+                temp.fieldName = k;
+
+                switch (k) {
+                    case 'whereArr': temp.subject = '어디로 가고 싶나요?'; break;
+                    case 'whoArr': temp.subject = '누구와 함께 하나요?'; break;
+                    case 'whatArr': temp.subject = '무엇을 하나요?'; break;
+                    case 'featureArr': temp.subject = '분위기와 특징'; break;
+                    case 'foodArr': temp.subject = '어떤 음식'; break;
+                    case 'drinkArr': temp.subject = '어떤 술/음료'; break;
+                    case 'categoryArr': temp.subject = '카테고리'; break;
+                    default: break;
+                }
+
+                const idArray = [];
+                const valueArray = [];
+                for (const j of json[k]) {
+                    idArray.push(j[0]);
+                    valueArray.push(j[1]);
+                }
+
+                temp.ids = idArray;
+                temp.values = valueArray;
+
+                data.push(temp);
+            }
         } catch (err) {
             throw err;
         } finally {

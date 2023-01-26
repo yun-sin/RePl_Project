@@ -13,34 +13,8 @@ export const getTags = createAsyncThunk('HashtagSlice/getTags', async (payload, 
         result = rejectWithValue(err.response);
     }
 
-    if(!result.item) return result;
-
-    if (result.rtcode === 200) {
-        const data = [];
-        const keys = Object.keys(result.item);
-
-        for (const k of keys) {
-            const temp = {};
-
-            temp.fieldName = k;
-            switch (k) {
-                case 'whereArr': temp.subject = '어디로 가고 싶나요?'; break;
-                case 'whoArr': temp.subject = '누구와 함께 하나요?'; break;
-                case 'whatArr': temp.subject = '무엇을 하나요?'; break;
-                case 'featureArr': temp.subject = '분위기와 특징'; break;
-                case 'foodArr': temp.subject = '어떤 음식'; break;
-                case 'drinkArr': temp.subject = '어떤 술/음료'; break;
-                case 'categoryArr': temp.subject = '카테고리'; break;
-                default: break;
-            }
-            temp.values = result.item[k];
-
-            data.push(temp);
-        }
-
-        return data;
-    }
-    return result.rtmsg;
+    if (result.item) return result.item;
+    else return result;
 });
 
 export const getPostsTags = createAsyncThunk('HashtagSlice/getPostsTags', async (payload, { rejectWithValue }) => {

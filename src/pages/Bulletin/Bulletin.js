@@ -149,6 +149,7 @@ const Bulletin = memo(() => {
     /** 옵션 검색 구현을 위한 State들 */
     const [classification, setClassification] = useState(0);
     const [tagOptions, setTagOptions] = useState([]);
+    const [tagValues, setTagValues] = useState([]);
 
     // 정렬 방식 변경시 이벤트
     const onSortWayChange = useCallback(e => {
@@ -172,8 +173,10 @@ const Bulletin = memo(() => {
     useEffect(() => {
         if (classification == 0) {
             setTagOptions([]);
+            setTagValues([]);
         } else {
             setTagOptions(tags[classification - 1].values);
+            setTagValues(tags[classification - 1].ids);
         }
     }, [classification]);
 
@@ -236,7 +239,7 @@ const Bulletin = memo(() => {
                         {
                             tagOptions && tagOptions.map((v, i) => {
                                 return (
-                                    <option key={i} value={v.id}>{v.name}</option>
+                                    <option key={i} value={tagValues[i]}>{v}</option>
                                 )
                             })
                         }
