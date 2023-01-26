@@ -17,7 +17,11 @@ export const getTP = createAsyncThunk("MapThemeSlice/getTP", async (payload, { r
     result = rejectWithValue(err.response);
   }
 
-  return result.item;
+  if (result.item) {
+    return result.item
+  } else {
+    return result;
+  }
 });
 
 /** 특정 유저가 작성한 데이터만을 불러오는 비동기 함수 */
