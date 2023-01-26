@@ -63,7 +63,7 @@ const PlaceList = memo(() => {
   const [LocData, setLocData] = useState();
   const [ThemeData, setThemeData] = useState();
 
-  const { data } = useSelector((state) => state.MapSlice);
+  const { data, loading } = useSelector((state) => state.MapSlice);
   const { data: data2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3 } = useSelector((state) => state.MapThemeSlice);
 
@@ -75,17 +75,13 @@ const PlaceList = memo(() => {
     dispatch(getTP());
   }, []);
 
-  useEffect(() => {
-    console.log(data, data2, data3);
-    console.log(randomData&&randomData)
-  }, [data, data2, data3])
+ 
 
   // const randomData = data && [...data]?.sort(() => Math.random() - 0.5);
   const randomData = useMemo(() => {
+    console.log(data);
     return data && [...data]?.sort(() => Math.random() - 0.5);
   }, [data]);
-
-  console.log(randomData);
 
   // 모달창 이벤트
   const onModalIsOpen = useCallback((e) => {

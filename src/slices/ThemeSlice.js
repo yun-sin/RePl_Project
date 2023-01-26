@@ -29,7 +29,11 @@ export const getThemeData = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+      return result.item
+    } else {
+      return result;
+    }
   }
 );
 
