@@ -149,9 +149,11 @@ const Sidebar = memo(() => {
   },[]);
 
   const onFilterClick = useCallback((target, type) => {
+    console.log(selectedItems);
     if (target === selectedItems[type]) {
+      console.log('2');
       setSelectedItems(state => {
-        const temp = {};
+        const temp = {};  
         for (const k in state) {
           temp[k] = state[k];
         }
@@ -168,6 +170,7 @@ const Sidebar = memo(() => {
       return;
     }
     if (selectedItems[type]) {
+      console.log('1');
       setSelectedItems(state => {
         const temp = {};
         for (const k in state) {
@@ -194,7 +197,7 @@ const Sidebar = memo(() => {
       // selectedItems[type] = e.currentTarget;
       // selectedItems[type].classList.add("active");
     }
-  }, []);
+  }, [selectedItems]);
 
   useEffect(() => {
     console.log(selectedItems);
