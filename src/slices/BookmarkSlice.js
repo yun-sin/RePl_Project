@@ -20,7 +20,8 @@ export const getBookmarkList = createAsyncThunk("BookmarkSlice/getBookmarkList",
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) return result.item;
+  else return result;
 });
 
 /** 특정 유저 + 특정 장소 bookmark 데이터를 불러오는 비동기 함수 */
@@ -36,13 +37,18 @@ export const getBookmarkItem = createAsyncThunk("BookmarkSlice/getBookmarkItem",
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) return result.item;
+  else return result;
 });
 
 /** bookmark 저장을 위한 비동기 함수 */
 export const postBookmark = createAsyncThunk("BookmarkSlice/postBookmark", async (payload, { rejectWithValue }) => {
   const URL = "/bookmark";
-  const user_id = 2; // 임시 유저 아이디 (로그인 정보에서 불러오는 것으로 수정 예정)
+
+  let user_id = 1; // 임시 유저 아이디
+  if (payload.user_id) {
+    user_id = payload.user_id;
+  }
 
   let result = null;
 
@@ -55,7 +61,9 @@ export const postBookmark = createAsyncThunk("BookmarkSlice/postBookmark", async
   } catch (err) {
     result = rejectWithValue(err.response);
   }
-  return result;
+  
+  if (result.item) return result.item;
+  else return result;
 });
 
 /** bookmark 삭제를 위한 비동기 함수 */
@@ -72,7 +80,8 @@ export const delBookmark = createAsyncThunk("BookmarkSlice/delBookmark", async (
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) return result.item;
+  else return result;
 });
 
 const BookmarkSlice = createSlice({

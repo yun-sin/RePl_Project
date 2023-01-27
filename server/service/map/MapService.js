@@ -27,6 +27,70 @@ class MapService {
 
         return data;
     }
+
+    async addBookmark(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'insertBookmark', params);
+            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows === 0) {
+                throw new RuntimeExeption('북마크 추가에 실패했습니다.');
+            }
+
+            sql = mybatisMapper.getStatement('MapMapper', 'selectBookmark', {
+                id: insertId
+            });
+            let [result] = await dbcon.query(sql);
+
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    async getUserBookmarkList(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'selectUserBookmarkList', params);
+            let [result] = await dbcon.query(sql);
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    async getUserBookmarkItem(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'selectUserBookmarkItem', params);
+            let [result] = await dbcon.query(sql);
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
 }
 
 module.exports = new MapService();

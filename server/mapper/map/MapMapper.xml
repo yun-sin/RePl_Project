@@ -7,4 +7,24 @@
         SELECT id, place_name, address_name, road_address_name, lat, lng, category_item_name, phone, place_url
         FROM place
     </select>
+
+    <insert id='insertBookmark'>
+        INSERT INTO bookmark (user_id, place_id)
+        VALUES (#{userId}, #{placeId})
+    </insert>
+
+    <select id='selectUserBookmarkList'>
+        SELECT place_id FROM bookmark
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id='selectUserBookmarkItem'>
+        SELECT * FROM bookmark
+        WHERE user_id = #{userId} AND place_id = #{placeId}
+    </select>
+
+    <select id='selectBookmark'>
+        SELECT * FROM bookmark
+        WHERE id = #{id}
+    </select>
 </mapper>

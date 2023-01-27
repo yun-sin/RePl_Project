@@ -466,7 +466,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
   useEffect(() => {
     if (data4) {
-      console.log(data4[0]?.id);
+      // console.log(data4[0]?.id);
       setBookmarkId(data4[0]?.id);
       if (data4[0]?.id) {
         setBookmarkBtn(true);
@@ -482,7 +482,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
     // bookmark 여부 데이터
     dispatch(getBookmarkItem({ user_id: 2, place_id: data.id })).then((e) => {
-      console.log(e.payload);
+      // console.log(e.payload);
       if (e.payload.length != 0) {
         setBookmarkId(e.payload[0]?.id);
         setBookmarkBtn(true);

@@ -150,6 +150,10 @@ const Sidebar = memo(() => {
 
   const onFilterClick = useCallback((target, type) => {
     console.log(selectedItems);
+    if (Object.values(selectedItems)?.filter((v) => v)?.length >= 3) {
+      window.alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
+      return;
+    }
     if (target === selectedItems[type]) {
       console.log('2');
       setSelectedItems(state => {
@@ -163,10 +167,6 @@ const Sidebar = memo(() => {
       });
       // selectedItems[type].classList.remove("active");
       // selectedItems[type] = null;
-      return;
-    }
-    if (Object.values(selectedItems)?.filter((v) => v)?.length >= 3) {
-      window.alert("카테고리는 최대 3개까지 선택할 수 있습니다.");
       return;
     }
     if (selectedItems[type]) {
