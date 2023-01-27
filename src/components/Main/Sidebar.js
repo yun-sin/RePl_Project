@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState, useMemo } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -126,7 +126,9 @@ const Sidebar = memo(() => {
   const theme = useRef();
   const following = useRef();
 
-  const convData = data&&_.keyBy(data,'fieldName');
+  const convData = useMemo(() => {
+    return data&&_.keyBy(data,'fieldName');
+  }, [data]);
 
   useEffect(() => {
     switch (filter) {
@@ -146,11 +148,19 @@ const Sidebar = memo(() => {
     dispatch((getTags()));
   },[]);
 
-
-  const onFilterClick = useCallback((e, type) => {
-    if (e.currentTarget === selectedItems[type]) {
-      selectedItems[type].classList.remove("active");
-      selectedItems[type] = null;
+  const onFilterClick = useCallback((target, type) => {
+    if (target === selectedItems[type]) {
+      setSelectedItems(state => {
+        const temp = {};
+        for (const k in state) {
+          temp[k] = state[k];
+        }
+        temp[type].classList.remove("active");
+        temp[type] = null;
+        return temp;
+      });
+      // selectedItems[type].classList.remove("active");
+      // selectedItems[type] = null;
       return;
     }
     if (Object.values(selectedItems)?.filter((v) => v)?.length >= 3) {
@@ -158,16 +168,37 @@ const Sidebar = memo(() => {
       return;
     }
     if (selectedItems[type]) {
-      selectedItems[type].classList.remove("active");
-      selectedItems[type] = e.currentTarget;
-      selectedItems[type].classList.add("active");
+      setSelectedItems(state => {
+        const temp = {};
+        for (const k in state) {
+          temp[k] = state[k];
+        }
+        temp[type].classList.remove("active");
+        temp[type] = target;
+        temp[type].classList.add("active");
+        return temp;
+      });
+      // selectedItems[type].classList.remove("active");
+      // selectedItems[type] = target;
+      // selectedItems[type].classList.add("active");
     } else {
-      selectedItems[type] = e.currentTarget;
-      selectedItems[type].classList.add("active");
+      setSelectedItems(state => {
+        const temp = {};
+        for (const k in state) {
+          temp[k] = state[k];
+        }
+        temp[type] = target;
+        temp[type].classList.add("active");
+        return temp;
+      });
+      // selectedItems[type] = e.currentTarget;
+      // selectedItems[type].classList.add("active");
     }
-  });
+  }, []);
 
-  // console.log(selectedItems);
+  useEffect(() => {
+    console.log(selectedItems);
+  }, [selectedItems]);
 
   const onSearchSubmit = useCallback((e) => {
     e.preventDefault();
@@ -213,9 +244,7 @@ const Sidebar = memo(() => {
     theme.current.classList.remove("active");
   });
 
-  // console.log(selectedItems);
-
-  const more = useCallback((whereArr,length) => {
+  const more = useCallback((whereArr, length) => {
     if ( !length)
     {      
       length = convData&&(convData[whereArr].values.length || 0)
@@ -223,7 +252,7 @@ const Sidebar = memo(() => {
     }
     return convData&&convData[whereArr].values.map((v, i) => {
       return (
-        <li key={i} onClick={(e) => onFilterClick(e, whereArr)}>
+        <li key={i} onClick={(e) => onFilterClick(e.currentTarget, whereArr)}>
           <span>{v}</span>
         </li>
       );
@@ -278,7 +307,7 @@ const Sidebar = memo(() => {
         <ul>
           {convData&&convData['whoArr'].values.map((v, i) => {
             return (
-              <li key={i} onClick={(e) => onFilterClick(e, "whoArr")}>
+              <li key={i} onClick={(e) => onFilterClick(e.currentTarget, "whoArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -316,7 +345,7 @@ const Sidebar = memo(() => {
         <ul>
           {convData&&convData['foodArr'].values.map((v, i) => {
             return (
-              <li key={i} onClick={(e) => onFilterClick(e, "foodArr")}>
+              <li key={i} onClick={(e) => onFilterClick(e.currentTarget, "foodArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -328,7 +357,7 @@ const Sidebar = memo(() => {
         <ul>
           {convData&&convData['drinkArr'].values.map((v, i) => {
             return (
-              <li key={i} onClick={(e) => onFilterClick(e, "drinkArr")}>
+              <li key={i} onClick={(e) => onFilterClick(e.currentTarget, "drinkArr")}>
                 <span>{v}</span>
               </li>
             );
@@ -340,14 +369,13 @@ const Sidebar = memo(() => {
         <ul>
           {convData&&convData['categoryArr'].values.map((v, i) => {
             return (
-              <li key={i} onClick={(e) => onFilterClick(e, "categoryArr")}>
+              <li key={i} onClick={(e) => onFilterClick(e.currentTarget, "categoryArr")}>
                 <span>{v}</span>
-              </li>
+              </li> 
             );
           })}
         </ul>
       </div>
-
      
     </SidebarContainer>
   );

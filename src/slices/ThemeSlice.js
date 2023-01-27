@@ -29,8 +29,6 @@ export const getThemeData = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    console.log(result);
-
     if (result.item) {
       return result.item
     } else {

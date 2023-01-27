@@ -13,9 +13,6 @@ const SidebarSlice = createSlice({
   },
 });
 
-
-
 export const { setActive } = SidebarSlice.actions;
-
 
 export default SidebarSlice.reducer;

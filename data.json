@@ -469,7 +469,7 @@
       "categories": [
         1, 2, 3
       ]
-    },
+    }
   ],
   "bookmark": [
     {
@@ -1294,6 +1294,6 @@
     { "id": 107, "fieldName": "categoryArr", "value": "베이커리" },
     { "id": 108, "fieldName": "categoryArr", "value": "문화공간" },
     { "id": 109, "fieldName": "categoryArr", "value": "공원" },
-    { "id": 110, "fieldName": "categoryArr", "value": "호텔" },
+    { "id": 110, "fieldName": "categoryArr", "value": "호텔" }
   ]
 }
