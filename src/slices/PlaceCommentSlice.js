@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { pending, fulfilled, rejected } from '../helper/ReduxHelper';
+import { cloneDeep } from 'lodash';
 
-export const getComment = createAsyncThunk("PlaceCommentSlice/addComment", async (payload, { rejectWithValue }) => {
+export const getComment = createAsyncThunk("PlaceCommentSlice/getComment", async (payload, { rejectWithValue }) => {
     let result = null;
     const URL = process.env.REACT_APP_PLACE_REVIEW;
     const { place_id } = payload;
@@ -20,23 +21,22 @@ export const getComment = createAsyncThunk("PlaceCommentSlice/addComment", async
 
 export const addComment = createAsyncThunk("PlaceCommentSlice/addComment", async (payload, { rejectWithValue }) => {
     let result = null;
-    const URL = process.env.REACT_APP_PLACE_PATH;
+    const URL = process.env.REACT_APP_PLACE_REVIEW;
     const { user_id, place_id, rating, content } = payload;
 
     try {
         const response = await axios.post(`${URL}`, {
-            userId: user_id,
-            placeId: place_id,
-            rating: rating,
+            user_id: +user_id,
+            place_id: +place_id,
+            rating: +rating,
             content: content
         });
 
-        result = response.data
+        result = response.data;
     } catch (err) {
         return (rejectWithValue(err.response));
     }
 
-    console.log(result);
     if (result?.item) return result.item;
     else return result;
 });
@@ -54,7 +54,15 @@ const PlaceCommentSlice = createSlice({
         [getComment.rejected]: rejected,
 
         [addComment.pending]: pending,
-        [addComment.fulfilled]: fulfilled,
+        [addComment.fulfilled]: (state, { payload }) => {
+            let data = cloneDeep(state.data);
+            data.push(payload);
+            return {
+                data: data,
+                loading: false,
+                error: null,
+            };
+        },
         [addComment.rejected]: rejected,
     }
 });

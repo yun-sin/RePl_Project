@@ -473,10 +473,6 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   }, []);
 
   useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
-  useEffect(() => {
     if (data4) {
       // console.log(data4[0]?.id);
       setBookmarkId(data4[0]?.id);
@@ -590,6 +586,18 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     const content = target.comment__input.value;
 
     console.log(rating, content);
+
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (userInfo) userInfo = JSON.parse(userInfo);
+    let user_id = 0;
+    if (userInfo?.id) user_id = userInfo.id;
+
+    dispatch(addComment({
+      user_id: user_id,
+      place_id: data.id,
+      rating: rating,
+      content: content
+    }));
   }, []);
 
   /** 북마크 클릭 이벤트 - 장윤신 */
@@ -681,7 +689,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
                     return (
                       <div className="review_item" key={i}>
                         <div className="review_emoji">
-                          <img src={emoji[v.rating]} alt="평점 이모지" />
+                          <img src={emoji[v.rating - 1]} alt="평점 이모지" />
                         </div>
                         <span className="review_text">{v.content}</span>
                       </div>
