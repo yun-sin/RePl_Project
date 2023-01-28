@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
+import cookieHelper from '../helper/CookieHelper';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faBookmark } from "@fortawesome/free-solid-svg-icons"; // 속이 찬 북마크
@@ -480,8 +481,14 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       setBookmarkBtn(false);
     }
 
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (userInfo) userInfo = JSON.parse(userInfo);
+
+    let user_id = 0;
+    if (userInfo) user_id = userInfo.id;
+
     // bookmark 여부 데이터
-    dispatch(getBookmarkItem({ user_id: 2, place_id: data.id })).then((e) => {
+    dispatch(getBookmarkItem({ user_id: user_id, place_id: data.id })).then((e) => {
       // console.log(e.payload);
       if (e.payload.length != 0) {
         setBookmarkId(e.payload[0]?.id);

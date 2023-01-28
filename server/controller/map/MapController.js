@@ -57,5 +57,20 @@ module.exports = (() => {
         res.sendResult({ item: result });
     });
 
+    router.delete('/bookmark/:index', async (req, res, next) => {
+        let result = null;
+        let { index } = req.params;
+
+        try {
+            result = await MapService.deleteBookmark({
+                id: index
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
     return router;
 })();

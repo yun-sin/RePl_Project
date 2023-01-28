@@ -27,4 +27,9 @@
         SELECT * FROM bookmark
         WHERE id = #{id}
     </select>
+
+    <delete id='deleteBookmark'>
+        DELETE FROM bookmark
+        WHERE id = #{id}
+    </delete>
 </mapper>

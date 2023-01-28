@@ -34,7 +34,14 @@ class MapService {
 
         try {
             dbcon = await DBPool.getConnection();
-            let sql = mybatisMapper.getStatement('MapMapper', 'insertBookmark', params);
+            let sql = mybatisMapper.getStatement('MapMapper', 'selectUserBookmarkItem', params);
+            let [result] = await dbcon.query(sql);
+
+            if (result.length > 0) {
+                return result;
+            }
+
+            sql = mybatisMapper.getStatement('MapMapper', 'insertBookmark', params);
             let [{ insertId, affectedRows }] = await dbcon.query(sql);
 
             if (affectedRows === 0) {
@@ -44,7 +51,7 @@ class MapService {
             sql = mybatisMapper.getStatement('MapMapper', 'selectBookmark', {
                 id: insertId
             });
-            let [result] = await dbcon.query(sql);
+            [result] = await dbcon.query(sql);
 
             data = result;
         } catch (err) {
@@ -90,6 +97,27 @@ class MapService {
         }
 
         return data;
+    }
+
+    async deleteBookmark(params) {
+        let dbcon = null;
+        
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'deleteBookmark', params);
+            
+            let [{ affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows === 0) {
+                throw new RuntimeExeption('북마크 삭제에 실패했습니다.');
+            }
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return [];
     }
 }
 
