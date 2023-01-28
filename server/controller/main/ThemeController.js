@@ -29,5 +29,19 @@ module.exports = (() => {
         res.sendResult({ item: result });
     });
 
+    router.post('/thme_place', async (req, res, next) => {
+        let result = null;
+        const { place_id, theme_id, user_id } = req.body;
+        console.log(place_id, theme_id, user_id);
+
+        try {
+            
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
     return router;
 })();

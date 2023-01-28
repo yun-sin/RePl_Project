@@ -45,7 +45,7 @@ export const getBookmarkItem = createAsyncThunk("BookmarkSlice/getBookmarkItem",
 export const postBookmark = createAsyncThunk("BookmarkSlice/postBookmark", async (payload, { rejectWithValue }) => {
   const URL = "/bookmark";
 
-  let user_id = 1; // 임시 유저 아이디
+  let user_id = 0; // 임시 유저 아이디
   if (payload.user_id) {
     user_id = payload.user_id;
   }

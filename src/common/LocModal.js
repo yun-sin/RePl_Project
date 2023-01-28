@@ -483,14 +483,13 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
     let userInfo = cookieHelper.getCookie('loginInfo');
     if (userInfo) userInfo = JSON.parse(userInfo);
-
     let user_id = 0;
-    if (userInfo) user_id = userInfo.id;
+    if (userInfo.id) user_id = userInfo.id;
 
     // bookmark 여부 데이터
     dispatch(getBookmarkItem({ user_id: user_id, place_id: data.id })).then((e) => {
-      // console.log(e.payload);
-      if (e.payload.length != 0) {
+      console.log(e.payload);
+      if (e.payload.length !== 0) {
         setBookmarkId(e.payload[0]?.id);
         setBookmarkBtn(true);
       }
@@ -502,7 +501,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
       if (!BookmarkId && BookmarkBtn) {
         console.log("북마크 등록");
-        dispatch(postBookmark({ place_id: data.id }));
+        dispatch(postBookmark({ user_id: user_id, place_id: data.id }));
       }
 
       if (BookmarkId && !BookmarkBtn) {

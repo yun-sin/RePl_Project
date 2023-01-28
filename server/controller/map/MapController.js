@@ -54,6 +54,7 @@ module.exports = (() => {
             return next(err);
         }
 
+        console.log(result);
         res.sendResult({ item: result });
     });
 
