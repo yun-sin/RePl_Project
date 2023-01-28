@@ -87,7 +87,6 @@ class ThemeService {
             if (dbcon) dbcon.release();
         }
 
-        console.log(data);
         return data;
     }
 }

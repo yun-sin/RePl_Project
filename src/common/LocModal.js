@@ -18,6 +18,8 @@ import { getThemeData } from "../slices/ThemeSlice";
 import { getTP } from "../slices/MapThemeSlice";
 import { getBookmarkItem, postBookmark, delBookmark } from "../slices/BookmarkSlice";
 
+import { getComment, addComment } from "../slices/PlaceCommentSlice";
+
 import a1 from "../assets/img/map/emoji-1-a.png";
 import a2 from "../assets/img/map/emoji-2-a.png";
 import a3 from "../assets/img/map/emoji-3-a.png";
@@ -431,6 +433,8 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
   const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
 
+  const { data: comments } = useSelector(state => state.PlaceCommentSlice);
+
   const [TModal, setTModal] = useState(false);
   const [ThemeData, setThemeData] = useState();
   const [TPList, setTPList] = useState({});
@@ -460,10 +464,17 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       setTPList(obj);
     });
 
+    // 후기 댓글 데이터
+    dispatch(getComment({ place_id: data.id }));
+
     return () => {
       console.log("모달창 닫음");
     };
   }, []);
+
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
 
   useEffect(() => {
     if (data4) {
@@ -488,7 +499,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
     // bookmark 여부 데이터
     dispatch(getBookmarkItem({ user_id: user_id, place_id: data.id })).then((e) => {
-      console.log(e.payload);
+      // console.log(e.payload);
       if (e.payload.length !== 0) {
         setBookmarkId(e.payload[0]?.id);
         setBookmarkBtn(true);
@@ -572,6 +583,13 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
   const onCommentSubmit = useCallback((e) => {
     e.preventDefault();
+
+    const target = e.currentTarget;
+
+    const rating = target.commentEmoji.value;
+    const content = target.comment__input.value;
+
+    console.log(rating, content);
   }, []);
 
   /** 북마크 클릭 이벤트 - 장윤신 */
@@ -650,14 +668,26 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
             <div className="info">
               <div className="info-item">
                 <div className="title">이 장소에 대한 후기들!</div>
+                {/* 예시 리뷰 //// */}
                 <div className="review_item">
-                  {/* 예시 리뷰 */}
                   <div className="review_emoji">
-                    <img src={emoji[3]} />
+                    <img src={emoji[3]} alt="평점 이모지" />
                   </div>
                   <span className="review_text">잔치국수와 김밥의 조화. 준수함.</span>
                 </div>
-                {/* 리뷰 */}
+                {/* //// 예시 리뷰 */}
+                {
+                  comments && comments.map((v, i) => {
+                    return (
+                      <div className="review_item" key={i}>
+                        <div className="review_emoji">
+                          <img src={emoji[v.rating]} alt="평점 이모지" />
+                        </div>
+                        <span className="review_text">{v.content}</span>
+                      </div>
+                    );
+                  })
+                }
                 {data?.review?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card">
@@ -673,8 +703,8 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
                     {emoji.map((v, i) => {
                       return (
                         <label key={i} htmlFor={`commentEmoji${i}`} onClick={onCommentRadioChange}>
-                          <input type="radio" name="commentEmoji" id={`commentEmoji${i}`} value={i} />
-                          <img src={v} />
+                          <input type="radio" name="commentEmoji" id={`commentEmoji${i}`} value={i + 1} />
+                          <img src={v} alt='평점 이모지' />
                         </label>
                       );
                     })}

@@ -99,7 +99,6 @@ const MapThemeSlice = createSlice({
     [postTP.pending]: pending,
     [postTP.fulfilled]: (state, { meta, payload }) => {
       const data = cloneDeep(state.data);
-      console.log(payload);
       data.push(payload);
       return {
         data: data,
