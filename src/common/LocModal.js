@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +20,7 @@ import { getTP } from "../slices/MapThemeSlice";
 import { getBookmarkItem, postBookmark, delBookmark } from "../slices/BookmarkSlice";
 
 import { getComment, addComment } from "../slices/PlaceCommentSlice";
+import { getPost } from "../slices/PlacePostSlice";
 
 import a1 from "../assets/img/map/emoji-1-a.png";
 import a2 from "../assets/img/map/emoji-2-a.png";
@@ -428,12 +430,15 @@ const testData = [
 
 // delCount, setDelCount 내 북마크 페이지에서 삭제될때마다 재렌더링을 위한 state (자식에서 부모로 전달하기 위해 props로 set까지 전달) - 장윤신
 const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount }) => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
   const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
 
   const { data: comments } = useSelector(state => state.PlaceCommentSlice);
+  const { data: posts } = useSelector(state => state.PlacePostSlice);
 
   const [TModal, setTModal] = useState(false);
   const [ThemeData, setThemeData] = useState();
@@ -467,10 +472,17 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     // 후기 댓글 데이터
     dispatch(getComment({ place_id: data.id }));
 
+    // 관련된 게시물 데이터
+    dispatch(getPost({ place_id: data.id }));
+    
     return () => {
       console.log("모달창 닫음");
     };
   }, []);
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
 
   useEffect(() => {
     if (data4) {
@@ -610,6 +622,13 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     setBookmarkBtn(false);
   });
 
+  // 게시물 클릭 이벤트
+  const onPostClick = useCallback(e => {
+    e.preventDefault();
+
+    navigate(`/bulletin/${e.currentTarget.dataset.id}`);
+  }, []);
+
   return (
     <Modal
       isOpen={isModalOpen}
@@ -738,17 +757,17 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
           <div className="modal-bullet-container">
             <div className="title">이 장소를 추천한 게시글 목록</div>
             <ul className="posts">
-              {testData.map((v, i) => {
+              {posts && posts.map((v, i) => {
                 return (
-                  <li key={i}>
+                  <li key={i} data-id={v.id} onClick={onPostClick}>
                     <img src={v.bgImg} alt="미리보기 이미지" />
                     <div className="posts_desc">
-                      <h4>{v.title}</h4>
-                      <p>{v.contents}</p>
+                      <h4>{v.postTitle}</h4>
+                      <p>{v.content}</p>
                     </div>
                     <div className="posts_fb">
                       <p>
-                        ♡<span>{v.hearts}</span>
+                        ♡<span>{v.like}</span>
                       </p>
                     </div>
                   </li>

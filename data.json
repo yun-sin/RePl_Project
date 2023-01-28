@@ -1981,5 +1981,21 @@
       "id": 15
     }
   ],
-  "placePost": []
+  "placePost": [
+    {
+      "id": 1,
+      "bulletin_id": 10,
+      "place_id": 7918217
+    },
+    {
+      "id": 2,
+      "bulletin_id": 12,
+      "place_id": 11378324
+    },
+    {
+      "id": 3,
+      "bulletin_id": 13,
+      "place_id": 18613409
+    }
+  ]
 }
