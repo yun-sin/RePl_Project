@@ -20,11 +20,12 @@ export const getPost = createAsyncThunk("PlacePostSlice/getPost", async (payload
             });
         }
 
-        let posts = null;
+        let posts = [];
         for (const k of arr) {
-            response = await axios.get(`/bulletin?id=${k}`);
+            response = await axios.get(`/bulletin?id=${k}`);    
             if (response?.data?.item) {
-                posts = response.data.item;
+                posts.push(response.data.item);
+                console.log(posts);
             } else {
                 posts = response.data;
             }

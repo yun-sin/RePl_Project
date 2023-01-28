@@ -54,7 +54,6 @@ module.exports = (() => {
             return next(err);
         }
 
-        console.log(result);
         res.sendResult({ item: result });
     });
 
@@ -70,6 +69,54 @@ module.exports = (() => {
             return next(err);
         }
 
+        res.sendResult({ item: result });
+    });
+
+    router.get('/placeReview', async (req, res, next) => {
+        let result = null;
+        let { place_id } = req.query;
+
+        try {
+            result = await MapService.getReviews({
+                placeId: +place_id
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
+    router.get('/placePost', async (req, res, next) => {
+        let result = null;
+        let { place_id } = req.query;
+
+        try {
+            result = await MapService.getPosts({
+                placeId: +place_id
+            });
+        } catch (err) {
+            return next(err);
+        }
+        
+        res.sendResult({ item: result });
+    });
+
+    router.post('/placeReview', async (req, res, next) => {
+        let result = null;
+        let { user_id, place_id, rating, content } = req.body;
+
+        try {
+            result = await MapService.addComment({
+                userId: +user_id,
+                placeId: +place_id,
+                rating: +rating,
+                content: content
+            });
+        } catch (err) {
+            return next(err);
+        }
+        
         res.sendResult({ item: result });
     });
 

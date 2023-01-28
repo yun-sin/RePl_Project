@@ -32,4 +32,24 @@
         DELETE FROM bookmark
         WHERE id = #{id}
     </delete>
+
+    <select id='selectReviews'>
+        SELECT * FROM review
+        WHERE place_id = #{placeId}
+    </select>
+
+    <select id='selectPostsId'>
+        SELECT bulletin_id FROM bulletin_place
+        WHERE place_id = #{placeId}
+    </select>
+
+    <insert id='insertReview'>
+        INSERT INTO review (user_id, place_id, comment, rating)
+        VALUES (#{userId}, #{placeId}, #{content}, #{rating})
+    </insert>
+
+    <select id='selectReview'>
+        SELECT * FROM review
+        WHERE id = #{id}
+    </select>
 </mapper>

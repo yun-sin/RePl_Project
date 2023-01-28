@@ -32,6 +32,7 @@ import b2 from "../assets/img/map/emoji-2-b.png";
 import b3 from "../assets/img/map/emoji-3-b.png";
 import b4 from "../assets/img/map/emoji-4-b.png";
 import b5 from "../assets/img/map/emoji-5-b.png";
+import Spinner from "./Spinner";
 
 const emoji = [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5];
 
@@ -438,7 +439,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
 
   const { data: comments } = useSelector(state => state.PlaceCommentSlice);
-  const { data: posts } = useSelector(state => state.PlacePostSlice);
+  const { data: posts, loading: postsLoading } = useSelector(state => state.PlacePostSlice);
 
   const [TModal, setTModal] = useState(false);
   const [ThemeData, setThemeData] = useState();
@@ -710,7 +711,13 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
                         <div className="review_emoji">
                           <img src={emoji[v.rating - 1]} alt="평점 이모지" />
                         </div>
-                        <span className="review_text">{v.content}</span>
+                        <span className="review_text">
+                          {
+                            v.content ? v.content : (
+                              v.comment ? v.comment : '내용없음'
+                            )
+                          }
+                        </span>
                       </div>
                     );
                   })
@@ -757,22 +764,36 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
           <div className="modal-bullet-container">
             <div className="title">이 장소를 추천한 게시글 목록</div>
             <ul className="posts">
-              {posts && posts.map((v, i) => {
-                return (
-                  <li key={i} data-id={v.id} onClick={onPostClick}>
-                    <img src={v.bgImg} alt="미리보기 이미지" />
-                    <div className="posts_desc">
-                      <h4>{v.postTitle}</h4>
-                      <p>{v.content}</p>
-                    </div>
-                    <div className="posts_fb">
-                      <p>
-                        ♡<span>{v.like}</span>
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
+              {
+                <>
+                  <Spinner loading={postsLoading} />
+
+                  {
+                    posts && posts.map((v, i) => {
+                      return (
+                        <li key={i} data-id={v.id} onClick={onPostClick}>
+                          <img src={v.bgImg} alt="미리보기 이미지" />
+                          <div className="posts_desc">
+                            <h4>
+                              {
+                                v.postTitle ? v.postTitle : (
+                                  v.title? v.title : '제목없음'
+                                )
+                              }
+                            </h4>
+                            <p dangerouslySetInnerHTML={{ __html: v.content }} />
+                          </div>
+                          <div className="posts_fb">
+                            <p>
+                              ♡<span>{v.like}</span>
+                            </p>
+                          </div>
+                        </li>
+                      );
+                    })
+                  }
+                </>
+              }
             </ul>
           </div>
         </div>

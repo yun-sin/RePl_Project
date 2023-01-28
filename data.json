@@ -564,6 +564,12 @@
       "theme_id": 0,
       "user_id": null,
       "id": 65
+    },
+    {
+      "place_id": 1889582026,
+      "theme_id": 0,
+      "user_id": null,
+      "id": 66
     }
   ],
   "theme": [
@@ -2154,6 +2160,13 @@
       "rating": 2,
       "content": "ㅁㄴㅇㅎㅇㄴㄹ",
       "id": 18
+    },
+    {
+      "user_id": 1,
+      "place_id": 1889582026,
+      "rating": 2,
+      "content": "123",
+      "id": 19
     }
   ],
   "placePost": [

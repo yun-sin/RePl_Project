@@ -257,13 +257,37 @@ const Bulletin = memo(() => {
                                     <Post
                                         key={i}
                                         targetId={v.id}
-                                        postTitle={v.title}
-                                        backgroundImage={v.bgimage}
-                                        backgroundColor={v.bgcolor}
-                                        postUser={v.username}
+                                        postTitle={
+                                            v.title ? v.title : (
+                                                v.postTitle ? v.postTitle : '제목없음'
+                                            )
+                                        }
+                                        backgroundImage={
+                                            v.bgimage ? v.bgimage : (
+                                                v.backgroundImage ? v.backgroundImage : ''
+                                            )
+                                        }
+                                        backgroundColor={
+                                            v.bgcolor ? v.bgcolor : (
+                                                v.bgColor ? v.bgColor : '#fff'
+                                            )
+                                        }
+                                        postUser={
+                                            v.username ? v.username : (
+                                                v.postUser ? v.postUser : '작성자'
+                                            )
+                                        }
                                         like={v.like}
-                                        postDate={v.postdate}
-                                        selectedTags={v.tags}
+                                        postDate={
+                                            v.postdate ? v.postdate : (
+                                                v.postDate ? v.postDate : '0000-00-00'
+                                            )
+                                        }
+                                        selectedTags={
+                                            v.tags ? v.tags : (
+                                                v.selectedTags ? v.selectedTags : []
+                                            )
+                                        }
                                     />
                                 );
                             })

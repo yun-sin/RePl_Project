@@ -119,6 +119,69 @@ class MapService {
 
         return [];
     }
+
+    async getReviews(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'selectReviews', params);
+            let [result] = await dbcon.query(sql);
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    async getPosts(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'selectPostsId', params);
+            let [result] = await dbcon.query(sql);
+            data = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
+
+    async addComment(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'insertReview', params);
+            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+            
+            if (affectedRows === 0) {
+                throw new RuntimeExeption('댓글 추가에 실패했습니다.');
+            }
+
+            sql = mybatisMapper.getStatement('MapMapper', 'selectReview', {
+                id: insertId
+            });
+            let [result] = await dbcon.query(sql);
+            [data] = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        return data;
+    }
 }
 
 module.exports = new MapService();

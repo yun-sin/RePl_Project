@@ -3,6 +3,7 @@ const logger = require('../../helper/LogHelper');
 const regexHelper = require('../../helper/RegexHelper');
 const { pagenation } = require('../../helper/UtilHelper');
 const bulletinService = require('../../service/bulletin/BulletinService');
+const PostService = require('../../service/bulletin/PostService');
 
 module.exports = (() => {
     const url = process.env.BULLETIN_PATH;
@@ -11,7 +12,23 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 파라미터들 저장
-        const { query, tag, page=1, rows=8, sortByLike } = req.query;
+        const { query, tag, page=1, rows=8, sortByLike, id } = req.query;
+
+        if (id) {
+            let json = null;
+
+            try {
+                json = await PostService.getItem({
+                    id: id
+                })
+            } catch (err) {
+                return next(err);
+            }
+
+            res.sendResult({ item: json });
+            return;
+        }
+
         const params = {};
         params.sortByLike = sortByLike;
 
@@ -103,7 +120,6 @@ module.exports = (() => {
             return next(err);
         }
 
-        console.log(data);
         res.sendResult({ item: data });
     });
 
