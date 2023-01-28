@@ -16,4 +16,15 @@
         SELECT id, place_id, theme_id, user_id
         FROM theme_place
     </select>
+
+    <select id="selectThemePlaceItem">
+        SELECT id, place_id, theme_id, user_id
+        FROM theme_place
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertPlaceTheme">
+        INSERT INTO theme_place (place_id, theme_id, user_id)
+        VALUES (#{placeId}, #{themeId}, #{userId})
+    </insert>
 </mapper>

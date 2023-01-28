@@ -484,7 +484,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     let userInfo = cookieHelper.getCookie('loginInfo');
     if (userInfo) userInfo = JSON.parse(userInfo);
     let user_id = 0;
-    if (userInfo.id) user_id = userInfo.id;
+    if (userInfo?.id) user_id = userInfo.id;
 
     // bookmark 여부 데이터
     dispatch(getBookmarkItem({ user_id: user_id, place_id: data.id })).then((e) => {
@@ -631,7 +631,9 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
             <div className="info">
               <div className="title">여기는 어떤 곳인가요?</div>
               <div className="info-item">
-                {themeList?.map((v, i) => {
+                {
+                  themeList && 
+                  themeList?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
                       {v?.icon + " " + v?.text}

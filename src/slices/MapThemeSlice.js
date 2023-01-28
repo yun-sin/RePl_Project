@@ -35,26 +35,28 @@ export const getUserTP = createAsyncThunk("MapThemeSlice/getUserTP", async (payl
   } catch (err) {
     result = rejectWithValue(err.response);
   }
-  return result;
+  if (result.item) return result.item;
+  else return result;
 });
 
 /** theme_place 저장을 위한 비동기 함수 */
 export const postTP = createAsyncThunk("MapThemeSlice/postTP", async (payload, { rejectWithValue }) => {
   let result = null;
   const URL = "/theme_place";
-  const user_id = 2; // 임시 유저 아이디 (로그인 정보에서 불러오는 것으로 수정 예정)
 
   try {
     const response = await axios.post(URL, {
       place_id: +payload.place_id,
       theme_id: +payload.theme_id,
-      user_id: user_id,
+      user_id: +payload.user_id,
     });
     result = response.data;
   } catch (err) {
     result = rejectWithValue(err.response);
   }
-  return result;
+
+  if (result.item) return result.item;
+  else return result;
 });
 
 /** theme_place 데이터 삭제를 위한 비동기 함수 */
@@ -70,7 +72,8 @@ export const deleteTP = createAsyncThunk("MapThemeSlice/deleteTP", async (payloa
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) return result.item;
+  else return result;
 });
 
 const MapThemeSlice = createSlice({
@@ -96,6 +99,7 @@ const MapThemeSlice = createSlice({
     [postTP.pending]: pending,
     [postTP.fulfilled]: (state, { meta, payload }) => {
       const data = cloneDeep(state.data);
+      console.log(payload);
       data.push(payload);
       return {
         data: data,
