@@ -120,6 +120,94 @@
       "category_item_name": "수도권7호선",
       "phone": "02-6311-7181",
       "place_url": "http://place.map.kakao.com/21160720"
+    },
+    {
+      "id": 1780698606,
+      "place_name": "서울숲카페거리",
+      "address_name": "서울 성동구 성수동1가 668-11",
+      "road_address_name": "",
+      "lat": "37.5464440372535",
+      "lng": "127.043028992489",
+      "category_item_name": "카페거리",
+      "phone": "",
+      "place_url": "http://place.map.kakao.com/1780698606"
+    },
+    {
+      "id": 1889582026,
+      "place_name": "서울숲 한강 전망대",
+      "address_name": "서울 성동구 성수동1가 700-1",
+      "road_address_name": "",
+      "lat": "37.5379147526231",
+      "lng": "127.041694615485",
+      "category_item_name": "전망대",
+      "phone": "",
+      "place_url": "http://place.map.kakao.com/1889582026"
+    },
+    {
+      "id": 21766257,
+      "place_name": "성수동갈비골목",
+      "address_name": "서울 성동구 성수동1가 668-11",
+      "road_address_name": "",
+      "lat": "37.5469328588197",
+      "lng": "127.044168799464",
+      "category_item_name": "먹자골목",
+      "phone": "",
+      "place_url": "http://place.map.kakao.com/21766257"
+    },
+    {
+      "id": 13127878,
+      "place_name": "서울숲 곤충식물원",
+      "address_name": "서울 성동구 성수동1가 685-715",
+      "road_address_name": "",
+      "lat": "37.5414277019142",
+      "lng": "127.039209487238",
+      "category_item_name": "수목원,식물원",
+      "phone": "",
+      "place_url": "http://place.map.kakao.com/13127878"
+    },
+    {
+      "id": 18059737,
+      "place_name": "서울숲 방문자센터",
+      "address_name": "서울 성동구 성수동1가 685-20",
+      "road_address_name": "서울 성동구 뚝섬로 273",
+      "lat": "37.5429945913268",
+      "lng": "127.041690655005",
+      "category_item_name": "관광안내소",
+      "phone": "02-460-2905",
+      "place_url": "http://place.map.kakao.com/18059737"
+    },
+    {
+      "id": 1772440780,
+      "place_name": "서울숲씨어터",
+      "address_name": "서울 성동구 성수동1가 685-696",
+      "road_address_name": "서울 성동구 서울숲2길 32-14",
+      "lat": "37.5456773288432",
+      "lng": "127.042914261633",
+      "category_item_name": "공연장,연극극장",
+      "phone": "070-4120-1310",
+      "place_url": "http://place.map.kakao.com/1772440780"
+    },
+    {
+      "id": 11331488,
+      "place_name": "서울숲",
+      "address_name": "서울 성동구 성수동1가 678-1",
+      "road_address_name": "",
+      "lat": "37.5443222301513",
+      "lng": "127.037617759165",
+      "category_item_name": "도시근린공원",
+      "phone": "02-460-2905",
+      "place_url": "http://place.map.kakao.com/11331488"
+    },
+    {
+      "id": 18234120,
+      "place_name": "서울숲역 수인분당선",
+      "address_name": "서울 성동구 성수동1가 656-436",
+      "road_address_name": "서울 성동구 왕십리로 지하 77",
+      "lat": "37.543645796605",
+      "lng": "127.044746216358",
+      "category_item_name": "수인분당선",
+      "phone": "02-461-3919",
+      "place_url": "http://place.map.kakao.com/18234120"
     }
   ],
   "theme_place": [
@@ -410,6 +498,72 @@
       "theme_id": 1,
       "user_id": 0,
       "id": 54
+    },
+    {
+      "place_id": 1344772608,
+      "theme_id": 3,
+      "user_id": 1,
+      "id": 55
+    },
+    {
+      "place_id": 1780698606,
+      "theme_id": 3,
+      "user_id": null,
+      "id": 56
+    },
+    {
+      "place_id": 1889582026,
+      "theme_id": 3,
+      "user_id": null,
+      "id": 57
+    },
+    {
+      "place_id": 21766257,
+      "theme_id": 3,
+      "user_id": null,
+      "id": 58
+    },
+    {
+      "place_id": 13127878,
+      "theme_id": 3,
+      "user_id": null,
+      "id": 59
+    },
+    {
+      "place_id": 18059737,
+      "theme_id": 3,
+      "user_id": null,
+      "id": 60
+    },
+    {
+      "place_id": 18059737,
+      "theme_id": 6,
+      "user_id": null,
+      "id": 61
+    },
+    {
+      "place_id": 1780698606,
+      "theme_id": 0,
+      "user_id": null,
+      "id": 62
+    },
+    {
+      "place_id": 1772440780,
+      "theme_id": 0,
+      "user_id": null,
+      "id": 63
+    },
+    {
+      "place_id": 11331488,
+      "theme_id": 0,
+      "user_id": null,
+      "id": 64
+    },
+    {
+      "place_id": 18234120,
+      "theme_id": 0,
+      "user_id": null,
+      "id": 65
     }
   ],
   "theme": [
@@ -1979,6 +2133,27 @@
       "rating": 2,
       "content": "123",
       "id": 15
+    },
+    {
+      "user_id": 1,
+      "place_id": 18613409,
+      "rating": 7,
+      "content": "ㅇㅁㄴㄹㅇㄴ",
+      "id": 16
+    },
+    {
+      "user_id": 1,
+      "place_id": 1772440780,
+      "rating": 2,
+      "content": "ㄷㅎㅁㄷㅎㅁㅎㄴ",
+      "id": 17
+    },
+    {
+      "user_id": 1,
+      "place_id": 1772440780,
+      "rating": 2,
+      "content": "ㅁㄴㅇㅎㅇㄴㄹ",
+      "id": 18
     }
   ],
   "placePost": [

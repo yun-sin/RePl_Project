@@ -369,9 +369,9 @@ const MapAdd = memo(({ zoomLevel }) => {
       {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
       <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={selectTheme} AAT={AAT} />
       {/* 모달창2 */}
-      <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} theme={1} />
-      {/* 모달창2 */}
-      <MapAddModal3 modalIsOpen={modalIsOpen3} title={location?.place_name} theme={1} />
+      <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} id={location?.id} theme={1} />
+      {/* 모달창3 */}
+      <MapAddModal3 modalIsOpen={modalIsOpen3} title={location?.place_name} id={location?.id} theme={1} />
 
       {/* 모달창 리뷰 */}
       {data &&

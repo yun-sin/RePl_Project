@@ -5,6 +5,9 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 
 import { modalOpen3, modalClose } from "../../slices/MapAddSlice";
+import { addComment } from "../../slices/PlaceCommentSlice";
+
+import cookieHelper from "../../helper/CookieHelper";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -22,7 +25,7 @@ import b5 from "../../assets/img/map/emoji-5-b.png";
 
 const emoji = [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5];
 
-export const MapAddModalContainer = styled.div`
+export const MapAddModalContainer = styled.form`
   letter-spacing: -0.5px;
   color: #666666;
   line-height: 21.45px;
@@ -158,7 +161,7 @@ export const MapAddModalContainer = styled.div`
   }
 `;
 
-const MapAddModal2 = memo(({ modalIsOpen }) => {
+const MapAddModal2 = memo(({ modalIsOpen, id }) => {
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState();
@@ -171,6 +174,27 @@ const MapAddModal2 = memo(({ modalIsOpen }) => {
 
     document.getElementById("comment_text")?.focus();
   });
+
+  const onCommentSubmit = useCallback(e => {
+    e.preventDefault();
+
+    const rate = rating;
+    const content = e.currentTarget.comment_text.value;
+
+    // console.log(rate, content, id);
+    const userInfo = cookieHelper.getCookie('loginInfo');
+    let user_id = 0;
+    if (userInfo) user_id = JSON.parse(userInfo).id;
+
+    dispatch(addComment({
+      user_id: user_id,
+      place_id: id,
+      rating: rate,
+      content: content
+    })).then(() => {
+      dispatch(modalOpen3());
+    });
+  }, [rating]);
 
   return (
     <Modal
@@ -193,7 +217,7 @@ const MapAddModal2 = memo(({ modalIsOpen }) => {
           overscrollBehavior: "contain",
         },
       }}>
-      <MapAddModalContainer>
+      <MapAddModalContainer onSubmit={onCommentSubmit}>
         <div className="place_name">
           🎉
           <br />
@@ -235,13 +259,13 @@ const MapAddModal2 = memo(({ modalIsOpen }) => {
 
         {rating && (
           <div className="input_box">
-            <textarea id="comment_text" name="" rows="4" placeholder="여기에 의견을 입력해주세요."></textarea>
+            <textarea id="comment_text" name="comment_text" rows="4" placeholder="여기에 의견을 입력해주세요."></textarea>
           </div>
         )}
 
-        <div className="save" onClick={() => dispatch(modalOpen3())}>
+        <button type='submit' className="save">
           저장하기
-        </div>
+        </button>
         <div className="next" onClick={() => dispatch(modalOpen3())}>
           건너뛰기
         </div>
