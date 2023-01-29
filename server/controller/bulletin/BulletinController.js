@@ -40,10 +40,10 @@ module.exports = (() => {
         if (tag) params.tagId = parseInt(tag);
 
         /** 데이터 조회 */
-        let json = null;
+        let data = null;
         let pageInfo = null;
 
-        try {
+    try {
             // 전체 데이터 수 얻기
             const totalCount = await bulletinService.getCount(params);
             pageInfo = pagenation(totalCount, page, rows);
@@ -51,12 +51,12 @@ module.exports = (() => {
             params.offset = pageInfo.offset;
             params.listCount = pageInfo.listCount;
 
-            json = await bulletinService.getList(params);
+            data = await bulletinService.getList(params);
         } catch (err) {
             return next(err);
         }
 
-        res.sendResult({ pagenation: pageInfo, item: json });
+        res.sendResult({ pagenation: pageInfo, item: data });
     });
 
     /** 내가 후기 남긴 장소 목록 불러오기 */

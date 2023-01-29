@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 
 const Item = styled.li`
@@ -70,8 +72,24 @@ const Item = styled.li`
 `
 
 const RecommendListItem = memo(props => {
+    const emoji = useMemo(() => {
+        switch (props.rating) {
+            case 1: return '😫'; break;
+            case 2: return '🥴'; break;
+            case 3: return '😋'; break;
+            case 4: return '🥰'; break;
+            case 5: return '🤩'; break;
+            default: return '😫'; break;
+        }
+    }, [props]);
+
+    const onClick = useCallback(e => {
+        e.preventDefault();
+        props.modalOpen(e.currentTarget);
+    }, [props]);
+
     return (
-        <Item>
+        <Item data-id={props.id} data-place_name={props.title} data-place_address={props.address} data-place_url={props.place_url} onClick={onClick}>
             <div className='recommend-Item__1'>
                 {
                     props.place_img ? (
@@ -87,7 +105,7 @@ const RecommendListItem = memo(props => {
             </div>
             <div className='recommend-Item__3'>
                 <p>후기 <span>{props.comment}</span></p>
-                <p>O <span>{props.rating}</span></p>
+                <p>{emoji} <span>{props.rating}</span></p>
             </div>
         </Item>
     );

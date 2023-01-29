@@ -14,7 +14,7 @@
 
     <!-- 게시글에서 추천한 장소 조회 기능 정의 -->
     <select id="selectPlaces">
-        SELECT p.place_name, p.address_name, p.road_address_name, p.id
+        SELECT p.place_name, p.address_name, p.road_address_name, p.id, p.place_url
         FROM place AS p
         LEFT JOIN bulletin_place AS bp
         ON p.id = bp.place_id
@@ -23,7 +23,7 @@
 
     <!-- 추천된 장소의 댓글 개수, 평점 -->
     <select id="selectPlaceInfo">
-        SELECT COUNT(comment) AS comment, AVG(rating) AS rating
+        SELECT COUNT(comment) AS comment, AVG(MOD(rating + 4, 5) + 1) AS rating
         FROM review
         WHERE place_id = #{id}
     </select>

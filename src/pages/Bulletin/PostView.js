@@ -9,6 +9,7 @@ import OtherPost from '../../components/bulletin/OtherPost';
 import RecommendListItem from '../../components/bulletin/RecommendListItem';
 import Spinner from '../../common/Spinner';
 import cookieHelper from '../../helper/CookieHelper';
+import LocModal from "../../common/LocModal";
 
 import { getPost } from '../../slices/bulletin/PostViewSlice';
 import { getOtherPosts } from '../../slices/bulletin/OtherPostSlice';
@@ -274,7 +275,7 @@ const NewPost = memo(props => {
     // 작성자의 다른 게시글들 데이터
     const { data: otherPosts, loading: loading4, error: error4 } = useSelector(state => state.OtherPostSlice);
 
-    // 패스파라미터 변수
+// 패스파라미터 변수
     const postId = useParams().id;
 
     // 팔로우 여부
@@ -285,12 +286,27 @@ const NewPost = memo(props => {
         dispatch(getPost(postId));
     }, [postId]);
 
-    // 게시글 데이터 적재 시 게시자의 다른 게시물 정보 불러오기
+    // 게시글 데이터 적재 완료시 2차 데이터 불러오기
     useEffect(() => {
+        console.log(data);
         if (data) {
             dispatch(getRecommendedPlaces(postId));
             dispatch(getPostsTags(postId));
             dispatch(getOtherPosts(data.userId));
+
+            const target = document.querySelector('#titleArea');
+            if (data.bgimage) {
+                target.setAttribute('style', `
+                    background-image: url(/upload/${data.bgimage});
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: cover;
+                `);
+            } else {
+                target.setAttribute('style', `
+                    background-color: ${data.bgcolor}
+                `);
+            }
         }
     }, [data]);
 
@@ -304,6 +320,30 @@ const NewPost = memo(props => {
             }) > -1);
         }
     }, [data]);
+
+    const [modalContent, setModalContent] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // 모달창 이벤트
+    const modalOpen = useCallback(current => {
+        setModalContent({ id: current.dataset.id, place_name: current.dataset.place_name, address_name: current.dataset.place_address, place_url: current.dataset.place_url });
+        setIsModalOpen(true);
+    }, []);
+
+    useEffect(() => {
+        if (isModalOpen) {
+          document.body.style.cssText = `
+                position: fixed; 
+                top: -${window.scrollY}px;
+                overflow-y: scroll;
+                width: 100%;
+            `;
+        } else {
+          const scrollY = document.body.style.top;
+          document.body.style.cssText = "";
+          window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+        }
+      }, [isModalOpen]);
 
     // 팔로우/언팔로우 클릭시 이벤트
     const onFollowClick = useCallback(e => {
@@ -381,7 +421,7 @@ const NewPost = memo(props => {
                         <div>에러</div>
                     ) : (
                         data && <>
-                            <TitleArea bgColor={data.bgColor}>
+                            <TitleArea id='titleArea' bgColor={data.bgColor}>
                                 <div className='title'>
                                     <h2 className='title__main-title'>{data.title}</h2>
                                     <div className='title__desc'>
@@ -411,14 +451,26 @@ const NewPost = memo(props => {
                                                             return (
                                                                 <RecommendListItem
                                                                     key={i}
+                                                                    id={v.id}
                                                                     img={v.img}
                                                                     title={v.place_name}
                                                                     address={v.address_name}
                                                                     comment={v.comment}
                                                                     rating={v.rating}
+                                                                    place_url={v.place_url}
+                                                                    modalOpen={modalOpen}
                                                                 />
                                                             );
                                                         })
+                                                    }
+                                                    {
+                                                        isModalOpen ? 
+                                                        <LocModal
+                                                            isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} 
+                                                            style={{ content: { 
+                                                            width: "300px" } }}
+                                                            data={modalContent}
+                                                        /> : <></>
                                                     }
                                                 </ul>
                                             )

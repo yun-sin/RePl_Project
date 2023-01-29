@@ -25,7 +25,6 @@ export const getPost = createAsyncThunk("PlacePostSlice/getPost", async (payload
             response = await axios.get(`/bulletin?id=${k}`);    
             if (response?.data?.item) {
                 posts.push(response.data.item);
-                console.log(posts);
             } else {
                 posts = response.data;
             }

@@ -11,6 +11,7 @@ import { getTags } from '../../slices/bulletin/HashtagSlice';
 
 import Post from '../../components/bulletin/Post';
 import Spinner from '../../components/Spinner';
+import CookieHelper from '../../helper/CookieHelper';
 
 const BannerArea = styled.div`
   width: 100%;
@@ -53,18 +54,22 @@ const BannerArea = styled.div`
     flex-flow: row nowrap;
     margin-bottom: 5px;
 
-    a {
-      margin: 0 5px;
-      padding: 6px 10px;
-      background-color: #fff;
-      text-decoration: none;
-      color: #0581bb;
-      border-radius: 12px;
+    button {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 5px;
+        padding: 6px 10px;
+        background-color: #fff;
+        text-decoration: none;
+        color: #0581bb;
+        border-radius: 12px;
+        border: none;
 
-      &:hover {
-        background-color: #0581bb;
-        color: #fff;
-      }
+        &:hover {
+            background-color: #0581bb;
+            color: #fff;
+            cursor: pointer;
+        }
     }
   }
 `;
@@ -134,6 +139,7 @@ const Bulletin = memo(() => {
     const [isUpdate, setIsUpdate] = useState(0);
     const [sort, setSort] = useState(false);
 
+    console.log(data, pagenation);
     // 데이터 적재
     useEffect(() => {
         dispatch(getList({
@@ -145,6 +151,29 @@ const Bulletin = memo(() => {
         }));
         dispatch(getTags());
     }, [query, page, isUpdate, sort]);
+
+    /** 글쓰기 / 내가 쓴 게시물 이동 버튼 */
+    const onBannerButtonClick = useCallback(e => {
+        e.preventDefault();
+
+        const loginInfo = CookieHelper.getCookie('loginInfo');
+        if (!loginInfo) {
+            if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                navigate('/login/repl');
+                return;
+            } else {
+                return;
+            }
+        }
+
+        const target = e.currentTarget.dataset.target;
+
+        switch (target) {
+            case 'mypost': navigate('/bulletin/mypost/*'); break;
+            case 'newpost': navigate('/bulletin/newpost/*'); break;
+            default: break;
+        }
+    }, []);
 
     /** 옵션 검색 구현을 위한 State들 */
     const [classification, setClassification] = useState(0);
@@ -203,6 +232,7 @@ const Bulletin = memo(() => {
 
         navigate(redirectUrl);
     }, [tag]);
+
     return (
         <>
             <BannerArea>
@@ -212,8 +242,8 @@ const Bulletin = memo(() => {
                 </div>
                 <div className="linksWrap">
                         <div className='links'>
-                            <NavLink to='/bulletin/mypost/*'>- 내 게시글 -</NavLink>
-                            <NavLink to='/bulletin/newpost/*'>- 글쓰기 -</NavLink>
+                            <button data-target='mypost' onClick={onBannerButtonClick}>- 내 게시글 -</button>
+                            <button data-target='newpost' onClick={onBannerButtonClick}>- 글쓰기 -</button>
                         </div>
                 </div>
             </BannerArea>
@@ -250,47 +280,50 @@ const Bulletin = memo(() => {
 
                 <PostList>
                     <div className='list-box'>
-                        <Spinner loading={loading} />
                         {
-                            data && data?.map((v, i) => {
-                                return (
-                                    <Post
-                                        key={i}
-                                        targetId={v.id}
-                                        postTitle={
-                                            v.title ? v.title : (
-                                                v.postTitle ? v.postTitle : '제목없음'
-                                            )
-                                        }
-                                        backgroundImage={
-                                            v.bgimage ? v.bgimage : (
-                                                v.backgroundImage ? v.backgroundImage : ''
-                                            )
-                                        }
-                                        backgroundColor={
-                                            v.bgcolor ? v.bgcolor : (
-                                                v.bgColor ? v.bgColor : '#fff'
-                                            )
-                                        }
-                                        postUser={
-                                            v.username ? v.username : (
-                                                v.postUser ? v.postUser : '작성자'
-                                            )
-                                        }
-                                        like={v.like}
-                                        postDate={
-                                            v.postdate ? v.postdate : (
-                                                v.postDate ? v.postDate : '0000-00-00'
-                                            )
-                                        }
-                                        selectedTags={
-                                            v.tags ? v.tags : (
-                                                v.selectedTags ? v.selectedTags : []
-                                            )
-                                        }
-                                    />
-                                );
-                            })
+                            loading ? (
+                                <Spinner loading={loading} />
+                            ) : (
+                                data && data?.map((v, i) => {
+                                    return (
+                                        <Post
+                                            key={i}
+                                            targetId={v.id}
+                                            postTitle={
+                                                v.title ? v.title : (
+                                                    v.postTitle ? v.postTitle : '제목없음'
+                                                )
+                                            }
+                                            backgroundImage={
+                                                v.bgimage ? v.bgimage : (
+                                                    v.backgroundImage ? v.backgroundImage : ''
+                                                )
+                                            }
+                                            backgroundColor={
+                                                v.bgcolor ? v.bgcolor : (
+                                                    v.bgColor ? v.bgColor : '#fff'
+                                                )
+                                            }
+                                            postUser={
+                                                v.username ? v.username : (
+                                                    v.postUser ? v.postUser : '작성자'
+                                                )
+                                            }
+                                            like={v.like}
+                                            postDate={
+                                                v.postdate ? v.postdate : (
+                                                    v.postDate ? v.postDate : '0000-00-00'
+                                                )
+                                            }
+                                            selectedTags={
+                                                v.tags ? v.tags : (
+                                                    v.selectedTags ? v.selectedTags : []
+                                                )
+                                            }
+                                        />
+                                    );
+                                })
+                            )
                         }
                     </div>
 

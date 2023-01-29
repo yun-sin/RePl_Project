@@ -64,8 +64,6 @@ class BulletinService {
             dbcon = await DBPool.getConnection();
 
             let sql = mybatisMapper.getStatement('BulletinMapper', 'selectAllCount', params);
-            console.log('2');
-            console.log(sql);
 
             let [result] = await dbcon.query(sql);
 
@@ -219,7 +217,7 @@ class BulletinService {
                 throw new RuntimeException('저장된 데이터를 조회할 수 없습니다.');
             }
 
-            [data] = result;
+            data = result;
         } catch (err) {
             throw err;
         } finally {

@@ -294,7 +294,8 @@ export const LocModalContainer = styled.div`
             filter: brightness(97%);
           }
 
-          img {
+          img,
+          div {
             width: 100%;
             height: 60px;
             object-fit: cover;
@@ -772,7 +773,27 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
                     posts && posts.map((v, i) => {
                       return (
                         <li key={i} data-id={v.id} onClick={onPostClick}>
-                          <img src={v.bgImg} alt="미리보기 이미지" />
+                          {
+                            v.bgimage ?
+                              <img
+                                src={
+                                  `/thumbnail/thumb_${v.bgimage.split('.')[0]}_480w.${v.bgimage.split('.')[1]}`
+                                }
+                                alt="미리보기 이미지"
+                              />
+                              : v.backgroundImage ?
+                                <img
+                                  src={
+                                    `/thumbnail/thumb_${v.backgroundImage.split('.')[0]}_480w.${v.backgroundImage.split('.')[1]}`
+                                  }
+                                  alt="미리보기 이미지"
+                                />
+                                : v.bgcolor ?
+                                  <div style={{backgrondColor: v.bgcolor}} />
+                                   : v.bgColor ?
+                                    <div style={{backgrondColor: v.bgColor}} />
+                                    : <div>미리보기 없음</div>
+                          }
                           <div className="posts_desc">
                             <h4>
                               {

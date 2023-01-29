@@ -187,6 +187,7 @@ app.use(require('./controller/login/LoginController'));
 app.use(require('./controller/bulletin/BulletinController'));
 app.use(require('./controller/bulletin/PostController'));
 
+app.use(require('./controller/FileController'));
 app.use(require('./controller/SessionController'));
 
 /** 에러 처리 -> 반드시 모든 route 처리의 마지막에 위치해야 함 */
