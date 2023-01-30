@@ -84,8 +84,6 @@ const PlaceHashtag = memo(props => {
         dispatch(getTags());
     }, []);
 
-    console.log(data);
-
     return (
         <Modal
             isOpen={props.isOpen}

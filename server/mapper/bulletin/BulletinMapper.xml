@@ -112,10 +112,10 @@
         );
     </select>
     <select id="selectPlacePhoto">
-        SELECT filename
+        SELECT MAX(filename) AS img
         FROM photo
-        where id = #{id}
-        LIMIT 0, 1;
+        where place_id = #{id}
+        ORDER BY id
     </select>
 
     <!-- 전체 카테고리 조회하기 -->

@@ -8,6 +8,7 @@ import { getMyPlace } from '../../slices/bulletin/RecommendPlaceSlice';
 import Modal from 'react-modal';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
+import CookieHelper from '../../helper/CookieHelper';
 
 const modalStyle = {
     overlay: {
@@ -214,8 +215,10 @@ const RecommendPlace = memo(props => {
 
     // 처음 내가 쓴 전체 게시글 불러오기
     useEffect(() => {
-        // TO DO: 여기 안에 파라미터로 가는 id 로그인 정보에서 불러와야함 ㅠㅠ
-        dispatch(getMyPlace(1));
+        const userInfo = CookieHelper.getCookie('loginInfo');
+        let user_id = 0;
+        if (userInfo) user_id = JSON.parse(userInfo).id;
+        dispatch(getMyPlace(user_id));
     }, []);
 
     /** 장소 선택하기 */
@@ -340,20 +343,25 @@ const RecommendPlace = memo(props => {
                                     return (
                                         <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
                                             {
-                                                data?.place_img ? (
-                                                    <div className='img' />
+                                                v?.place_img ? (
+                                                    <img
+                                                        className='img' src={
+                                                            `/thumbnail/thumb_${v.place_img.split('.')[0]}_480w.${v.place_img.split('.')[1]}`
+                                                        }
+                                                        alt="장소 사진"
+                                                    />
                                                 ) : (
-                                                    <img className='img' src={v?.place_img[0]} alt="장소 사진" />
+                                                    <div className='img' >NO PHOTO</div>
                                                 )
                                             }
                                             <div>
                                                 <h4>{v.place_name}</h4>
                                                 {
                                                     v.road_address_name ? (
-                                                        <p>{v.address_name}</p>
-                                                    ) : (
                                                         <p>{v.road_address_name}</p>
-                                                    )
+                                                        ) : (
+                                                            <p>{v.address_name}</p>
+                                                        )
                                                 }
                                             </div>
                                         </li>
@@ -365,20 +373,25 @@ const RecommendPlace = memo(props => {
                                 return (
                                     <li key={i} data-idx={i} onClick={onPlaceClick} className={classNames({active: selectedIndex[i]})}>
                                         {
-                                            data?.place_img ? (
-                                                <div className='img' />
+                                            v?.place_img ? (
+                                                <img
+                                                    className='img' src={
+                                                        `/thumbnail/thumb_${v.place_img.split('.')[0]}_480w.${v.place_img.split('.')[1]}`
+                                                    }
+                                                    alt="장소 사진"
+                                                />
                                             ) : (
-                                                <img className='img' src={v?.place_img[0]} alt="장소 사진" />
+                                                <div className='img' >NO PHOTO</div>
                                             )
                                         }
                                         <div>
                                             <h4>{v.place_name}</h4>
                                             {
                                                 v.road_address_name ? (
-                                                    <p>{v.address_name}</p>
-                                                ) : (
                                                     <p>{v.road_address_name}</p>
-                                                )
+                                                    ) : (
+                                                        <p>{v.address_name}</p>
+                                                    )
                                             }
                                         </div>
                                     </li>

@@ -93,10 +93,9 @@ class BulletinService {
 
             for (let i = 0; i < result.length; i++) {
                 sql = mybatisMapper.getStatement('BulletinMapper', 'selectPlacePhoto', { id: result[i].id });
-
                 [temp] = await dbcon.query(sql);
 
-                result[i].place_img = temp;
+                result[i].place_img = temp[0].img;
             }
 
             if (result.length === 0) {
