@@ -3,6 +3,7 @@ const logger = require('../../helper/LogHelper');
 const regexHelper = require('../../helper/RegexHelper');
 const { pagenation } = require('../../helper/UtilHelper');
 const bulletinService = require('../../service/bulletin/BulletinService');
+const PostService = require('../../service/bulletin/PostService');
 
 module.exports = (() => {
     const url = process.env.BULLETIN_PATH;
@@ -11,7 +12,23 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 파라미터들 저장
-        const { query, tag, page=1, rows=8, sortByLike } = req.query;
+        const { query, tag, page=1, rows=8, sortByLike, id } = req.query;
+
+        if (id) {
+            let json = null;
+
+            try {
+                json = await PostService.getItem({
+                    id: id
+                })
+            } catch (err) {
+                return next(err);
+            }
+
+            res.sendResult({ item: json });
+            return;
+        }
+
         const params = {};
         params.sortByLike = sortByLike;
 
@@ -23,10 +40,10 @@ module.exports = (() => {
         if (tag) params.tagId = parseInt(tag);
 
         /** 데이터 조회 */
-        let json = null;
+        let data = null;
         let pageInfo = null;
 
-        try {
+    try {
             // 전체 데이터 수 얻기
             const totalCount = await bulletinService.getCount(params);
             pageInfo = pagenation(totalCount, page, rows);
@@ -34,12 +51,12 @@ module.exports = (() => {
             params.offset = pageInfo.offset;
             params.listCount = pageInfo.listCount;
 
-            json = await bulletinService.getList(params);
+            data = await bulletinService.getList(params);
         } catch (err) {
             return next(err);
         }
 
-        res.sendResult({ pagenation: pageInfo, item: json });
+        res.sendResult({ pagenation: pageInfo, item: data });
     });
 
     /** 내가 후기 남긴 장소 목록 불러오기 */
@@ -103,7 +120,6 @@ module.exports = (() => {
             return next(err);
         }
 
-        console.log(data);
         res.sendResult({ item: data });
     });
 

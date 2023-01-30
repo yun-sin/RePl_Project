@@ -160,7 +160,6 @@ const Join = memo(() => {
         setIsUsernameChanged(true);
     }, []);
 
-    /** TO DO: 이제 회원가입 처리 슬라이스로 넘기기.. 너모귀찮고 */
     const onAddUserSubmit = useCallback(e => {
         e.preventDefault();
 
@@ -194,9 +193,10 @@ const Join = memo(() => {
             password: password.value
         }
 
-        dispatch(addUser(params)).then(() => {
-            if (data === null) return;
-            if (data?.item !== 200) {
+        dispatch(addUser(params)).then(({ payload }) => {
+            console.log(payload);
+            if (payload === null) return;
+            if (payload?.item !== 200) {
                 window.alert('서버 오류! 회원가입에 실패했습니다.');
                 return;
             }

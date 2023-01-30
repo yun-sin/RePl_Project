@@ -49,7 +49,6 @@
             </otherwise>
         </choose>
         
-
         <!-- 페이지 구현을 위한 LIMIT절 추가 -->
         <if test="listCount > 0">
             LIMIT ${offset}, ${listCount}

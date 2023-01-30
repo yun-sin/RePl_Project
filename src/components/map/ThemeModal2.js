@@ -11,6 +11,7 @@ import { getThemeData } from "../../slices/ThemeSlice";
 
 import { postTP } from "../../slices/MapThemeSlice";
 import Spinner from "../../common/Spinner";
+import cookieHelper from "../../helper/CookieHelper";
 
 const MapAddModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -114,15 +115,20 @@ const ThemeModal2 = memo(({ modalIsOpen, onRequestClose, onClick, placeId, setTM
   const onThemeClick = useCallback((e) => {
     console.log(e.currentTarget.dataset.id);
     setBtnActive(e.currentTarget.dataset.id);
-  });
+  }, []);
 
   const onSaveClick = useCallback((e) => {
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    let user_id = 0;
+    if (userInfo) userInfo = JSON.parse(userInfo);
+    if (userInfo?.id) user_id = userInfo.id;
+
     console.log(placeId);
     console.log(btnActive);
-    dispatch(postTP({ place_id: placeId, theme_id: btnActive })).then((e) => {
+    dispatch(postTP({ place_id: placeId, theme_id: btnActive, user_id: user_id })).then((e) => {
       setTModal(false);
     });
-  });
+  }, [btnActive]);
 
   const themeArr = [];
   themeList.forEach((v, i) => {
@@ -160,7 +166,7 @@ const ThemeModal2 = memo(({ modalIsOpen, onRequestClose, onClick, placeId, setTM
             {data2?.map((v, i) => {
               if (!themeArr.includes(v.id))
                 return (
-                  <div key={i} data-id={v.id} className={`${"theme"} ${v.id == btnActive ? "active" : ""}`} theme onClick={onThemeClick}>
+                  <div key={i} data-id={v.id} className={`${"theme"} ${v.id == btnActive ? "active" : ""}`} onClick={onThemeClick}>
                     <div className="theme_icon">{v.icon}</div>
                     <div className="theme_text">{v.text}</div>
                   </div>

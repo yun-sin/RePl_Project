@@ -1,7 +1,9 @@
 import React, { memo, useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
+import cookieHelper from '../helper/CookieHelper';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faBookmark } from "@fortawesome/free-solid-svg-icons"; // 속이 찬 북마크
@@ -17,6 +19,9 @@ import { getThemeData } from "../slices/ThemeSlice";
 import { getTP } from "../slices/MapThemeSlice";
 import { getBookmarkItem, postBookmark, delBookmark } from "../slices/BookmarkSlice";
 
+import { getComment, addComment } from "../slices/PlaceCommentSlice";
+import { getPost } from "../slices/PlacePostSlice";
+
 import a1 from "../assets/img/map/emoji-1-a.png";
 import a2 from "../assets/img/map/emoji-2-a.png";
 import a3 from "../assets/img/map/emoji-3-a.png";
@@ -27,6 +32,7 @@ import b2 from "../assets/img/map/emoji-2-b.png";
 import b3 from "../assets/img/map/emoji-3-b.png";
 import b4 from "../assets/img/map/emoji-4-b.png";
 import b5 from "../assets/img/map/emoji-5-b.png";
+import Spinner from "./Spinner";
 
 const emoji = [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5];
 
@@ -288,7 +294,8 @@ export const LocModalContainer = styled.div`
             filter: brightness(97%);
           }
 
-          img {
+          img,
+          div {
             width: 100%;
             height: 60px;
             object-fit: cover;
@@ -425,10 +432,15 @@ const testData = [
 
 // delCount, setDelCount 내 북마크 페이지에서 삭제될때마다 재렌더링을 위한 state (자식에서 부모로 전달하기 위해 props로 set까지 전달) - 장윤신
 const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount }) => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { data: data2, loading: loading2, error: error2 } = useSelector((state) => state.ThemeSlice);
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
   const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
+
+  const { data: comments } = useSelector(state => state.PlaceCommentSlice);
+  const { data: posts, loading: postsLoading } = useSelector(state => state.PlacePostSlice);
 
   const [TModal, setTModal] = useState(false);
   const [ThemeData, setThemeData] = useState();
@@ -459,14 +471,24 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       setTPList(obj);
     });
 
+    // 후기 댓글 데이터
+    dispatch(getComment({ place_id: data.id }));
+
+    // 관련된 게시물 데이터
+    dispatch(getPost({ place_id: data.id }));
+    
     return () => {
       console.log("모달창 닫음");
     };
   }, []);
 
   useEffect(() => {
+    console.log(posts);
+  }, [posts]);
+
+  useEffect(() => {
     if (data4) {
-      console.log(data4[0]?.id);
+      // console.log(data4[0]?.id);
       setBookmarkId(data4[0]?.id);
       if (data4[0]?.id) {
         setBookmarkBtn(true);
@@ -480,10 +502,15 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       setBookmarkBtn(false);
     }
 
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (userInfo) userInfo = JSON.parse(userInfo);
+    let user_id = 0;
+    if (userInfo?.id) user_id = userInfo.id;
+
     // bookmark 여부 데이터
-    dispatch(getBookmarkItem({ user_id: 2, place_id: data.id })).then((e) => {
-      console.log(e.payload);
-      if (e.payload.length != 0) {
+    dispatch(getBookmarkItem({ user_id: user_id, place_id: data.id })).then((e) => {
+      // console.log(e.payload);
+      if (e.payload.length !== 0) {
         setBookmarkId(e.payload[0]?.id);
         setBookmarkBtn(true);
       }
@@ -495,7 +522,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
       if (!BookmarkId && BookmarkBtn) {
         console.log("북마크 등록");
-        dispatch(postBookmark({ place_id: data.id }));
+        dispatch(postBookmark({ user_id: user_id, place_id: data.id }));
       }
 
       if (BookmarkId && !BookmarkBtn) {
@@ -566,6 +593,25 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
   const onCommentSubmit = useCallback((e) => {
     e.preventDefault();
+
+    const target = e.currentTarget;
+
+    const rating = target.commentEmoji.value;
+    const content = target.comment__input.value;
+
+    console.log(rating, content);
+
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (userInfo) userInfo = JSON.parse(userInfo);
+    let user_id = 0;
+    if (userInfo?.id) user_id = userInfo.id;
+
+    dispatch(addComment({
+      user_id: user_id,
+      place_id: data.id,
+      rating: rating,
+      content: content
+    }));
   }, []);
 
   /** 북마크 클릭 이벤트 - 장윤신 */
@@ -577,6 +623,13 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     console.log(BookmarkId);
     setBookmarkBtn(false);
   });
+
+  // 게시물 클릭 이벤트
+  const onPostClick = useCallback(e => {
+    e.preventDefault();
+
+    navigate(`/bulletin/${e.currentTarget.dataset.id}`);
+  }, []);
 
   return (
     <Modal
@@ -625,7 +678,9 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
             <div className="info">
               <div className="title">여기는 어떤 곳인가요?</div>
               <div className="info-item">
-                {themeList?.map((v, i) => {
+                {
+                  themeList && 
+                  themeList?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card theme-card__about">
                       {v?.icon + " " + v?.text}
@@ -642,14 +697,32 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
             <div className="info">
               <div className="info-item">
                 <div className="title">이 장소에 대한 후기들!</div>
+                {/* 예시 리뷰 //// */}
                 <div className="review_item">
-                  {/* 예시 리뷰 */}
                   <div className="review_emoji">
-                    <img src={emoji[3]} />
+                    <img src={emoji[3]} alt="평점 이모지" />
                   </div>
                   <span className="review_text">잔치국수와 김밥의 조화. 준수함.</span>
                 </div>
-                {/* 리뷰 */}
+                {/* //// 예시 리뷰 */}
+                {
+                  comments && comments.map((v, i) => {
+                    return (
+                      <div className="review_item" key={i}>
+                        <div className="review_emoji">
+                          <img src={emoji[v.rating - 1]} alt="평점 이모지" />
+                        </div>
+                        <span className="review_text">
+                          {
+                            v.content ? v.content : (
+                              v.comment ? v.comment : '내용없음'
+                            )
+                          }
+                        </span>
+                      </div>
+                    );
+                  })
+                }
                 {data?.review?.map((v, i) => {
                   return (
                     <div key={i} className="theme-card">
@@ -665,8 +738,8 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
                     {emoji.map((v, i) => {
                       return (
                         <label key={i} htmlFor={`commentEmoji${i}`} onClick={onCommentRadioChange}>
-                          <input type="radio" name="commentEmoji" id={`commentEmoji${i}`} value={i} />
-                          <img src={v} />
+                          <input type="radio" name="commentEmoji" id={`commentEmoji${i}`} value={i + 1} />
+                          <img src={v} alt='평점 이모지' />
                         </label>
                       );
                     })}
@@ -692,22 +765,56 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
           <div className="modal-bullet-container">
             <div className="title">이 장소를 추천한 게시글 목록</div>
             <ul className="posts">
-              {testData.map((v, i) => {
-                return (
-                  <li key={i}>
-                    <img src={v.bgImg} alt="미리보기 이미지" />
-                    <div className="posts_desc">
-                      <h4>{v.title}</h4>
-                      <p>{v.contents}</p>
-                    </div>
-                    <div className="posts_fb">
-                      <p>
-                        ♡<span>{v.hearts}</span>
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
+              {
+                <>
+                  <Spinner loading={postsLoading} />
+
+                  {
+                    posts && posts.map((v, i) => {
+                      return (
+                        <li key={i} data-id={v.id} onClick={onPostClick}>
+                          {
+                            v.bgimage ?
+                              <img
+                                src={
+                                  `/thumbnail/thumb_${v.bgimage.split('.')[0]}_480w.${v.bgimage.split('.')[1]}`
+                                }
+                                alt="미리보기 이미지"
+                              />
+                              : v.backgroundImage ?
+                                <img
+                                  src={
+                                    `/thumbnail/thumb_${v.backgroundImage.split('.')[0]}_480w.${v.backgroundImage.split('.')[1]}`
+                                  }
+                                  alt="미리보기 이미지"
+                                />
+                                : v.bgcolor ?
+                                  <div style={{backgrondColor: v.bgcolor}} />
+                                   : v.bgColor ?
+                                    <div style={{backgrondColor: v.bgColor}} />
+                                    : <div>미리보기 없음</div>
+                          }
+                          <div className="posts_desc">
+                            <h4>
+                              {
+                                v.postTitle ? v.postTitle : (
+                                  v.title? v.title : '제목없음'
+                                )
+                              }
+                            </h4>
+                            <p dangerouslySetInnerHTML={{ __html: v.content }} />
+                          </div>
+                          <div className="posts_fb">
+                            <p>
+                              ♡<span>{v.like}</span>
+                            </p>
+                          </div>
+                        </li>
+                      );
+                    })
+                  }
+                </>
+              }
             </ul>
           </div>
         </div>

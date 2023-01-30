@@ -84,6 +84,8 @@ const PlaceHashtag = memo(props => {
         dispatch(getTags());
     }, []);
 
+    console.log(data);
+
     return (
         <Modal
             isOpen={props.isOpen}
@@ -104,6 +106,7 @@ const PlaceHashtag = memo(props => {
                                 key={i}
                                 subject={v.subject}
                                 values={v.values}
+                                ids={v.ids}
                                 selectedTags={props.selectedTags}
                                 setSelectedTags={props.setSelectedTags}
                                 setSelectedTagID={props.setSelectedTagID}

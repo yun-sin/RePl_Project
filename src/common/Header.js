@@ -164,7 +164,7 @@ const Header = memo(() => {
   const { data, loading } = useSelector(state => state.LoginSlice);
 
   useEffect(() => {
-    if (data?.item) setLoginInfo(data.item);
+    if (data?.item && typeof data.item === "object") setLoginInfo(data.item);
     else setLoginInfo(null);
   }, [data]);
   useEffect(() => {
@@ -175,7 +175,7 @@ const Header = memo(() => {
   const onLogout = useCallback(e => {
     e.preventDefault();
 
-    if (window.confirm('로그아웃 하시겠습니까?')) {
+    if (cookieHelper.getCookie('loginInfo') && window.confirm('로그아웃 하시겠습니까?')) {
       cookieHelper.deleteCookie('loginInfo');
       dispatch(makeLogout());
       window.location.reload();
@@ -226,7 +226,11 @@ const Header = memo(() => {
             <></>
           ) : (
             loginInfo ? (
-              <a>{ loginInfo.username }님</a>
+              <a>
+                {
+                  loginInfo.username
+                }님
+              </a>
             ) : (
               <a onClick={handleLoginModal}>로그인</a>
             )

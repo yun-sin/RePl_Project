@@ -8,6 +8,9 @@ import ThemeSlice from "./slices/ThemeSlice";
 import BookmarkSlice from "./slices/BookmarkSlice";
 import MapAddSlice from "./slices/MapAddSlice";
 
+import PlaceCommentSlice from "./slices/PlaceCommentSlice";
+import PlacePostSlice from "./slices/PlacePostSlice";
+
 import SidebarSlice from "./slices/SidebarSlice";
 import NavbarSlice from "./slices/NavbarSlice";
 
@@ -38,6 +41,9 @@ const store = configureStore({
     ThemeSlice: ThemeSlice,
     BookmarkSlice: BookmarkSlice,
     MapAddSlice: MapAddSlice,
+
+    PlaceCommentSlice: PlaceCommentSlice,
+    PlacePostSlice: PlacePostSlice,
 
     SidebarSlice: SidebarSlice,
     NavbarSlice: NavbarSlice,

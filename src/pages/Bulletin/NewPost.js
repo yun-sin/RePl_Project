@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
+import axios from 'axios';
 
 import Editor from '../../components/bulletin/Editor';
 import RecommendPlace from '../../components/bulletin/RecommendPlace';
@@ -11,7 +12,7 @@ import PlaceHashtag from '../../components/bulletin/PlaceHashtag';
 import { useSelector, useDispatch } from 'react-redux';
 import { newPost } from '../../slices/bulletin/BulletinSlice';
 
-import { useEffect } from 'react';
+import cookieHelper from '../../helper/CookieHelper';
 
 const MainForm = styled.form`
     width: 100%;
@@ -211,7 +212,6 @@ const NewPost = memo(() => {
     const navigate = useNavigate();
 
     /** 슬라이스 */
-    const { data, loading, error } = useSelector(state => state.BulletinSlice);
     const dispatch = useDispatch();
 
     /** 상단 제목란 배경색 변경 */
@@ -219,8 +219,71 @@ const NewPost = memo(() => {
     const [backgroundColor, setBackgroundColor] = useState('#fff');
     // 사용자 컬러 인풋 바뀌면 state 변경
     const onBackgroundColorInputChange = useCallback(e => {
+        document.querySelector('#titleArea').setAttribute('style', '');
+        document.querySelector('#backgroundImageInput').value = '';
+        document.querySelector('#titleArea').setAttribute('style', `
+            backgroundColor: ${backgroundColor};
+        `);
         setBackgroundColor(e.currentTarget.value);
+    }, [backgroundColor]);
+
+    /** 상단 file input으로 배경 이미지 변경 시 */
+    // 서버에 저장된 파일 경로 + 이름 저장할 str state
+    const [backgroundImage, setBackgroundImage] = useState('');
+    // input 내용이 바뀔 시 임시 파일 저장 및 미리보기 변경
+    // To Do: 생각해야할게 이미지 넣어보고 게시 안하면 그거 삭제해야함
+    const onBackgroundImageInputChange = useCallback(async e => {
+        // 선택된 파일의 파일리스트--> 싱글 업로드이므로 단 하나의 원소만 선택되기 때문에 0번째 항목에 직접 접근한다.
+        const file = e.currentTarget.files[0];
+        console.log(file);
+
+        if (!file) return;
+        document.querySelector('#titleArea').setAttribute('style', '');
+
+        // 백엔드로의 전송을 위한 FormData객체 생성
+        const formData = new FormData();
+        // <input>태그의 name속성과 파일객체를 formData에 추가한다.
+        formData.append("customPhoto", file);
+        // 추가적인 텍스트 데이터도 formData객체에 추가한다.
+        let userInfo = cookieHelper.getCookie('loginInfo');
+        if (userInfo) userInfo = JSON.parse(userInfo);
+        formData.append("username", userInfo.username);
+
+        // 파일 서버 업로드 ajax axios
+        // HTML Element 생성 후 srcset 설정으로 HTML Element를 바꿀 예정이므로
+        // 따로 Slice는 두지 않고 바로 Node Controller로 연결
+        let json = null;
+        try {
+            const response = await axios.post("/upload/single", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            json = response.data;
+        } catch (err) {
+            json = err.response.data;
+            alert(`[${json.rt}] ${json.rtmsg}`);
+            return;
+        }
+        
+        console.log(json);
+
+        // 미리보기를 표시할 객체
+        const targetElement = document.querySelector("#titleArea");
+        targetElement.setAttribute("style", `
+            background-image: url(${json.url});
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        `);
+
+        setBackgroundImage(json.filename);
     }, []);
+
+    useEffect(() => {
+        console.log(backgroundImage);
+    }, [backgroundImage])
 
     /** 게시글 본문 내용 */
     // 내용 저장용 state
@@ -290,11 +353,10 @@ const NewPost = memo(() => {
             return;
         }
 
-        let backgroundImage = null;
-        if (e.currentTarget.backgroundImageInput.value) {
-            backgroundImage = e.currentTarget.backgroundImageInput.value;
-        }
-        const postUser = 1; // <TO DO> 로그인 정보 불러오기
+        const loginInfo = cookieHelper.getCookie('loginInfo');
+        let userId = 0;
+        if (loginInfo) userId = JSON.parse(loginInfo).id;
+        console.log(userId);
 
         const selectedPlace_light = [];
         for (const k of selectedPlaces) {
@@ -302,7 +364,7 @@ const NewPost = memo(() => {
         }
 
         const data = {
-            user_id: postUser,
+            user_id: userId,
             title: postTitle,
             postdate: dayjs().format('YYYY-MM-DD'),
             bgcolor: backgroundColor,
@@ -314,24 +376,25 @@ const NewPost = memo(() => {
 
         dispatch(newPost(data)).then(({ payload, error }) => {
             if (error) {
-                window.alert(payload.item.rtmsg);
+                window.alert(payload.rtmsg);
                 return;
             }
 
-            navigate(`/bulletin/postView/${payload.item.id}`);
+            navigate(`/bulletin/${payload.item[0].id}`);
         });
-    }, [content, selectedTagID, selectedPlaces, backgroundColor]);
+    }, [content, selectedTagID, selectedPlaces, backgroundColor, backgroundImage]);
 
     return (
         <MainForm onSubmit={onPosting}>
-            <TitleArea style={{ backgroundColor: backgroundColor }}>
+            <TitleArea id='titleArea' style={{ backgroundColor: backgroundColor }}>
                 <div className="title-edit-menu">
                     <label htmlFor="backgroundImageInput">B</label>
                     <input type="file"
                         accept='.jpg,.PNG'
-                        name='backgroundImageInput'
+                        name='customPhoto'
                         id='backgroundImageInput'
                         style={{display: 'none'}}
+                        onChange={onBackgroundImageInputChange}
                     />
                     <input type="color" name="backgroundColorInput" id="backgroundColorInput" onChange={onBackgroundColorInputChange}/>
                     {/* <button>A</button> */}
@@ -340,7 +403,7 @@ const NewPost = memo(() => {
                     <input type="text" name='postTitle' className='title-input__main-title' placeholder='제목을 입력하세요' />
                     <div className='title-input__desc'>
                         <input type="text" name='postDate' defaultValue={dayjs().format('YYYY-MM-DD')} disabled />
-                        <input type="text" name='postUser' placeholder='게시자' disabled />
+                        <input type="text" name='postUser' placeholder={JSON.parse(cookieHelper.getCookie('loginInfo')).username} disabled />
                     </div>
                 </div>
             </TitleArea>

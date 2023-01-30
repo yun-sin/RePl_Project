@@ -145,7 +145,7 @@ const Post = memo(props => {
                 str += ` ${v2.innerHTML}`;
             });
             v1.setAttribute('title', str);
-        })
+        });
     }, [props]);
 
     return (
@@ -157,7 +157,14 @@ const Post = memo(props => {
 
             {
                 props.backgroundImage ? (
-                    <img className='bg' src={props.backgroundImage} alt="게시물 이미지" />
+                    <img
+                        id='tets'
+                        className='bg'
+                        src={
+                            `thumbnail/thumb_${props.backgroundImage.split('.')[0]}_480w.${props.backgroundImage.split('.')[1]}`
+                        }
+                    alt="게시물 이미지"
+                    />
                 ) : (
                     <div className='bg' style={{backgroundColor: props.backgroundColor}} />
                 )

@@ -157,13 +157,13 @@ const TagBox = memo(props => {
                         return (
                             <li
                                 key={i}
-                                data-id={v.id}
+                                data-id={props.ids[i]}
                                 onClick={onHashtagClick}
                                 className={classNames({
-                                    active: props.selectedTags.indexOf(v.name) !== -1
+                                    active: props.selectedTags.indexOf(v) !== -1
                                 })}
                             >
-                                {v.name}
+                                {v}
                             </li>
                         )
                     })

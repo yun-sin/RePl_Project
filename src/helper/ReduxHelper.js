@@ -7,7 +7,7 @@ const pending = (state, { payload }) => {
 
 const fulfilled = (state, { payload }) => {
     return {
-        data: payload,
+        data: payload?.item ? payload?.item : payload,
         pagenation: payload?.pagenation,
         loading: false,
         error: null

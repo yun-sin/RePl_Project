@@ -29,5 +29,22 @@ module.exports = (() => {
         res.sendResult({ item: result });
     });
 
+    router.post('/theme_place', async (req, res, next) => {
+        let result = null;
+        const { place_id, theme_id, user_id } = req.body;
+
+        try {
+            result = await ThemeService.addPlaceTheme({
+                placeId: place_id,
+                themeId: theme_id,
+                userId: user_id
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        res.sendResult({ item: result });
+    });
+
     return router;
 })();

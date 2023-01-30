@@ -33,7 +33,6 @@ export const getThemeData = createAsyncThunk(
       return result.item
     } else {
       return result;
-
     }
   }
 );
@@ -51,7 +50,11 @@ export const getItem = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+      return result.item
+    } else {
+      return result;
+    }
   }
 );
 
@@ -71,7 +74,11 @@ export const postItem = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+      return result.item
+    } else {
+      return result;
+    }
   }
 );
 
@@ -88,7 +95,11 @@ export const deleteItem = createAsyncThunk(
       result = rejectWithValue(err.response);
     }
 
-    return result;
+    if (result.item) {
+      return result.item
+    } else {
+      return result;
+    }
   }
 );
 

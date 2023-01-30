@@ -5,7 +5,7 @@
 <mapper namespace="ThemeMapper">
     <!-- 단일 게시글 조회를 위한 기능 정의 -->
     <select id="selectList">
-        SELECT id, icon, title, (
+        SELECT id, icon, `text`, (
             SELECT COUNT(*) FROM theme_place
             WHERE theme_id = t.id
         ) AS user_number
@@ -16,4 +16,15 @@
         SELECT id, place_id, theme_id, user_id
         FROM theme_place
     </select>
+
+    <select id="selectThemePlaceItem">
+        SELECT id, place_id, theme_id, user_id
+        FROM theme_place
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertPlaceTheme">
+        INSERT INTO theme_place (place_id, theme_id, user_id)
+        VALUES (#{placeId}, #{themeId}, #{userId})
+    </insert>
 </mapper>
