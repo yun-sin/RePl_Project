@@ -676,6 +676,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   const onPostClick = useCallback(e => {
     e.preventDefault();
     navigate(`/bulletin/${e.currentTarget.dataset.id}`);
+    closeModal();
   }, []);
 
   return (

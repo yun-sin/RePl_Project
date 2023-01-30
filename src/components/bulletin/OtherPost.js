@@ -49,9 +49,7 @@ const OtherPost = memo(props => {
 
         navigate(`${process.env.REACT_APP_BULLETIN_PATH}/${props.id}`);
     }, []);
-
-    console.log(props.imgSrc);
-
+    
     return (
         <Post onClick={onOtherPostClick}>
             {
