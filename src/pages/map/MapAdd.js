@@ -38,6 +38,10 @@ const MapAdd = memo(({ zoomLevel }) => {
   const [ps, setPs] = useState();
   const [location, setLocation] = useState();
 
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
   const [selectTheme, setSelectTheme] = useState();
 
   const [PList, setPList] = useState([]);
@@ -366,13 +370,17 @@ const MapAdd = memo(({ zoomLevel }) => {
         </div>
       </MapAddListContainer>
 
-      {/* 모달창1*/}
-      {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
-      <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={selectTheme} AAT={AAT} />
-      {/* 모달창2 */}
-      <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} id={location?.id} theme={1} />
-      {/* 모달창3 */}
-      <MapAddModal3 modalIsOpen={modalIsOpen3} title={location?.place_name} id={location?.id} theme={1} />
+      {
+        location && <>
+          {/* 모달창1*/}
+          {/* location:선택된 하나의 장소, data2: 리플 모든 테마 데이터, theme: 현재 보고있는 하나의 테마 번호*/}
+          <MapAddModal1 modalIsOpen={modalIsOpen1} location={location} theme={selectTheme} AAT={AAT} />
+          {/* 모달창2 */}
+          <MapAddModal2 modalIsOpen={modalIsOpen2} title={location?.place_name} id={location?.id} theme={1} />
+          {/* 모달창3 */}
+          <MapAddModal3 modalIsOpen={modalIsOpen3} title={location?.place_name} id={location?.id} theme={1} />
+        </>
+      }
 
       {/* 모달창 리뷰 */}
       {data &&
