@@ -17,8 +17,6 @@ import { getRecommendedPlaces } from '../../slices/bulletin/RecommendedPlaceSlic
 import { getPostsTags } from '../../slices/bulletin/HashtagSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
-import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
-
 const TitleArea = styled.div`
     width: 100%;
     margin: auto;
@@ -159,6 +157,10 @@ const PublisherDiv = styled.div`
             cursor: pointer;
             filter: brightness(0.8);
         }
+    }
+
+    h1 {
+        font-size: 40px;
     }
 
     h2 {
@@ -498,7 +500,7 @@ const NewPost = memo(props => {
 
                             <PublisherDiv>
                                 <div>
-                                    <img src={breadSample} alt="작성자 프로필 이모지" />
+                                    <h1>{data.icon}</h1>
                                     <h2>{data.username}</h2>
                                 </div>
                                 <div>

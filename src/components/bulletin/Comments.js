@@ -10,6 +10,7 @@ import { getComments, postComment } from '../../slices/bulletin/CommentsSlice';
 
 import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 import { useEffect } from 'react';
+import { useMemo } from 'react';
 
 const CommentsArea = styled.div`
     width: 800px;
@@ -115,6 +116,12 @@ const CommentsArea = styled.div`
             margin-bottom: 50px;
             box-sizing: border-box;
 
+            h1 {
+                font-size: 40px;
+                font-weight: 600;
+                color: #aaa;
+            }
+
             .connemts__add__inputBox {
                 position: relative;
                 width: 100%;
@@ -162,6 +169,11 @@ const Comments = memo(props => {
     const commentContainerRef = useRef();
 
     const id = props.id;
+    const userInfo = useMemo(() => {
+        const temp = cookieHelper.getCookie('loginInfo');
+        if (temp) return JSON.parse(temp);
+        else return null;
+    }, [props])
 
     useEffect(() => {
         dispatch(getComments(id));
@@ -170,8 +182,7 @@ const Comments = memo(props => {
     const onCommentAddSubmit = useCallback(e => {
         e.preventDefault();
 
-        const loginInfo = cookieHelper.getCookie('loginInfo');
-        if (!loginInfo) {
+        if (!userInfo) {
             if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
                 navigate('/login/repl');
             } else {
@@ -179,7 +190,7 @@ const Comments = memo(props => {
             }
         }
 
-        const userId = JSON.parse(loginInfo).id;
+        const userId = userInfo.id;
 
         const current = e.currentTarget;
         const value = current.commentsInput.value;
@@ -225,7 +236,7 @@ const Comments = memo(props => {
                                         data.map((v, i) => {
                                             return (
                                                 <li className='comments__list__item' key={i}>
-                                                    <img src={breadSample} alt="댓글 작성자 프로필 이모지" className='comments__profileImg' />
+                                                    <h1>{v.icon}</h1>
                                                     <div className='comments__contents'>
                                                         <p className='comments__contents__top'>
                                                             <span>{v.username}</span>
@@ -242,7 +253,13 @@ const Comments = memo(props => {
                                 </ul>
 
                                 <form className="comments__add" onSubmit={onCommentAddSubmit}>
-                                    <img src={breadSample} alt="댓글 작성자 프로필 이모지" className='comments__profileImg' />
+                                    {
+                                        userInfo ? (
+                                            <h1>{userInfo.icon}</h1>
+                                        ) : (
+                                            <h1>?</h1>
+                                        )
+                                    }
 
                                     <div className='connemts__add__inputBox'>
                                         <textarea name='commentsInput' placeholder='작성자에게 힘이 되는 댓글을 부탁드려요!' />
