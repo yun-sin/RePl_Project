@@ -181,7 +181,7 @@ const MapAddModal2 = memo(({ modalIsOpen, id }) => {
     const rate = rating;
     const content = e.currentTarget.comment_text.value;
 
-    // console.log(rate, content, id);
+    console.log(rate, content, id);
     const userInfo = cookieHelper.getCookie('loginInfo');
     let user_id = 0;
     if (userInfo) user_id = JSON.parse(userInfo).id;

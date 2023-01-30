@@ -21,6 +21,7 @@ import { getBookmarkItem, postBookmark, delBookmark } from "../slices/BookmarkSl
 
 import { getComment, addComment } from "../slices/PlaceCommentSlice";
 import { getPost } from "../slices/PlacePostSlice";
+import { getPlacePhotos, addPlacePhotos } from "../slices/PlacePhotoSlice";
 
 import a1 from "../assets/img/map/emoji-1-a.png";
 import a2 from "../assets/img/map/emoji-2-a.png";
@@ -102,6 +103,67 @@ export const LocModalContainer = styled.div`
         font-size: 13px;
         font-weight: 400;
         line-height: 21.45px;
+      }
+    }
+
+    .place-photos {
+      width: 700px;
+      height: 160px;
+      display: flex;
+      margin-bottom: 20px;
+      border-radius: 10px;
+
+      .place-photos__add-button {
+        width: 130px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #e5e5e5;
+        margin-right: 10px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .place-photos__list {
+        width: 560px;
+        height: 160px;
+
+        display: flex;
+        flex-flow: row nowrap;
+
+        overflow-y: hidden;
+        box-sizing: border-box;
+
+        ::-webkit-scrollbar { 
+          height: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: #aaaaaa;
+          border-radius: 3px;
+        }
+        ::-webkit-scrollbar-track { 
+          background: none;
+        }
+
+        img {
+          height: 160px;
+          object-fit: cover;
+          background-repeat: no-repeat;
+          margin-right: 10px;
+
+          &:last-child {
+            margin: 0;
+          }
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
       }
     }
 
@@ -385,51 +447,6 @@ export const LocModalContainer = styled.div`
   }
 `;
 
-const testData = [
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-  {
-    bgImg: breadSample,
-    title: "예시 게시물",
-    contents: "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세",
-    hearts: 3,
-  },
-];
-
 // delCount, setDelCount 내 북마크 페이지에서 삭제될때마다 재렌더링을 위한 state (자식에서 부모로 전달하기 위해 props로 set까지 전달) - 장윤신
 const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount }) => {
   const navigate = useNavigate();
@@ -439,6 +456,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   const { data: data3, loading: loading3, error: error3 } = useSelector((state) => state.MapThemeSlice);
   const { data: data4, loading: loading4, error: error4 } = useSelector((state) => state.BookmarkSlice);
 
+  const { data: photos } = useSelector(state => state.PlacePhotoSlice);
   const { data: comments } = useSelector(state => state.PlaceCommentSlice);
   const { data: posts, loading: postsLoading } = useSelector(state => state.PlacePostSlice);
 
@@ -473,9 +491,10 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
 
     // 후기 댓글 데이터
     dispatch(getComment({ place_id: data.id }));
-
     // 관련된 게시물 데이터
     dispatch(getPost({ place_id: data.id }));
+    // 게시물 사진 데이터
+    dispatch(getPlacePhotos({ placeId: data.id }));
     
     return () => {
       console.log("모달창 닫음");
@@ -483,8 +502,8 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   }, []);
 
   useEffect(() => {
-    console.log(posts);
-  }, [posts]);
+    console.log(photos);
+  }, [photos])
 
   useEffect(() => {
     if (data4) {
@@ -559,6 +578,35 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
     }
   }, [data, data2, data3, TModal]);
 
+  const onAddPhotoClick = useCallback(e => {
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (!userInfo) {
+      if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        navigate('/login/repl');
+      } else {
+        e.preventDefault();
+        return;
+      }
+    } else {
+      userInfo = JSON.parse(userInfo);
+    }
+  }, []);
+
+  const onPlaceImageInputChange = useCallback(async e => {
+    const files = Array.from(e.currentTarget.files);
+    console.log(files);
+    let userInfo = cookieHelper.getCookie('loginInfo');
+    if (!userInfo) return;
+    else userInfo = JSON.parse(userInfo);
+
+    dispatch(addPlacePhotos({
+      userId: userInfo.id,
+      username: userInfo.username,
+      placeId: data.id,
+      files: files
+    }));
+  }, []);
+
   const onCommentRadioChange = useCallback((e) => {
     e.preventDefault();
     const current = e.currentTarget;
@@ -627,7 +675,6 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
   // 게시물 클릭 이벤트
   const onPostClick = useCallback(e => {
     e.preventDefault();
-
     navigate(`/bulletin/${e.currentTarget.dataset.id}`);
   }, []);
 
@@ -656,22 +703,70 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       }}>
       <LocModalContainer>
         <div className="modal-header">
-          <h3>{data?.place_name}</h3>
+          <h3>{data?.place_name}</h3>`  `
           <span>{data?.road_address_name ? data?.road_address_name : data?.address_name}</span>
           <FontAwesomeIcon className="faX" icon={faX} onClick={closeModal} />
         </div>
         <div className="modal-body">
           {/* 이미지 칸 */}
-          <div className="modal-img-container">
-            <div className="icon">
-              <img src={iconPlus} alt="plusIcon" />
-            </div>
-            <div className="text">
-              여기를 눌러서 장소와 관련된 사진을 올려주시면
-              <br />
-              페이지가 더 유익해 질 것 같아요!
-            </div>
-          </div>
+          {
+            photos && photos[0]?.filename ? (
+              <div className="place-photos">
+                <label htmlFor="customPhoto" className="place-photos__add-button" onClick={onAddPhotoClick}>
+                  <div className="icon">
+                    <img src={iconPlus} alt="plusIcon" />
+                    <p>사진 추가하기</p>
+                  </div>
+                </label>
+                <input
+                  type='file'
+                  accept='.jpg,.PNG'
+                  name='customPhoto'
+                  id='customPhoto'
+                  style={{display: 'none'}}
+                  onChange={onPlaceImageInputChange}
+                  multiple
+                />
+                <div className="place-photos__list">
+                  {
+                    photos.map((v, i) => {
+                      return (
+                        <img
+                          key={i}
+                          src={
+                            `/thumbnail/thumb_${v.filename.split('.')[0]}_480w.${v.filename.split('.')[1]}`
+                          }
+                          alt="장소 이미지"
+                        />
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            ) : (
+              <>
+                <label className="modal-img-container" htmlFor='customPhoto' onClick={onAddPhotoClick}>
+                  <div className="icon">
+                    <img src={iconPlus} alt="plusIcon" />
+                  </div>
+                  <div className="text">
+                    여기를 눌러서 장소와 관련된 사진을 올려주시면
+                    <br />
+                    페이지가 더 유익해 질 것 같아요!
+                  </div>
+                </label>
+                <input
+                  type='file'
+                  accept='.jpg,.PNG'
+                  name='customPhoto'
+                  id='customPhoto'
+                  style={{display: 'none'}}
+                  onChange={onPlaceImageInputChange}
+                  multiple
+                />
+              </>
+            )
+          }
 
           <div className="modal-info-container">
             {/* 왼쪽 줄 */}

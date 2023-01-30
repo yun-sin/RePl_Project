@@ -10,6 +10,7 @@ import MapAddSlice from "./slices/MapAddSlice";
 
 import PlaceCommentSlice from "./slices/PlaceCommentSlice";
 import PlacePostSlice from "./slices/PlacePostSlice";
+import PlacePhotoSlice from "./slices/PlacePhotoSlice";
 
 import SidebarSlice from "./slices/SidebarSlice";
 import NavbarSlice from "./slices/NavbarSlice";
@@ -44,6 +45,7 @@ const store = configureStore({
 
     PlaceCommentSlice: PlaceCommentSlice,
     PlacePostSlice: PlacePostSlice,
+    PlacePhotoSlice: PlacePhotoSlice,
 
     SidebarSlice: SidebarSlice,
     NavbarSlice: NavbarSlice,

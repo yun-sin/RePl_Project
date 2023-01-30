@@ -56,6 +56,7 @@ const PlaceCommentSlice = createSlice({
         [addComment.pending]: pending,
         [addComment.fulfilled]: (state, { payload }) => {
             let data = cloneDeep(state.data);
+            if (!data) return;
             data.push(payload);
             return {
                 data: data,

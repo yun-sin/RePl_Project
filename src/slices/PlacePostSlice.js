@@ -7,7 +7,7 @@ export const getPost = createAsyncThunk("PlacePostSlice/getPost", async (payload
     const URL = process.env.REACT_APP_PLACE_POST;
     const { place_id } = payload;
     
-    try {
+try {
         let response = await axios.get(`${URL}?place_id=${place_id}`);
         const arr = [];
         if (response?.data?.item) {

@@ -181,6 +181,7 @@ app.use('/', router);
 ---------------------------------------------------------*/
 app.use(require('./controller/main/ThemeController'));
 app.use(require('./controller/map/MapController'));
+app.use(require('./controller/map/PhotoController'));
 
 app.use(require('./controller/login/LoginController'));
 

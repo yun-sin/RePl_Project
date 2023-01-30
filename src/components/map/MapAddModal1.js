@@ -9,6 +9,7 @@ import { postLoc } from "../../slices/MapSlice";
 import { postTP } from "../../slices/MapThemeSlice";
 
 import "animate.css";
+import CookieHelper from "../../helper/CookieHelper";
 
 export const MapAddModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -95,20 +96,28 @@ export const MapAddModalContainer = styled.div`
 const MapAddModal1 = memo(({ modalIsOpen, location, theme, AAT }) => {
   const dispatch = useDispatch();
 
-  const onSaveClick = useCallback(async (e) => {
+  const onSaveClick = useCallback((e) => {
+    const userInfo = CookieHelper.getCookie('loginInfo');
+    let user_id = 0;
+    if (userInfo) user_id = JSON.parse(userInfo).id;
     try {
       if (AAT) {
         console.group("테마 추가 : " + location?.place_name);
         console.log(location);
         console.groupEnd();
       } else {
-        await dispatch(postLoc({ location: location, theme: theme.id }));
+        dispatch(postLoc({ location: location, theme: theme.id })).then(() => {
+          dispatch(postTP({ user_id: user_id, place_id: location.id, theme_id: theme.id }));
+        });
         console.group("장소 추가 : " + location?.place_name);
         console.log(location);
         console.groupEnd();
       }
-      await dispatch(postTP({ place_id: location.id, theme_id: theme.id }));
-    } catch (error) {}
+    }
+    catch (error) {
+      window.alert('장소 추가에 실패했습니다.');
+      return;
+    }
 
     dispatch(modalOpen2());
   });

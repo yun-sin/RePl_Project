@@ -38,7 +38,11 @@ export const getMapItem = createAsyncThunk("MapSlice/getMapItem", async (payload
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) {
+    return result.item
+  } else {
+    return result;
+  }
 });
 
 /** 장소 저장을 위한 비동기 함수 */
@@ -62,7 +66,11 @@ export const postLoc = createAsyncThunk("MapSlice/postLoc", async (payload, { re
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) {
+    return result.item
+  } else {
+    return result;
+  }
 });
 
 /** 장소 데이터 삭제를 위한 비동기 함수 */
@@ -79,7 +87,11 @@ export const deleteLoc = createAsyncThunk("MapSlice/deleteLoc", async (payload, 
     result = rejectWithValue(err.response);
   }
 
-  return result;
+  if (result.item) {
+    return result.item
+  } else {
+    return result;
+  }
 });
 
 const MapSlice = createSlice({

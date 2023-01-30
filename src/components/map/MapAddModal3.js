@@ -5,6 +5,8 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 
 import { modalOpen1, modalOpen2, modalClose } from "../../slices/MapAddSlice";
+import { addPlacePhotos } from "../../slices/PlacePhotoSlice";
+import CookieHelper from "../../helper/CookieHelper";
 
 export const MapAddModalContainer = styled.div`
   letter-spacing: -0.5px;
@@ -62,6 +64,7 @@ export const MapAddModalContainer = styled.div`
 
   .save {
     font-size: 14px;
+    display: block;
     width: 100%;
     height: 50px;
     background-color: #0581bb;
@@ -90,19 +93,32 @@ export const MapAddModalContainer = styled.div`
   }
 `;
 
-const MapAddModal3 = memo(({ modalIsOpen, title }) => {
+const MapAddModal3 = memo(({ modalIsOpen, title, id }) => {
   const dispatch = useDispatch();
 
-  const [rating, setRating] = useState();
+  const onAddPhotoChange = useCallback(e => {
+    e.preventDefault();
 
-  const onRatingClick = useCallback((e) => {
-    const current = e.currentTarget;
-    const index = current.dataset.rating;
-    console.log(+index + 1);
-    setRating(index);
+    const files = Array.from(e.currentTarget.files);
+    const userInfo = CookieHelper.getCookie('loginInfo');
+    let userId = 0, username = 'test0';
+    if (userInfo) {
+      userId = JSON.parse(userInfo).id;
+      username = JSON.parse(userInfo).username;
+    }
 
-    document.getElementById("comment_text").focus();
-  });
+    dispatch(addPlacePhotos({
+      userId: userId,
+      username: username,
+      placeId: id,
+      files: files
+    })).then(() => {
+      dispatch(modalClose());
+    }).catch(err => {
+      window.alert(err);
+      return;
+    });
+  }, []);
 
   return (
     <Modal
@@ -147,9 +163,18 @@ const MapAddModal3 = memo(({ modalIsOpen, title }) => {
           진짜서울이 더 유익해 질 것 같아요!
         </div>
 
-        <div className="save" onClick={() => dispatch(modalClose())}>
+        <label htmlFor="customPhoto" className="save">
           사진 추가하기
-        </div>
+        </label>
+        <input
+          type='file'
+          accept='.jpg,.PNG'
+          name='customPhoto'
+          id='customPhoto'
+          style={{display: 'none'}}
+          onChange={onAddPhotoChange}
+          multiple
+        />
         <div className="close" onClick={() => dispatch(modalClose())}>
           종료하기
         </div>

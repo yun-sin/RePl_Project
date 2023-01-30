@@ -54,7 +54,7 @@ module.exports = (() => {
         // name 속성이 myphoto인 경우에 대한 업로드를 수행
         // --> 설정 파일에서 UPLOAD_MAX_COUNT에 저장한 만큼 업로드 가능
         // --> UPLOAD_MAX_COUNT 값을 -1로 지정 시 수량 제한 없음
-        const upload = fileHelper.initMulter().array('myphoto');
+        const upload = fileHelper.initMulter().array('customPhoto');
     
         upload(req, res, async err => {
             console.group('request');

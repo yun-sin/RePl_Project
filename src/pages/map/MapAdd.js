@@ -84,6 +84,7 @@ const MapAdd = memo(({ zoomLevel }) => {
   }, []);
 
   useEffect(() => {
+    console.log(data);
     let arr = [];
     if (data) {
       Array.from(data)?.forEach((v, i) => {

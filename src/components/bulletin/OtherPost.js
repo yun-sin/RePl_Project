@@ -47,14 +47,21 @@ const OtherPost = memo(props => {
     const onOtherPostClick = useCallback(e => {
         e.preventDefault();
 
-        navigate(`${process.env.REACT_APP_BULLETIN_PATH}/postview/${props.id}`);
+        navigate(`${process.env.REACT_APP_BULLETIN_PATH}/${props.id}`);
     }, []);
+
+    console.log(props.imgSrc);
 
     return (
         <Post onClick={onOtherPostClick}>
             {
-                props.bgImage ? (
-                    <img src={props.imgSrc} alt="미리보기 사진" />
+                props.imgSrc ? (
+                    <img
+                        src={
+                            `/thumbnail/thumb_${props.imgSrc.split('.')[0]}_480w.${props.imgSrc.split('.')[1]}`
+                        }
+                        alt="미리보기 사진"
+                    />
                 ) : (
                     <div style={{backgroundColor: props.bgColor}} />
                 )

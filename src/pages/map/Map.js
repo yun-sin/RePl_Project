@@ -26,6 +26,7 @@ import iconMore from "../../assets/img/map/icon-more.svg";
 import { useQueryString } from "../../hooks/useQueryString";
 
 import "animate.css";
+import CookieHelper from "../../helper/CookieHelper";
 
 const Map = memo(() => {
   const dispatch = useDispatch();

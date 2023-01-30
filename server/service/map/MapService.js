@@ -182,6 +182,34 @@ class MapService {
 
         return data;
     }
+
+    async addPlace(params) {
+        let dbcon = null;
+        let data = null;
+
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = mybatisMapper.getStatement('MapMapper', 'insertPlace', params);
+            let [{ affectedRows }] = await dbcon.query(sql);
+            
+            if (affectedRows === 0) {
+                throw new RuntimeExeption('장소 추가에 실패했습니다.');
+            }
+
+            sql = mybatisMapper.getStatement('MapMapper', 'selectPlace', {
+                id: params.id
+            });
+            let [result] = await dbcon.query(sql);
+            [data] = result;
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) dbcon.release();
+        }
+
+        console.log(data);
+        return data;
+    }
 }
 
 module.exports = new MapService();

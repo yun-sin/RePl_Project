@@ -120,5 +120,29 @@ module.exports = (() => {
         res.sendResult({ item: result });
     });
 
+    router.post('/map', async (req, res, next) => {
+        let result = null;
+
+        try {
+            result = await MapService.addPlace({
+                id: req.body.id,
+                place_name: req.body.place_name,
+                address_name: req.body.address_name,
+                road_address_name: req.body.road_address_name,
+                lat: req.body.lat,
+                lng: req.body.lng,
+                category_item_name: req.body.category_item_name,
+                phone: req.body.phone,
+                place_url: req.body.place_url
+            });
+        } catch (err) {
+            return next(err);
+        }
+
+        console.log(result);
+        
+        res.sendResult({ item: result });
+    });
+
     return router;
 })();
