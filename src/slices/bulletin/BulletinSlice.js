@@ -13,6 +13,8 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
                 page: payload?.page || 1,
                 rows: payload?.rows || 8,
                 sortByLike: payload?.sortByLike || false,
+                isMyPost: payload?.isMyPost,
+                userId: payload?.userId
             }
         });
         result = response.data;
@@ -21,11 +23,7 @@ export const getList = createAsyncThunk('BulletinSlice/getList', async (payload,
         result = rejectWithValue(err.response);
     }
 
-    if (result.item) {
-        return result.item;
-    } else {
-        return result;
-    }
+    return result;
 });
 
 export const newPost = createAsyncThunk('BulletinSlice/newPost', async (payload, { rejectWithValue }) => {

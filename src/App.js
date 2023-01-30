@@ -21,7 +21,6 @@ import CreateTheme from "./pages/Main/CreateTheme";
 
 /* 게시판 컴포넌트 모듈 */
 import Bulletin from "./pages/bulletin/Bulletin";
-import MyPost from "./pages/bulletin/MyPost";
 import NewPost from "./pages/bulletin/NewPost";
 import PostView from "./pages/bulletin/PostView";
 import MakeCuration from "./components/mypage/MakeCuration";
@@ -52,7 +51,6 @@ const App = memo(() => {
 
         {/* 게시판 Routes */}
         <Route path="/bulletin" element={<Bulletin />} />
-        <Route path="/bulletin/mypost/:id" element={<MyPost />} />
         <Route path="/bulletin/newpost/:id" element={<NewPost />} />
         <Route path="/bulletin/:id" element={<PostView />} />
       </Routes>

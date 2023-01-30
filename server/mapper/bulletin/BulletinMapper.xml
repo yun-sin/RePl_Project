@@ -14,7 +14,7 @@
 
     <!-- 다중행 조회를 위한 기능 정의 -->
     <select id="selectList">
-        SELECT b.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content,
+        SELECT b.id, u.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content,
             (
 	            SELECT COUNT(*) FROM `like` AS l WHERE l.bulletin_id = b.id
             ) AS `like`
@@ -35,6 +35,13 @@
                 AND b.id IN (
                     SELECT bulletin_id FROM bulletin_category
                     WHERE category_id = ${tagId}
+                )
+            </if>
+            
+            <if test="isMyPost and userId">
+                AND b.id IN (
+                    SELECT id FROM bulletin
+                    WHERE user_id = ${userId}
                 )
             </if>
         </trim>
@@ -84,6 +91,13 @@
                 AND b.id IN (
                     SELECT bulletin_id FROM bulletin_category
                     WHERE category_id = ${tagId}
+                )
+            </if>
+
+            <if test="isMyPost and userId">
+                AND b.id IN (
+                    SELECT id FROM bulletin
+                    WHERE user_id = ${userId}
                 )
             </if>
         </trim>

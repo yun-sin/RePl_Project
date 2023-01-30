@@ -149,7 +149,11 @@ const Post = memo(props => {
     }, [props]);
 
     return (
-        <PostCard onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} onClick={onLinkClick}>
+        <PostCard
+            onMouseOver={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+            onClick={onLinkClick}
+        >
             <div className={classNames('hover__preview', {active: isHover})}>
                 <h3>{props.postTitle}</h3>
                 <p>게시물 바로가기</p>
@@ -161,7 +165,7 @@ const Post = memo(props => {
                         id='tets'
                         className='bg'
                         src={
-                            `thumbnail/thumb_${props.backgroundImage.split('.')[0]}_480w.${props.backgroundImage.split('.')[1]}`
+                            `/thumbnail/thumb_${props.backgroundImage.split('.')[0]}_480w.${props.backgroundImage.split('.')[1]}`
                         }
                     alt="게시물 이미지"
                     />

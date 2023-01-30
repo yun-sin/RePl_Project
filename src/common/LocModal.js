@@ -704,7 +704,7 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
       }}>
       <LocModalContainer>
         <div className="modal-header">
-          <h3>{data?.place_name}</h3>`  `
+          <h3>{data?.place_name}</h3>
           <span>{data?.road_address_name ? data?.road_address_name : data?.address_name}</span>
           <FontAwesomeIcon className="faX" icon={faX} onClick={closeModal} />
         </div>
@@ -794,12 +794,14 @@ const LocModal = memo(({ isModalOpen, closeModal, data, delCount, setDelCount })
               <div className="info-item">
                 <div className="title">이 장소에 대한 후기들!</div>
                 {/* 예시 리뷰 //// */}
+                {/*
                 <div className="review_item">
                   <div className="review_emoji">
                     <img src={emoji[3]} alt="평점 이모지" />
                   </div>
                   <span className="review_text">잔치국수와 김밥의 조화. 준수함.</span>
                 </div>
+                */}
                 {/* //// 예시 리뷰 */}
                 {
                   comments && comments.map((v, i) => {

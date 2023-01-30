@@ -12,7 +12,7 @@ module.exports = (() => {
     /** 전체 게시글 목록 조회 */
     router.get(url, async (req, res, next) => {
         // 파라미터들 저장
-        const { query, tag, page=1, rows=8, sortByLike, id } = req.query;
+        const { query, tag, page=1, rows=8, sortByLike, id, isMyPost, userId } = req.query;
 
         if (id) {
             let json = null;
@@ -38,12 +38,15 @@ module.exports = (() => {
         }
         // 태그 저장
         if (tag) params.tagId = parseInt(tag);
+        // 내 게시물일 경우
+        if (isMyPost === 'true') params.isMyPost = true;
+        if (userId) params.userId = userId;
 
         /** 데이터 조회 */
         let data = null;
         let pageInfo = null;
 
-    try {
+        try {
             // 전체 데이터 수 얻기
             const totalCount = await bulletinService.getCount(params);
             pageInfo = pagenation(totalCount, page, rows);

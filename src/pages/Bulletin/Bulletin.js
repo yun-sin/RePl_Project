@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useState, useCallback } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React, { memo, useEffect, useState, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useQueryString } from '../../hooks/useQueryString';
@@ -138,8 +138,18 @@ const Bulletin = memo(() => {
 
     const [isUpdate, setIsUpdate] = useState(0);
     const [sort, setSort] = useState(false);
+    const [isMyPost, setIsMyPost] = useState(false);
 
-    console.log(data, pagenation);
+    useEffect(() => {
+        console.log(pagenation, data);
+    }, [data]);
+
+    const userInfo = useMemo(() => {
+        const temp = CookieHelper.getCookie('loginInfo');
+        if (!temp) return null;
+        else return JSON.parse(temp);
+    }, []);
+
     // 데이터 적재
     useEffect(() => {
         dispatch(getList({
@@ -147,17 +157,19 @@ const Bulletin = memo(() => {
             tag: tag,
             page: page,
             rows: 8,
-            sortByLike: sort
+            sortByLike: sort,
+            isMyPost: isMyPost,
+            userId: userInfo?.id
         }));
         dispatch(getTags());
-    }, [query, page, isUpdate, sort]);
+    }, [query, page, isUpdate, sort, isMyPost]);
 
     /** 글쓰기 / 내가 쓴 게시물 이동 버튼 */
     const onBannerButtonClick = useCallback(e => {
         e.preventDefault();
 
         const loginInfo = CookieHelper.getCookie('loginInfo');
-        if (!loginInfo) {
+        if (!isMyPost && !loginInfo) {
             if (window.confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
                 navigate('/login/repl');
                 return;
@@ -169,7 +181,7 @@ const Bulletin = memo(() => {
         const target = e.currentTarget.dataset.target;
 
         switch (target) {
-            case 'mypost': navigate('/bulletin/mypost/*'); break;
+            case 'mypost': setIsMyPost(state => !state); break;
             case 'newpost': navigate('/bulletin/newpost/*'); break;
             default: break;
         }
@@ -236,16 +248,35 @@ const Bulletin = memo(() => {
     return (
         <>
             <BannerArea>
-                <div className="banner__title">
-                    <h1>사람들의 서울 이야기</h1>
-                    <p>게시글은 직접 리뷰를 남긴 장소를 대상으로 작성 가능해요.<br/>아래의 썸네일을 클릭해서 사람들의 취향과 개성이 담긴 이야기를 직접 읽어보세요.</p>
-                </div>
-                <div className="linksWrap">
-                        <div className='links'>
-                            <button data-target='mypost' onClick={onBannerButtonClick}>- 내 게시글 -</button>
-                            <button data-target='newpost' onClick={onBannerButtonClick}>- 글쓰기 -</button>
-                        </div>
-                </div>
+                {
+                    isMyPost ? (
+                        <>
+                            <div className="banner__title">
+                                <h1>내 게시글</h1>
+                                <p>내가 직접 남긴 게시글들이에요.</p>
+                            </div>
+                            <div className="linksWrap">
+                                <div className='links'>
+                                <button data-target='mypost' onClick={onBannerButtonClick}>- 전체 게시글 -</button>
+                                <button data-target='newpost' onClick={onBannerButtonClick}>- 글쓰기 -</button>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="banner__title">
+                                <h1>사람들의 서울 이야기</h1>
+                                <p>게시글은 직접 리뷰를 남긴 장소를 대상으로 작성 가능해요.<br/>아래의 썸네일을 클릭해서 사람들의 취향과 개성이 담긴 이야기를 직접 읽어보세요.</p>
+                            </div>
+                            <div className="linksWrap">
+                                    <div className='links'>
+                                        <button data-target='mypost' onClick={onBannerButtonClick}>- 내 게시글 -</button>
+                                        <button data-target='newpost' onClick={onBannerButtonClick}>- 글쓰기 -</button>
+                                    </div>
+                            </div>
+                        </>
+                    )
+                }
             </BannerArea>
 
             <MainArea>
