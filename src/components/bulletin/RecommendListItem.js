@@ -92,8 +92,14 @@ const RecommendListItem = memo(props => {
         <Item data-id={props.id} data-place_name={props.title} data-place_address={props.address} data-place_url={props.place_url} onClick={onClick}>
             <div className='recommend-Item__1'>
                 {
-                    props.place_img ? (
-                        <img className='img' src={props.img} alt={`${props.title} 후기 이미지`} />
+                    props.img ? (
+                        <img
+                            className='img'
+                            src={
+                                `/thumbnail/thumb_${props.img.split('.')[0]}_480w.${props.img.split('.')[1]}`
+                            }
+                            alt={`${props.title} 후기 이미지`}
+                        />
                     ) : (
                         <div className='img'>No Photo</div>
                     )

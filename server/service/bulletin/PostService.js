@@ -69,7 +69,7 @@ class PostService {
 
                 sql = mybatisMapper.getStatement('PostMapper', 'selectPlacePhoto', {id: result[i].id});
                 [temp] = await dbcon.query(sql);
-                if (temp.length > 0) result[i].img = temp[0];
+                if (temp.length > 0) result[i].img = temp[0].place_image;
                 else result[i].img = null;
             };
 

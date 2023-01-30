@@ -30,9 +30,10 @@
 
     <!-- 추천된 장소의 대표 사진 -->
     <select id="selectPlacePhoto">
-        SELECT filename
+        SELECT MAX(filename) AS place_image
         FROM photo
         WHERE place_id = #{id}
+        ORDER BY id
     </select>
 
     <!-- 게시글 카테고리 해시태그 불러오기 -->

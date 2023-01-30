@@ -8,7 +8,6 @@ import cookieHelper from '../../helper/CookieHelper';
 import { useSelector, useDispatch } from 'react-redux';
 import { getComments, postComment } from '../../slices/bulletin/CommentsSlice';
 
-import breadSample from '../../assets/img/bulletin/bread_sample.jpg';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 

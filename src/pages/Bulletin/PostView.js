@@ -312,6 +312,10 @@ const NewPost = memo(props => {
         }
     }, [data]);
 
+    useEffect(() => {
+        console.log(places);
+    }, [places]);
+
     // 로그인 여부에 따라 팔로우 정보 처리
     useEffect(() => {
         const loginInfo = cookieHelper.getCookie('loginInfo');
