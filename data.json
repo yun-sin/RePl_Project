@@ -570,6 +570,12 @@
       "theme_id": 0,
       "user_id": null,
       "id": 66
+    },
+    {
+      "user_id": 0,
+      "place_id": 2094529832,
+      "theme_id": 6,
+      "id": 67
     }
   ],
   "theme": [
@@ -693,6 +699,11 @@
       "place_id": 1149707328,
       "user_id": 2,
       "id": 9
+    },
+    {
+      "place_id": 2094529832,
+      "user_id": 0,
+      "id": 10
     }
   ],
   "bulletin": [
