@@ -6,7 +6,8 @@
   
 
 ## About
- - 진짜서울(https://jinjja-seoul.com) 클론코딩
+ - React 사용
+ - 진짜서울(https://jinjja-seoul.com) 사이트를 참고함
  - 유저들이 장소에 대한 후기를 남기고 이를 테마별로 지정하여 검색할 수 있는 사이트
  
 ## Team
@@ -50,10 +51,35 @@
 
 
 ## Problems
- - 2
- 
-## Output
+ - 북마크 중복 요청문제
+   - 버튼을 연속적으로 누를 경우 서버에 중복된 요청이 전송됨 (버튼을 누를때마다 post 또는 del 요청)
+   - -> 모달창이 닫힐 때 state값에 따라 post 또는 delete 수행
 
+## 담당업무
+ - 지도페이지 담당
+   - 카카오맵 API 적용
+   - React modal을 이용한 장소 상세정보 팝업
+   - 현재 장소 표시 및 재검색
+   - 보고있는 지도 범위, 테마 등 검색조건 적용기능
+   - 북마크 기능 구현
+   - 장소 추가 및 삭제(카카오맵 검색 기능 이용, 중복 등록 방지 기능 구현)
+   - 애니메이션 (마커 클릭시 해당 장소로 스크롤, 반대로 목록 클릭시 마커 중심으로 지도 이동)
+
+ 
+## 결과물
+
+> 지도페이지
 ![지도3](https://user-images.githubusercontent.com/99275134/231155883-d1c60747-03e7-493c-abd2-b16aa84697aa.gif)
 
+> 장소추가
+![장소추가](https://user-images.githubusercontent.com/99275134/231156790-55b2fb9e-a74b-45fd-8772-973647d90290.gif)
+
+> 장소삭제
+![장소삭제](https://user-images.githubusercontent.com/99275134/231159002-073039c3-8027-40a2-801e-20a04b776531.gif)
+
+> 테마추가
+![테마추가](https://user-images.githubusercontent.com/99275134/231159433-80a26ca1-b0bc-4d92-9298-911debb25025.gif)
+
+> 검색결과 없을 경우
+![검색결과없을시](https://user-images.githubusercontent.com/99275134/231159063-05b991af-f1f6-486a-8ef0-d85ed2cda99e.gif)
 
