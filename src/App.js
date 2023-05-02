@@ -20,9 +20,9 @@ import ThemeList from "./components/Main/ThemeList";
 import CreateTheme from "./pages/Main/CreateTheme";
 
 /* 게시판 컴포넌트 모듈 */
-import Bulletin from "./pages/bulletin/Bulletin";
-import NewPost from "./pages/bulletin/NewPost";
-import PostView from "./pages/bulletin/PostView";
+import Bulletin from "./pages/Bulletin/Bulletin";
+import NewPost from "./pages/Bulletin/NewPost";
+import PostView from "./pages/Bulletin/PostView";
 import MakeCuration from "./components/mypage/MakeCuration";
 
 const App = memo(() => {
